@@ -20,7 +20,7 @@ Repositori ini berisi kode sumber Tugas Besar Praktikum Pemrograman Web 2026 **K
 | 1 | **Taufiq Kusumawibowo** | *(Isi NPM)* | `feat/kelompok-13-transaksi` | **Ketua Tim / Modul Pelanggan & Tracking**: Konfigurasi PDO, skema DB, router utama, pemesanan servis, unggah foto kendala, riwayat servis, dan *stepper tracking*. |
 | 2 | **Fareluna Nazwa Hafiez** | *(Isi NPM)* | `feat/kelompok-13-auth-pelanggan` | **Modul Autentikasi & Session**: Login, registrasi, logout, *role-based access control* (Admin, Teknisi, Customer), profil, serta aktivasi akun teknisi. |
 | 3 | **Raffi Ichwan Pramudya** | *(Isi NPM)* | `feat/kelompok-13-master-data` | **Modul Master Data**: CRUD kategori kendaraan (Roda 2/Roda 4, merk, tipe) serta CRUD paket layanan servis beserta estimasi tarif dan durasi. |
-| 4 | **Triandika** | *(Isi NPM)* | `feat/kelompok-13-teknisi-wo` | **Modul Teknisi & Work Order**: Daftar antrean kerja teknisi, pembaruan status pengerjaan unit, unggah dokumentasi komponen mesin, dan catatan suku cadang. |
+| 4 | **Triandika** | 2415061064 | `feat/kelompok-13-teknisi-work-order` | **Modul Teknisi & Work Order**: Daftar antrean kerja teknisi, pembaruan status pengerjaan unit, unggah dokumentasi komponen mesin, dan catatan suku cadang. |
 | 5 | **Ezzra Rei Setiawan** | 2415061096 | `feat/kelompok-13-ui-dashboard` | **Modul UI/UX Global, Dashboard & Cetak Dokumen**: Layout global Bootstrap 5 (`header`, `sidebar`, `footer`), dashboard metrik operasional admin, serta fitur cetak Nota Pengambilan & Kuitansi Servis. |
 
 ---
