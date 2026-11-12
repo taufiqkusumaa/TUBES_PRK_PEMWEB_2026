@@ -5,8 +5,8 @@ require_once __DIR__ . '/../Config/Database.php';
 class PelangganModel {
     private $db;
 
-    public function __construct() {
-        $this->db = Database::getConnection();
+    public function __construct(?PDO $db = null) {
+        $this->db = $db ?: Database::getConnection();
     }
 
     public function findByEmail($email) {
@@ -21,16 +21,17 @@ class PelangganModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function register($nama, $email, $password, $no_telp, $role = 'customer') {
+    public function register($nama, $email, $password, $no_telp, $role = 'customer', $statusAktif = 1) {
         $hashed = password_hash($password, PASSWORD_BCRYPT);
         $stmt = $this->db->prepare("INSERT INTO users (nama, email, password, no_telp, role, status_aktif) 
-                                    VALUES (:nama, :email, :password, :no_telp, :role, 1)");
+                                    VALUES (:nama, :email, :password, :no_telp, :role, :status_aktif)");
         return $stmt->execute([
             ':nama' => $nama,
             ':email' => $email,
             ':password' => $hashed,
             ':no_telp' => $no_telp,
-            ':role' => $role
+            ':role' => $role,
+            ':status_aktif' => $statusAktif,
         ]);
     }
 

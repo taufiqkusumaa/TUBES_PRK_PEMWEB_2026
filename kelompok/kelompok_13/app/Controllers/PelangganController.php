@@ -6,11 +6,11 @@ require_once __DIR__ . '/../Models/PelangganModel.php';
 class PelangganController {
     private $model;
 
-    public function __construct() {
+    public function __construct(?PDO $db = null) {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        $this->model = new PelangganModel();
+        $this->model = new PelangganModel($db);
     }
 
     public function index() {
@@ -29,10 +29,13 @@ class PelangganController {
         exit;
     }
 
-    // PASTIKAN NAMA METHOD INI ADALAH handleApi
+    public function handle(): void {
+        $this->handleApi();
+    }
+
     public function handleApi() {
         $action = $_GET['action'] ?? '';
-        $method = $_SERVER['REQUEST_METHOD'];
+        $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
         $rawInput = file_get_contents('php://input');
         $jsonInput = json_decode($rawInput, true);
@@ -50,6 +53,9 @@ class PelangganController {
                 break;
 
             case 'logout':
+                if ($method !== 'POST') {
+                    $this->jsonResponse(false, 'Metode HTTP tidak valid', null, 405);
+                }
                 $this->processLogout();
                 break;
 
@@ -58,6 +64,8 @@ class PelangganController {
                     $this->getProfile();
                 } elseif ($method === 'POST') {
                     $this->updateProfile($input);
+                } else {
+                    $this->jsonResponse(false, 'Metode HTTP tidak valid', null, 405);
                 }
                 break;
 
@@ -65,6 +73,8 @@ class PelangganController {
                 $this->requireRole(['admin']);
                 if ($method === 'GET') {
                     $this->listUsers();
+                } else {
+                    $this->jsonResponse(false, 'Metode HTTP tidak valid', null, 405);
                 }
                 break;
 
@@ -72,6 +82,8 @@ class PelangganController {
                 $this->requireRole(['admin']);
                 if ($method === 'POST') {
                     $this->toggleStatusUser($input);
+                } else {
+                    $this->jsonResponse(false, 'Metode HTTP tidak valid', null, 405);
                 }
                 break;
 
@@ -104,9 +116,13 @@ class PelangganController {
             $role = 'customer';
         }
 
-        $res = $this->model->register($nama, $email, $password, $no_telp, $role);
+        $statusAktif = $role === 'teknisi' ? 0 : 1;
+        $res = $this->model->register($nama, $email, $password, $no_telp, $role, $statusAktif);
         if ($res) {
-            $this->jsonResponse(true, 'Registrasi berhasil. Silakan login.');
+            $message = $statusAktif === 0
+                ? 'Pendaftaran teknisi berhasil. Akun menunggu aktivasi admin.'
+                : 'Registrasi berhasil. Silakan login.';
+            $this->jsonResponse(true, $message);
         } else {
             $this->jsonResponse(false, 'Gagal melakukan registrasi', null, 500);
         }
@@ -135,6 +151,7 @@ class PelangganController {
             'email' => $user['email'],
             'role'  => $user['role']
         ];
+        session_regenerate_id(true);
 
         $this->jsonResponse(true, 'Login berhasil', $_SESSION['user']);
     }
