@@ -3,7 +3,7 @@
 
     const API = 'api.php?endpoint=layanan';
     const $ = (selector, root = document) => root.querySelector(selector);
-    const state = { services: [] };
+    const state = { services: [], categories: [] };
 
     const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -64,6 +64,7 @@
         tbody.innerHTML = state.services.length ? state.services.map((row) => `
             <tr>
                 <td class="fw-semibold">${esc(row.nama_paket)}</td>
+                <td>${esc(row.jenis)} — ${esc(row.merk)} ${esc(row.tipe)}</td>
                 <td>${rupiah(row.tarif_dasar)}</td>
                 <td>${formatDurasi(row.estimasi_durasi_menit)}</td>
                 <td class="text-end text-nowrap">
@@ -71,17 +72,24 @@
                     <button class="btn-surface py-1 px-2 text-danger" type="button" data-delete="${Number(row.id)}">Hapus</button>
                 </td>
             </tr>`).join('') :
-            '<tr><td colspan="4" class="text-center py-4">Belum ada paket layanan.</td></tr>';
+            '<tr><td colspan="5" class="text-center py-4">Belum ada paket layanan.</td></tr>';
     }
 
     async function load() {
-        $('#tbodyLayanan').innerHTML = '<tr><td colspan="4" class="text-center py-4">Memuat paket layanan...</td></tr>';
+        $('#tbodyLayanan').innerHTML = '<tr><td colspan="5" class="text-center py-4">Memuat paket layanan...</td></tr>';
         try {
             const { data } = await api('list');
             state.services = data.layanan || [];
+            state.categories = data.kategori || [];
+            const select = $('#kategoriLayanan');
+            const selected = select.value;
+            select.innerHTML = '<option value="">Pilih kategori kendaraan</option>' + state.categories.map((row) =>
+                `<option value="${Number(row.id)}">${esc(row.jenis)} — ${esc(row.merk)} ${esc(row.tipe)}</option>`
+            ).join('');
+            if (state.categories.some((row) => String(row.id) === selected)) select.value = selected;
             render();
         } catch (error) {
-            $('#tbodyLayanan').innerHTML = `<tr><td colspan="4" class="text-center text-danger py-4">${esc(error.message)}</td></tr>`;
+            $('#tbodyLayanan').innerHTML = `<tr><td colspan="5" class="text-center text-danger py-4">${esc(error.message)}</td></tr>`;
         }
     }
 
@@ -100,6 +108,7 @@
         const body = Object.fromEntries(new FormData(form).entries());
         body.tarif_dasar = Number(body.tarif_dasar);
         body.estimasi_durasi_menit = Number(body.estimasi_durasi_menit);
+        body.kategori_id = Number(body.kategori_id);
         if (body.id) body.id = Number(body.id);
         try {
             const { message } = await api('save', {
@@ -127,6 +136,7 @@
                 if (!row) return;
                 const form = $('#formLayanan');
                 form.elements.id.value = row.id;
+                form.elements.kategori_id.value = row.kategori_id;
                 form.elements.nama_paket.value = row.nama_paket;
                 form.elements.tarif_dasar.value = row.tarif_dasar;
                 form.elements.estimasi_durasi_menit.value = row.estimasi_durasi_menit;

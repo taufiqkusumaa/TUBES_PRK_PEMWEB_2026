@@ -1,77 +1,52 @@
 <?php
-/**
- * SparepartController - REST API dokumentasi komponen & catatan teknis suku cadang.
- * KONTRAK (sama dengan MekanikController):
- *   api.php: case 'sparepart': (new SparepartController($pdo))->handle(); break;
- *   Session: $_SESSION['user'] = ['id', 'nama', 'role'] (role dinormalisasi:
- *            mekanik => teknisi, pelanggan => customer).
- *   Sub-aksi: parameter "action". Respons: {"success": bool, "message": string, "data": mixed}
- *
- * Endpoint:
- *   GET    api.php?endpoint=sparepart&action=list&transaksi_id=ID
- *   POST   api.php?endpoint=sparepart&action=tambah   (multipart/form-data)
- *   POST   api.php?endpoint=sparepart&action=ubah     (multipart/form-data, field id)
- *   DELETE api.php?endpoint=sparepart&action=hapus&id=ID   (POST juga diterima)
- *
- * Catatan: PHP tidak mengisi $_POST/$_FILES untuk multipart bermetode PUT, karena itu
- * "ubah" memakai POST.
- *
- * Aturan bisnis:
- *   - list     : admin; teknisi yang ditugaskan; customer pemilik transaksi (hanya baca).
- *   - tambah/ubah/hapus : admin atau teknisi yang ditugaskan, HANYA saat status Dikerjakan.
- *   - Setiap perubahan komponen menghitung ulang transaksi_servis.total_biaya
- *     (tarif dasar + SUM jumlah x harga_satuan).
- */
+
 require_once __DIR__ . '/../Models/SparepartModel.php';
+require_once __DIR__ . '/../Models/MekanikModel.php';
+require_once __DIR__ . '/../Models/TransaksiModel.php';
 
-class SparepartController
-{
-    private const MAKS_FOTO_BYTE = 2097152; // 2 MB
-    private const TIPE_FOTO = [
-        'image/jpeg' => 'jpg',
-        'image/png'  => 'png',
-        'image/webp' => 'webp',
-    ];
-
+class SparepartController {
     private SparepartModel $model;
+    private MekanikModel $mekanikModel;
+    private TransaksiModel $transaksiModel;
+    private PDO $db;
+    private string $uploadDir;
 
-    public function __construct(PDO $db)
-    {
+    public function __construct(PDO $db) {
+        $this->db = $db;
         $this->model = new SparepartModel($db);
+        $this->mekanikModel = new MekanikModel($db);
+        $this->transaksiModel = new TransaksiModel($db);
+        $this->uploadDir = __DIR__ . '/../../public/uploads/';
     }
 
-    public function handle(): void
-    {
+    public function handle(): void {
         try {
             $user = $this->currentUser();
-            // Admin boleh tanpa id (stub sesi awal). Teknisi & customer difilter
-            // berdasarkan id, jadi wajib ada.
-            if ($user['role'] === '' || ($user['role'] !== 'admin' && $user['id'] <= 0)) {
-                $this->json(false, 'Sesi berakhir. Silakan login kembali.', null, 401);
+            if ($user['id'] <= 0 || !in_array($user['role'], ['admin', 'teknisi'], true)) {
+                $this->json(false, 'Anda tidak memiliki akses ke dokumentasi suku cadang.', null, 403);
             }
 
-            $aksi   = $_GET['action'] ?? '';
+            $action = (string) ($_GET['action'] ?? '');
             $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-
-            switch ($aksi) {
+            switch ($action) {
                 case 'list':
                     $this->wajibMethod($method, ['GET']);
-                    $this->daftar($user);
+                    $this->list($user);
                     break;
                 case 'tambah':
                     $this->wajibMethod($method, ['POST']);
-                    $this->tambah($user);
+                    $this->simpan($user, null);
                     break;
                 case 'ubah':
-                    $this->wajibMethod($method, ['POST']);
-                    $this->ubah($user);
+                    $this->wajibMethod($method, ['POST', 'PUT']);
+                    $this->simpan($user, (int) ($this->input()['id'] ?? 0));
                     break;
                 case 'hapus':
                     $this->wajibMethod($method, ['DELETE', 'POST']);
                     $this->hapus($user);
                     break;
                 default:
-                    $this->json(false, 'Aksi tidak dikenal.', null, 404);
+                    $this->json(false, 'Aksi suku cadang tidak dikenal.', null, 404);
             }
         } catch (Throwable $e) {
             error_log('[SparepartController] ' . $e->getMessage());
@@ -79,306 +54,178 @@ class SparepartController
         }
     }
 
-    // ------------------------------------------------------------------
-    // Aksi
-    // ------------------------------------------------------------------
-
-    private function daftar(array $user): void
-    {
+    private function list(array $user): void {
         $transaksiId = (int) ($_GET['transaksi_id'] ?? 0);
-        $info = $transaksiId > 0 ? $this->model->getTransaksiInfo($transaksiId) : null;
-        if (!$info) {
-            $this->json(false, 'Work order tidak ditemukan.', null, 404);
-        }
-        if (!$this->bolehBaca($info, $user)) {
-            $this->json(false, 'Anda tidak memiliki akses ke work order ini.', null, 403);
-        }
-
-        $info['bisa_ubah'] = $this->bolehUbah($info, $user);
-        unset($info['user_id'], $info['teknisi_id']);
+        $transaksi = $this->workOrder($transaksiId, $user, false);
+        $items = $this->model->getByTransaksi($transaksiId);
+        $totalKomponen = array_sum(array_map(
+            static fn (array $item): float => (float) $item['subtotal'],
+            $items
+        ));
+        $transaksi['bisa_ubah'] = $this->bisaUbah($transaksi, $user);
+        $detail = $this->transaksiModel->getById($transaksiId);
+        $transaksi['total_biaya'] = (float) ($detail['grand_total'] ?? $transaksi['total_biaya']);
 
         $this->json(true, 'OK', [
-            'transaksi' => $info,
-            'komponen'  => $this->model->getByTransaksi($transaksiId),
-            'ringkasan' => $this->model->getRingkasan($transaksiId),
+            'transaksi' => $transaksi,
+            'komponen' => $items,
+            'ringkasan' => [
+                'jumlah_item' => count($items),
+                'total_komponen' => $totalKomponen,
+            ],
         ]);
     }
 
-    private function tambah(array $user): void
-    {
-        $this->cekBodyTerlalu();
-        $this->wajibRoleTulis($user);
-
-        $transaksiId = (int) ($_POST['transaksi_id'] ?? 0);
-        $info = $transaksiId > 0 ? $this->model->getTransaksiInfo($transaksiId) : null;
-        if (!$info) {
-            $this->json(false, 'Work order tidak ditemukan.', null, 404);
+    private function simpan(array $user, ?int $id): void {
+        $input = $this->input();
+        $transaksiId = (int) ($input['transaksi_id'] ?? 0);
+        if ($id !== null && $id <= 0) {
+            $this->json(false, 'ID komponen tidak valid.', null, 422);
         }
-        $this->wajibBolehUbah($info, $user);
-
-        $data = $this->validasiForm();
-
-        // Komponen dicatat atas nama teknisi penanggung jawab work order.
-        $teknisiId = $info['teknisi_id'] !== null ? (int) $info['teknisi_id'] : $user['id'];
-        if ($teknisiId <= 0) {
-            $this->json(false, 'Work order belum memiliki teknisi penanggung jawab.', null, 422);
+        $transaksi = $this->workOrder($transaksiId, $user, true);
+        if (!$this->bisaUbah($transaksi, $user)) {
+            $this->json(false, 'Komponen hanya dapat diubah pada work order yang sedang dikerjakan.', null, 409);
         }
 
-        $fotoBaru = null;
-        try {
-            $fotoBaru = $this->simpanFotoJikaAda();
-            $id = $this->model->tambah([
-                'transaksi_id'      => $transaksiId,
-                'teknisi_id'        => $teknisiId,
-                'nama_suku_cadang'  => $data['nama_suku_cadang'],
-                'jumlah'            => $data['jumlah'],
-                'harga_satuan'      => $data['harga_satuan'],
-                'foto_komponen'     => $fotoBaru,
-                'catatan_perbaikan' => $data['catatan_perbaikan'],
-            ]);
-        } catch (InvalidArgumentException $e) {
-            $this->json(false, $e->getMessage(), null, 422);
-        } catch (Throwable $e) {
-            $this->hapusFile($fotoBaru);
-            throw $e;
+        $existing = $id === null ? null : $this->model->getById($id);
+        if ($id !== null && (!$existing || (int) $existing['transaksi_id'] !== $transaksiId)) {
+            $this->json(false, 'Komponen tidak ditemukan pada work order ini.', null, 404);
         }
 
-        $this->json(true, 'Komponen berhasil ditambahkan.', ['id' => $id], 201);
+        $nama = trim((string) ($input['nama_suku_cadang'] ?? ''));
+        $jumlah = filter_var($input['jumlah'] ?? null, FILTER_VALIDATE_INT);
+        $harga = filter_var($input['harga_satuan'] ?? null, FILTER_VALIDATE_FLOAT);
+        $catatan = trim((string) ($input['catatan_perbaikan'] ?? ''));
+        if ($nama === '' || mb_strlen($nama) > 100 ||
+            $jumlah === false || $jumlah < 1 || $jumlah > 999 ||
+            $harga === false || $harga < 0 || $harga > 99999999 ||
+            mb_strlen($catatan) > 1000) {
+            $this->json(false, 'Nama, jumlah, harga, atau catatan komponen tidak valid.', null, 422);
+        }
+
+        $foto = $existing['foto_komponen'] ?? null;
+        $uploadedFoto = $this->simpanFoto($_FILES['foto_komponen'] ?? null);
+        if ($uploadedFoto !== null) {
+            $foto = $uploadedFoto;
+        }
+
+        $this->model->simpan([
+            ':transaksi_id' => $transaksiId,
+            ':teknisi_id' => $user['role'] === 'teknisi' ? $user['id'] : (int) $transaksi['teknisi_id'],
+            ':nama_suku_cadang' => $nama,
+            ':jumlah' => $jumlah,
+            ':harga_satuan' => $harga,
+            ':foto_komponen' => $foto,
+            ':catatan_perbaikan' => $catatan !== '' ? $catatan : null,
+        ], $id);
+
+        if ($uploadedFoto !== null && !empty($existing['foto_komponen'])) {
+            $this->hapusFoto($existing['foto_komponen']);
+        }
+        $this->transaksiModel->recalculateTotalBiaya($transaksiId);
+        $this->json(true, $id === null ? 'Komponen berhasil ditambahkan.' : 'Komponen berhasil diperbarui.');
     }
 
-    private function ubah(array $user): void
-    {
-        $this->cekBodyTerlalu();
-        $this->wajibRoleTulis($user);
-
-        $id  = (int) ($_POST['id'] ?? 0);
-        $row = $id > 0 ? $this->model->getById($id) : null;
-        if (!$row) {
-            $this->json(false, 'Data komponen tidak ditemukan.', null, 404);
+    private function hapus(array $user): void {
+        $input = $this->input();
+        $id = (int) ($_GET['id'] ?? $input['id'] ?? 0);
+        $transaksiId = (int) ($_GET['transaksi_id'] ?? $input['transaksi_id'] ?? 0);
+        $transaksi = $this->workOrder($transaksiId, $user, true);
+        if (!$this->bisaUbah($transaksi, $user)) {
+            $this->json(false, 'Komponen hanya dapat diubah pada work order yang sedang dikerjakan.', null, 409);
         }
-        $info = $this->model->getTransaksiInfo((int) $row['transaksi_id']);
-        $this->wajibBolehUbah($info, $user);
-
-        $data = $this->validasiForm();
-
-        $fotoBaru = null;
-        try {
-            $fotoBaru = $this->simpanFotoJikaAda();
-            if ($fotoBaru !== null) {
-                $data['foto_komponen'] = $fotoBaru; // kunci hanya ada bila ganti foto
-            }
-            $this->model->ubah($id, (int) $row['transaksi_id'], $data);
-        } catch (InvalidArgumentException $e) {
-            $this->json(false, $e->getMessage(), null, 422);
-        } catch (Throwable $e) {
-            $this->hapusFile($fotoBaru);
-            throw $e;
+        $item = $id > 0 ? $this->model->getById($id) : null;
+        if (!$item || (int) $item['transaksi_id'] !== $transaksiId) {
+            $this->json(false, 'Komponen tidak ditemukan pada work order ini.', null, 404);
+        }
+        if (!$this->model->hapus($id, $transaksiId)) {
+            $this->json(false, 'Komponen tidak berhasil dihapus.', null, 409);
         }
 
-        if ($fotoBaru !== null) {
-            $this->hapusFile($row['foto_komponen']);
-        }
-        $this->json(true, 'Komponen berhasil diperbarui.', ['id' => $id]);
-    }
-
-    private function hapus(array $user): void
-    {
-        $this->wajibRoleTulis($user);
-
-        $id = (int) ($_GET['id'] ?? ($_POST['id'] ?? 0));
-        $row = $id > 0 ? $this->model->getById($id) : null;
-        if (!$row) {
-            $this->json(false, 'Data komponen tidak ditemukan.', null, 404);
-        }
-        $info = $this->model->getTransaksiInfo((int) $row['transaksi_id']);
-        $this->wajibBolehUbah($info, $user);
-
-        $this->model->hapus($id, (int) $row['transaksi_id']);
-        $this->hapusFile($row['foto_komponen']);
-
+        $this->hapusFoto($item['foto_komponen'] ?? null);
+        $this->transaksiModel->recalculateTotalBiaya($transaksiId);
         $this->json(true, 'Komponen berhasil dihapus.');
     }
 
-    // ------------------------------------------------------------------
-    // Otorisasi
-    // ------------------------------------------------------------------
-
-    private function wajibRoleTulis(array $user): void
-    {
-        if (!in_array($user['role'], ['teknisi', 'admin'], true)) {
-            $this->json(false, 'Anda tidak memiliki akses untuk mengubah komponen.', null, 403);
-        }
-    }
-
-    private function bolehBaca(array $info, array $user): bool
-    {
-        switch ($user['role']) {
-            case 'admin':
-                return true;
-            case 'teknisi':
-                return $info['teknisi_id'] !== null && (int) $info['teknisi_id'] === $user['id'];
-            case 'customer':
-                return (int) $info['user_id'] === $user['id'];
-            default:
-                return false;
-        }
-    }
-
-    /** Boleh tulis: admin / teknisi yang ditugaskan, dan status harus Dikerjakan. */
-    private function bolehUbah(array $info, array $user): bool
-    {
-        if (!in_array($user['role'], ['teknisi', 'admin'], true)) {
-            return false;
-        }
-        if ($user['role'] === 'teknisi'
-            && ($info['teknisi_id'] === null || (int) $info['teknisi_id'] !== $user['id'])) {
-            return false;
-        }
-        return $info['status_servis'] === 'Dikerjakan';
-    }
-
-    private function wajibBolehUbah(?array $info, array $user): void
-    {
-        if (!$info) {
+    private function workOrder(int $id, array $user, bool $forEdit): array {
+        $row = $id > 0 ? $this->mekanikModel->getDetail($id) : null;
+        if (!$row) {
             $this->json(false, 'Work order tidak ditemukan.', null, 404);
         }
-        if ($user['role'] === 'teknisi'
-            && ($info['teknisi_id'] === null || (int) $info['teknisi_id'] !== $user['id'])) {
-            $this->json(false, 'Work order ini bukan tugas Anda.', null, 403);
+        if ($user['role'] === 'teknisi' && (int) $row['teknisi_id'] !== $user['id']) {
+            $this->json(false, 'Work order ini ditugaskan ke teknisi lain.', null, 403);
         }
-        if ($info['status_servis'] !== 'Dikerjakan') {
-            $this->json(false, 'Komponen hanya dapat diubah saat status work order "Dikerjakan".', null, 409);
+        if ($forEdit && $row['status_servis'] !== 'Dikerjakan') {
+            $this->json(false, 'Komponen hanya dapat diubah saat work order berstatus Dikerjakan.', null, 409);
         }
+        $row['tarif_dasar'] = (float) $row['tarif_dasar'];
+        $row['total_biaya'] = $this->transaksiModel->recalculateTotalBiaya($id);
+        return $row;
     }
 
-    // ------------------------------------------------------------------
-    // Validasi & upload
-    // ------------------------------------------------------------------
-
-    private function validasiForm(): array
-    {
-        $nama    = trim((string) ($_POST['nama_suku_cadang'] ?? ''));
-        $jumlah  = $_POST['jumlah'] ?? '';
-        $harga   = $_POST['harga_satuan'] ?? '';
-        $catatan = trim((string) ($_POST['catatan_perbaikan'] ?? ''));
-
-        if ($nama === '' || mb_strlen($nama) > 100) {
-            $this->json(false, 'Nama suku cadang wajib diisi (maksimal 100 karakter).', null, 422);
-        }
-        if (filter_var($jumlah, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'max_range' => 999]]) === false) {
-            $this->json(false, 'Jumlah harus bilangan bulat antara 1 dan 999.', null, 422);
-        }
-        if (!is_numeric($harga) || (float) $harga < 0 || (float) $harga > 99999999.99) {
-            $this->json(false, 'Harga satuan harus berupa angka 0 sampai 99.999.999.', null, 422);
-        }
-        if (mb_strlen($catatan) > 1000) {
-            $this->json(false, 'Catatan perbaikan maksimal 1000 karakter.', null, 422);
-        }
-
-        return [
-            'nama_suku_cadang'  => $nama,
-            'jumlah'            => (int) $jumlah,
-            'harga_satuan'      => round((float) $harga, 2),
-            'catatan_perbaikan' => $catatan === '' ? null : $catatan,
-        ];
+    private function bisaUbah(array $transaksi, array $user): bool {
+        return $transaksi['status_servis'] === 'Dikerjakan' && (int) $transaksi['teknisi_id'] > 0 &&
+            ($user['role'] === 'admin' || (int) $transaksi['teknisi_id'] === $user['id']);
     }
 
-    /** Jika post_max_size terlewati, PHP mengosongkan $_POST dan $_FILES. */
-    private function cekBodyTerlalu(): void
-    {
-        if ((int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 0 && empty($_POST) && empty($_FILES)) {
-            $this->json(false, 'Ukuran data yang dikirim terlalu besar.', null, 413);
-        }
-    }
-
-    /**
-     * Simpan foto ke public/uploads/. Mengembalikan path relatif ("uploads/xxx.jpg")
-     * atau null jika tidak ada file. Melempar InvalidArgumentException bila tidak valid.
-     */
-    private function simpanFotoJikaAda(): ?string
-    {
-        $f = $_FILES['foto_komponen'] ?? null;
-        if (!$f || ($f['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+    private function simpanFoto(?array $file): ?string {
+        if ($file === null || ($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
             return null;
         }
-        if ($f['error'] === UPLOAD_ERR_INI_SIZE || $f['error'] === UPLOAD_ERR_FORM_SIZE) {
-            throw new InvalidArgumentException('Ukuran foto melebihi batas 2 MB.');
-        }
-        if ($f['error'] !== UPLOAD_ERR_OK || !is_uploaded_file($f['tmp_name'])) {
-            throw new InvalidArgumentException('Upload foto gagal. Silakan coba lagi.');
-        }
-        if ($f['size'] > self::MAKS_FOTO_BYTE) {
-            throw new InvalidArgumentException('Ukuran foto melebihi batas 2 MB.');
+        if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK || (int) $file['size'] > 2 * 1024 * 1024) {
+            $this->json(false, 'Unggahan foto gagal atau melebihi batas 2 MB.', null, 422);
         }
 
-        // getimagesize() membaca isi file sungguhan, bukan sekadar ekstensi/MIME kiriman browser.
-        $info = @getimagesize($f['tmp_name']);
-        $ext  = $info ? (self::TIPE_FOTO[$info['mime']] ?? null) : null;
-        if ($ext === null) {
-            throw new InvalidArgumentException('Format foto harus JPG, PNG, atau WebP.');
+        $mime = (new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
+        $extensions = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+        if (!isset($extensions[$mime])) {
+            $this->json(false, 'Foto harus berformat JPG, PNG, atau WebP.', null, 422);
+        }
+        if (!is_dir($this->uploadDir) && !mkdir($this->uploadDir, 0775, true) && !is_dir($this->uploadDir)) {
+            throw new RuntimeException('Direktori unggahan tidak dapat dibuat.');
         }
 
-        $dir = $this->uploadDir();
-        if (!is_dir($dir) && !@mkdir($dir, 0755, true) && !is_dir($dir)) {
-            throw new RuntimeException('Folder uploads tidak dapat dibuat.');
+        $filename = bin2hex(random_bytes(16)) . '.' . $extensions[$mime];
+        if (!move_uploaded_file($file['tmp_name'], $this->uploadDir . $filename)) {
+            throw new RuntimeException('Foto komponen gagal disimpan.');
         }
-
-        $nama = 'part_' . date('Ymd_His') . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
-        if (!move_uploaded_file($f['tmp_name'], $dir . DIRECTORY_SEPARATOR . $nama)) {
-            throw new RuntimeException('Gagal menyimpan file upload.');
-        }
-        return 'uploads/' . $nama;
+        return 'uploads/' . $filename;
     }
 
-    /** Hapus file hanya jika berada di uploads/ (basename mencegah path traversal). */
-    private function hapusFile(?string $path): void
-    {
-        if (!$path || strpos($path, 'uploads/') !== 0) {
+    private function hapusFoto(?string $path): void {
+        if (!$path || !preg_match('/\Auploads\/[a-f0-9]{32}\.(jpg|png|webp)\z/', $path)) {
             return;
         }
-        $full = $this->uploadDir() . DIRECTORY_SEPARATOR . basename($path);
-        if (is_file($full)) {
-            @unlink($full);
+        $file = $this->uploadDir . basename($path);
+        if (is_file($file) && !unlink($file)) {
+            error_log('[SparepartController] Tidak dapat menghapus foto: ' . $file);
         }
     }
 
-    /** app/Controllers -> kelompok_13/public/uploads */
-    private function uploadDir(): string
-    {
-        return dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'uploads';
+    private function currentUser(): array {
+        $user = is_array($_SESSION['user'] ?? null) ? $_SESSION['user'] : [];
+        $role = strtolower(trim((string) ($user['role'] ?? '')));
+        $role = ['mekanik' => 'teknisi'][$role] ?? $role;
+        return ['id' => (int) ($user['id'] ?? 0), 'role' => $role];
     }
 
-    // ------------------------------------------------------------------
-    // Helper umum
-    // ------------------------------------------------------------------
-
-    private function currentUser(): array
-    {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+    private function input(): array {
+        $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+        if (stripos($contentType, 'application/json') !== false) {
+            $decoded = json_decode((string) file_get_contents('php://input'), true);
+            return is_array($decoded) ? $decoded : [];
         }
-        $s = $_SESSION ?? [];
-        $u = is_array($s['user'] ?? null) ? $s['user'] : [];
-
-        $role = strtolower(trim((string) ($u['role'] ?? ($s['role'] ?? ''))));
-        $role = ['mekanik' => 'teknisi', 'pelanggan' => 'customer'][$role] ?? $role;
-
-        return [
-            'id'   => (int) ($u['id'] ?? ($u['id_user'] ?? ($s['user_id'] ?? 0))),
-            'role' => $role,
-        ];
+        return $_POST;
     }
 
-    private function wajibMethod(string $method, array $diizinkan): void
-    {
-        if (!in_array($method, $diizinkan, true)) {
-            header('Allow: ' . implode(', ', $diizinkan));
+    private function wajibMethod(string $method, array $allowed): void {
+        if (!in_array($method, $allowed, true)) {
+            header('Allow: ' . implode(', ', $allowed));
             $this->json(false, 'Method tidak diizinkan.', null, 405);
         }
     }
 
-    private function json(bool $success, string $message, $data = null, int $code = 200): void
-    {
+    private function json(bool $success, string $message, $data = null, int $code = 200): void {
         http_response_code($code);
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(

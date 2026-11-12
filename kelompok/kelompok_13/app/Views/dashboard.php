@@ -63,6 +63,8 @@ require_once __DIR__ . '/layouts/sidebar.php';
                     <option value="Antre">Antre</option>
                     <option value="Dikerjakan">Dikerjakan</option>
                     <option value="Siap Diambil">Siap Diambil</option>
+                    <option value="Selesai">Selesai</option>
+                    <option value="Dibatalkan">Dibatalkan</option>
                 </select>
                 <input type="text" class="input-enterprise" id="searchTransaksi" placeholder="Cari No. Order / Nopol / Nama..." style="width: 240px;">
             </div>
@@ -193,6 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
     let allTransactions = [];
+    let loadError = '';
     const tableBody = document.getElementById('tableDashboardBody');
     const filterStatus = document.getElementById('filterStatus');
     const searchInput = document.getElementById('searchTransaksi');
@@ -216,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function renderStatusBadge(status) {
         const s = (status || '').toLowerCase();
-        if (s === 'pending' || s === 'antre') {
+        if (s === 'pending' || s === 'antre' || s === 'dibatalkan') {
             return `<span class="status-badge status-pending"><span class="dot"></span>${status}</span>`;
         } else if (s === 'dikerjakan' || s === 'process') {
             return `<span class="status-badge status-process"><span class="dot"></span>${status}</span>`;
@@ -225,14 +228,49 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function formatTanggal(value) {
+        const date = new Date(String(value || '').replace(' ', 'T'));
+        return Number.isNaN(date.getTime()) ? '-' : date.toLocaleString('id-ID');
+    }
+
     async function loadDashboardData() {
         try {
             const res = await fetch('api.php?endpoint=transaksi', { headers: { 'Accept': 'application/json' } });
-            if (!res.ok) throw new Error();
+            if (!res.ok) throw new Error(`Permintaan gagal (HTTP ${res.status}).`);
             const json = await res.json();
-            allTransactions = Array.isArray(json.data) && json.data.length > 0 ? json.data : fallbackTransactions;
+            if (!json.status || !Array.isArray(json.data)) {
+                throw new Error(json.message || 'Data transaksi tidak valid.');
+            }
+            allTransactions = json.data.map(row => ({
+                id_transaksi: String(row.kode_transaksi || row.id),
+                tanggal: formatTanggal(row.tanggal_pesan),
+                nama_pelanggan: row.nama_customer || '-',
+                telepon: row.telp_customer || '',
+                alamat: '',
+                no_polisi: row.no_polisi || '-',
+                kendaraan: `${row.nama_model || '-'}${row.tahun_pembuatan ? ` (${row.tahun_pembuatan})` : ''}`,
+                no_rangka: '',
+                kilometer: '',
+                keluhan: row.keluhan_mesin || '',
+                nama_layanan: row.nama_paket || '-',
+                kode_layanan: `SRV-${row.layanan_id || ''}`,
+                biaya_layanan: Number(row.tarif_dasar) || 0,
+                sparepart: (row.sparepart || []).map(part => ({
+                    nama: part.nama || '-',
+                    qty: Number(part.qty) || 0,
+                    satuan: 'Pcs',
+                    harga: Number(part.harga) || 0,
+                })),
+                catatan_mekanik: row.catatan_admin || '',
+                nama_mekanik: row.nama_teknisi || '',
+                stall: '',
+                status: row.status_servis || 'Pending',
+                total_biaya: Number(row.total_biaya) || 0,
+            }));
+            loadError = '';
         } catch (e) {
-            allTransactions = fallbackTransactions;
+            allTransactions = [];
+            loadError = e.message || 'Gagal memuat data transaksi.';
         }
         updateStatCards(allTransactions);
         renderTable();
@@ -242,9 +280,10 @@ document.addEventListener('DOMContentLoaded', function () {
         let antre = 0, proses = 0, selesai = 0, total = 0;
         data.forEach(item => {
             const st = (item.status || '').toLowerCase();
+            if (st === 'dibatalkan') return;
             if (st === 'pending' || st === 'antre') antre++;
             else if (st === 'dikerjakan' || st === 'process') proses++;
-            else selesai++;
+            else if (st === 'siap diambil' || st === 'selesai') selesai++;
             total += hitungTotal(item);
         });
 
@@ -268,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         if (filtered.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="9" class="text-center py-4">Tidak ada data work order yang cocok.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="9" class="text-center py-4">${loadError || 'Tidak ada data work order yang cocok.'}</td></tr>`;
             return;
         }
 
@@ -292,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <td class="text-end font-mono fw-semibold" style="white-space: nowrap;">${formatRupiah(total)}</td>
                     <td class="text-end" style="white-space: nowrap;">
                         <button type="button" class="btn-surface py-1 px-2 me-1 btn-cetak-nota" data-id="${row.id_transaksi}">Nota PKB</button>
-                        <button type="button" class="btn-royal py-1 px-2 btn-cetak-kuitansi" data-id="${row.id_transaksi}">Kuitansi</button>
+                        <button type="button" class="btn-royal py-1 px-2 btn-cetak-kuitansi" data-id="${row.id_transaksi}" ${row.status === 'Selesai' ? '' : 'disabled title="Kuitansi tersedia setelah servis selesai."'}>Kuitansi</button>
                     </td>
                 </tr>
             `;
@@ -477,7 +516,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <table class="dealer-meta-table">
                         <tr><td class="label">Nomor Polisi</td><td>: <strong class="font-mono">${d.no_polisi}</strong></td></tr>
                         <tr><td class="label">Tipe Kendaraan</td><td>: ${d.kendaraan}</td></tr>
-                        <tr><td class="label">Metode / Status</td><td>: <strong>TUNAI / LUNAS</strong></td></tr>
+                        <tr><td class="label">Status transaksi</td><td>: <strong>${d.status}</strong></td></tr>
                     </table>
                 </div>
 

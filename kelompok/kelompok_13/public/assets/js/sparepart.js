@@ -317,7 +317,7 @@
         try {
             const { message } = await api('sparepart', 'hapus', {
                 method: 'DELETE',
-                params: { id: state.hapusId },
+                params: { id: state.hapusId, transaksi_id: state.transaksiId },
             });
             modal.hapus.hide();
             tampilkanAlert('success', message);

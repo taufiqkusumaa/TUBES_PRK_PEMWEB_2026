@@ -76,7 +76,7 @@ class MekanikController
     // Aksi
     // ------------------------------------------------------------------
 
-    private function antrean(array $user): void
+    public function antrean(array $user): void
     {
         $param = trim((string) ($_GET['status'] ?? ''));
 

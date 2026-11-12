@@ -29,7 +29,10 @@ class LayananController
             $action = (string) ($_GET['action'] ?? '');
             $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
             if ($action === 'list' && $method === 'GET') {
-                $this->json(true, 'OK', ['layanan' => $this->model->getSemua()]);
+                $this->json(true, 'OK', [
+                    'layanan' => $this->model->getSemua(),
+                    'kategori' => $this->model->getKategori(),
+                ]);
             }
             if ($user['role'] !== 'admin') {
                 $this->json(false, 'Hanya admin yang dapat mengubah paket layanan.', null, 403);
@@ -56,20 +59,25 @@ class LayananController
     private function simpan(): void
     {
         $input = $this->input();
-        $id = isset($input['id']) ? (int) $input['id'] : null;
+        $idInput = $input['id'] ?? null;
+        $id = $idInput === null || $idInput === '' ? null : (int) $idInput;
+        $kategoriId = (int) ($input['kategori_id'] ?? 0);
         $nama = trim((string) ($input['nama_paket'] ?? ''));
-        $tarif = filter_var($input['tarif_dasar'] ?? null, FILTER_VALIDATE_INT);
+        $tarif = filter_var($input['tarif_dasar'] ?? null, FILTER_VALIDATE_FLOAT);
         $durasi = filter_var($input['estimasi_durasi_menit'] ?? null, FILTER_VALIDATE_INT);
 
-        if ($nama === '' || preg_match('/\A.{1,120}\z/u', $nama) !== 1 || $tarif === false || $tarif < 0 ||
+        if ($kategoriId <= 0 || !$this->model->kategoriAda($kategoriId) ||
+            $nama === '' || preg_match('/\A.{1,120}\z/u', $nama) !== 1 ||
+            $tarif === false || $tarif < 0 || $tarif > 9999999999 ||
             $durasi === false || $durasi < 1 || $durasi > 10080) {
-            $this->json(false, 'Nama paket, tarif (minimal Rp0), dan durasi (1–10.080 menit) wajib valid.', null, 422);
+            $this->json(false, 'Kategori, nama paket, tarif (minimal Rp0), dan durasi (1–10.080 menit) wajib valid.', null, 422);
         }
         if ($id !== null && ($id <= 0 || !$this->model->ada($id))) {
             $this->json(false, 'Paket layanan tidak ditemukan.', null, 404);
         }
 
         $this->model->simpan([
+            ':kategori_id' => $kategoriId,
             ':nama_paket' => $nama,
             ':tarif_dasar' => $tarif,
             ':estimasi_durasi_menit' => $durasi,

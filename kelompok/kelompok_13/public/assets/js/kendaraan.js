@@ -3,7 +3,7 @@
 
     const API = 'api.php?endpoint=kendaraan';
     const $ = (selector, root = document) => root.querySelector(selector);
-    const state = { categories: [], vehicles: [] };
+    const state = { categories: [], vehicles: [], customers: [] };
 
     const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -72,6 +72,13 @@
             `<option value="${Number(row.id)}">${esc(row.jenis)} — ${esc(row.merk)} ${esc(row.tipe)}</option>`
         ).join('');
         if (state.categories.some((row) => String(row.id) === current)) select.value = current;
+
+        const ownerSelect = $('#kendaraanPemilik');
+        const currentOwner = ownerSelect.value;
+        ownerSelect.innerHTML = '<option value="">Pilih pelanggan</option>' + state.customers.map((row) =>
+            `<option value="${Number(row.id)}">${esc(row.nama)} — ${esc(row.email)}</option>`
+        ).join('');
+        if (state.customers.some((row) => String(row.id) === currentOwner)) ownerSelect.value = currentOwner;
     }
 
     function renderVehicles() {
@@ -81,13 +88,14 @@
                 <td class="fw-semibold">${esc(row.no_polisi)}</td>
                 <td>${esc(row.jenis)}</td>
                 <td>${esc(row.merk)} / ${esc(row.tipe)}</td>
-                <td>${esc(row.nama_model)}${row.warna ? ` / ${esc(row.warna)}` : ''}</td>
+                <td>${esc(row.nama_model)}${row.tahun_pembuatan ? ` (${esc(row.tahun_pembuatan)})` : ''}${row.warna ? ` / ${esc(row.warna)}` : ''}</td>
+                <td>${esc(row.nama_pemilik || '-')}</td>
                 <td class="text-end text-nowrap">
                     <button class="btn-surface py-1 px-2" type="button" data-edit-vehicle="${Number(row.id)}">Ubah</button>
                     <button class="btn-surface py-1 px-2 text-danger" type="button" data-delete-vehicle="${Number(row.id)}">Hapus</button>
                 </td>
             </tr>`).join('') :
-            '<tr><td colspan="5" class="text-center py-4">Belum ada data kendaraan.</td></tr>';
+            '<tr><td colspan="6" class="text-center py-4">Belum ada data kendaraan.</td></tr>';
     }
 
     async function loadData() {
@@ -97,6 +105,7 @@
             const { data } = await api('list_vehicles');
             state.categories = data.kategori || [];
             state.vehicles = data.kendaraan || [];
+            state.customers = data.pelanggan || [];
             renderCategories();
             renderVehicles();
         } catch (error) {
@@ -147,6 +156,7 @@
         if (!form.reportValidity()) return;
         const body = formData(form);
         body.kategori_id = Number(body.kategori_id);
+        body.user_id = Number(body.user_id);
         if (body.id) body.id = Number(body.id);
         body.no_polisi = body.no_polisi.toUpperCase().trim();
         try {
@@ -206,8 +216,10 @@
                 const form = $('#formKendaraan');
                 form.elements.id.value = row.id;
                 form.elements.kategori_id.value = row.kategori_id;
+                form.elements.user_id.value = row.user_id;
                 form.elements.no_polisi.value = row.no_polisi;
                 form.elements.nama_model.value = row.nama_model;
+                form.elements.tahun_pembuatan.value = row.tahun_pembuatan || '';
                 form.elements.warna.value = row.warna || '';
                 $('#btnBatalKendaraan').classList.remove('d-none');
                 form.scrollIntoView({ behavior: 'smooth', block: 'center' });

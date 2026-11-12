@@ -55,22 +55,41 @@ class KendaraanModel
     }
 
     public function getKendaraan(): array
-    {
-        $sql = "SELECT v.id, v.kategori_id, v.no_polisi, v.nama_model, v.warna,
-                       k.jenis, k.merk, k.tipe
-                FROM kendaraan v
-                JOIN kategori_kendaraan k ON k.id = v.kategori_id
-                ORDER BY v.id DESC";
+{
+    $sql = "SELECT v.id, v.user_id, v.kategori_id, v.no_polisi, v.nama_model, v.tahun_pembuatan, v.warna,
+                   k.jenis, k.merk, k.tipe,
+                   u.nama AS nama_pemilik, u.no_telp
+            FROM kendaraan v
+            JOIN kategori_kendaraan k ON k.id = v.kategori_id
+            LEFT JOIN users u ON u.id = v.user_id
+            ORDER BY v.id DESC";
 
-        return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+}
+    public function getPelanggan(): array
+    {
+        return $this->db->query(
+            "SELECT id, nama, email FROM users
+             WHERE role = 'customer' AND status_aktif = 1
+             ORDER BY nama"
+        )->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function pelangganAda(int $id): bool
+    {
+        $stmt = $this->db->prepare(
+            "SELECT 1 FROM users WHERE id = :id AND role = 'customer' AND status_aktif = 1"
+        );
+        $stmt->execute([':id' => $id]);
+        return (bool) $stmt->fetchColumn();
     }
 
     public function simpanKendaraan(array $data, ?int $id = null): int
     {
         if ($id === null) {
             $stmt = $this->db->prepare(
-                'INSERT INTO kendaraan (kategori_id, no_polisi, nama_model, warna)
-                 VALUES (:kategori_id, :no_polisi, :nama_model, :warna)'
+                'INSERT INTO kendaraan (user_id, kategori_id, no_polisi, nama_model, tahun_pembuatan, warna)
+                 VALUES (:user_id, :kategori_id, :no_polisi, :nama_model, :tahun_pembuatan, :warna)'
             );
             $stmt->execute($data);
             return (int) $this->db->lastInsertId();
@@ -78,8 +97,8 @@ class KendaraanModel
 
         $stmt = $this->db->prepare(
             'UPDATE kendaraan
-             SET kategori_id = :kategori_id, no_polisi = :no_polisi,
-                 nama_model = :nama_model, warna = :warna
+             SET user_id = :user_id, kategori_id = :kategori_id, no_polisi = :no_polisi,
+                 nama_model = :nama_model, tahun_pembuatan = :tahun_pembuatan, warna = :warna
              WHERE id = :id'
         );
         $stmt->execute($data + [':id' => $id]);
@@ -97,6 +116,15 @@ class KendaraanModel
     {
         $stmt = $this->db->prepare('SELECT 1 FROM kendaraan WHERE id = :id');
         $stmt->execute([':id' => $id]);
+        return (bool) $stmt->fetchColumn();
+    }
+
+    public function kendaraanDimiliki(int $id, int $userId): bool
+    {
+        $stmt = $this->db->prepare(
+            'SELECT 1 FROM kendaraan WHERE id = :id AND user_id = :user_id'
+        );
+        $stmt->execute([':id' => $id, ':user_id' => $userId]);
         return (bool) $stmt->fetchColumn();
     }
 

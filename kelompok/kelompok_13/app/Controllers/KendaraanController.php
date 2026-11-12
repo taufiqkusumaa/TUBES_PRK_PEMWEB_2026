@@ -29,7 +29,18 @@ class KendaraanController
             $action = (string) ($_GET['action'] ?? '');
             $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
             if ($method === 'GET') {
+                if ($action === 'list_vehicles' && $user['role'] !== 'admin') {
+                    $this->json(false, 'Hanya admin yang dapat melihat daftar semua kendaraan.', null, 403);
+                }
                 $this->baca($action);
+                return;
+            }
+            if (in_array($action, ['register_own_vehicle', 'update_own_vehicle'], true)) {
+                if ($user['role'] !== 'customer') {
+                    $this->json(false, 'Aksi ini hanya tersedia untuk akun customer.', null, 403);
+                }
+                $this->wajibMethod($method, ['POST']);
+                $this->simpanKendaraan($user['id'], $action === 'update_own_vehicle');
                 return;
             }
             if ($user['role'] !== 'admin') {
@@ -72,6 +83,7 @@ class KendaraanController
                 $this->json(true, 'OK', [
                     'kendaraan' => $this->model->getKendaraan(),
                     'kategori' => $this->model->getKategori(),
+                    'pelanggan' => $this->model->getPelanggan(),
                 ]);
                 break;
             default:
@@ -82,7 +94,8 @@ class KendaraanController
     private function simpanKategori(): void
     {
         $input = $this->input();
-        $id = isset($input['id']) ? (int) $input['id'] : null;
+        $idInput = $input['id'] ?? null;
+        $id = $idInput === null || $idInput === '' ? null : (int) $idInput;
         $jenis = trim((string) ($input['jenis'] ?? ''));
         $merk = trim((string) ($input['merk'] ?? ''));
         $tipe = trim((string) ($input['tipe'] ?? ''));
@@ -115,18 +128,27 @@ class KendaraanController
         $this->json(true, 'Kategori berhasil dihapus.');
     }
 
-    private function simpanKendaraan(): void
+    private function simpanKendaraan(?int $ownerId = null, bool $allowOwnerUpdate = false): void
     {
         $input = $this->input();
-        $id = isset($input['id']) ? (int) $input['id'] : null;
+        $idInput = $input['id'] ?? null;
+        $id = ($ownerId === null || $allowOwnerUpdate) && $idInput !== null && $idInput !== ''
+            ? (int) $idInput
+            : null;
+        if ($allowOwnerUpdate && $id === null) {
+            $this->json(false, 'Kendaraan yang akan diubah wajib dipilih.', null, 422);
+        }
         $kategoriId = (int) ($input['kategori_id'] ?? 0);
+        $userId = $ownerId ?? (int) ($input['user_id'] ?? 0);
         $nomor = strtoupper(trim((string) ($input['no_polisi'] ?? '')));
         $nomor = preg_replace('/\s+/', ' ', $nomor) ?? $nomor;
         $model = trim((string) ($input['nama_model'] ?? ''));
         $warna = trim((string) ($input['warna'] ?? ''));
+        $tahun = trim((string) ($input['tahun_pembuatan'] ?? ''));
 
-        if ($kategoriId <= 0 || $nomor === '' || $model === '') {
-            $this->json(false, 'Kategori, nomor polisi, dan model kendaraan wajib diisi.', null, 422);
+        if ($kategoriId <= 0 || $userId <= 0 || $nomor === '' || mb_strlen($nomor) > 15 ||
+            $model === '' || mb_strlen($model) > 100 || mb_strlen($warna) > 30) {
+            $this->json(false, 'Pemilik, kategori, nomor polisi, dan model kendaraan wajib diisi.', null, 422);
         }
         if (!preg_match('/^[A-Z]{1,2}\s*[0-9]{1,4}\s*[A-Z]{0,3}$/', $nomor)) {
             $this->json(false, 'Format nomor polisi tidak valid.', null, 422);
@@ -134,20 +156,46 @@ class KendaraanController
         if (!$this->model->kategoriAda($kategoriId)) {
             $this->json(false, 'Kategori kendaraan tidak ditemukan.', null, 422);
         }
+        if (!$this->model->pelangganAda($userId)) {
+            $this->json(false, 'Pelanggan kendaraan tidak ditemukan atau tidak aktif.', null, 422);
+        }
+        $tahunInt = $tahun === '' ? null : filter_var($tahun, FILTER_VALIDATE_INT);
+        if ($tahun !== '' && ($tahunInt === false || $tahunInt < 1901 || $tahunInt > ((int) date('Y') + 1))) {
+            $this->json(false, 'Tahun pembuatan kendaraan tidak valid.', null, 422);
+        }
         if ($id !== null && ($id <= 0 || !$this->model->kendaraanAda($id))) {
             $this->json(false, 'Data kendaraan tidak ditemukan.', null, 404);
+        }
+        if ($ownerId !== null && $id !== null && !$this->model->kendaraanDimiliki($id, $ownerId)) {
+            $this->json(false, 'Kendaraan tidak ditemukan atau bukan milik Anda.', null, 404);
         }
         if ($this->model->nomorPolisiTerpakai($nomor, $id)) {
             $this->json(false, 'Nomor polisi sudah terdaftar.', null, 409);
         }
 
-        $this->model->simpanKendaraan([
+        $kendaraanId = $this->model->simpanKendaraan([
+            ':user_id' => $userId,
             ':kategori_id' => $kategoriId,
             ':no_polisi' => $nomor,
             ':nama_model' => $model,
+            ':tahun_pembuatan' => $tahunInt,
             ':warna' => $warna !== '' ? $warna : null,
         ], $id);
-        $this->json(true, $id === null ? 'Kendaraan berhasil ditambahkan.' : 'Kendaraan berhasil diperbarui.');
+        if ($id !== null) {
+            $kendaraanId = $id;
+        }
+        $this->json(
+            true,
+            $id === null ? 'Kendaraan berhasil ditambahkan.' : 'Kendaraan berhasil diperbarui.',
+            ['kendaraan' => [
+                'id' => $kendaraanId,
+                'no_polisi' => $nomor,
+                'nama_model' => $model,
+                'kategori_id' => $kategoriId,
+                'tahun_pembuatan' => $tahunInt,
+                'warna' => $warna,
+            ]]
+        );
     }
 
     private function hapusKendaraan(): void

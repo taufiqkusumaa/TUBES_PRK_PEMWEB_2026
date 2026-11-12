@@ -11,7 +11,7 @@ $pageTitle = $pageTitle ?? 'Sistem Manajemen Servis Bengkel';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($pageTitle) ?> — BENGKEL-SERVIS</title>
+    <title><?= htmlspecialchars($pageTitle) ?> — Machinify</title>
     <script>
         (function() {
             const saved = localStorage.getItem('bengkel_theme') || 'light';
@@ -31,7 +31,7 @@ $pageTitle = $pageTitle ?? 'Sistem Manajemen Servis Bengkel';
             </button>
             <a class="brand-title d-flex align-items-center" href="index.php?page=dashboard">
                 <span class="brand-dot"></span>
-                <span>BENGKEL-SERVIS</span>
+                <span>Machinify</span>
             </a>
         </div>
 
@@ -56,7 +56,7 @@ $pageTitle = $pageTitle ?? 'Sistem Manajemen Servis Bengkel';
                 <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size: 13px;">
                     <li><a class="dropdown-item" href="index.php?page=pelanggan">Pengaturan Akun</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="api.php?endpoint=auth&action=logout">Keluar Sesi</a></li>
+                    <li><a class="dropdown-item text-danger" href="#" id="btnLogout">Keluar Sesi</a></li>
                 </ul>
             </div>
         </div>
@@ -67,6 +67,7 @@ $pageTitle = $pageTitle ?? 'Sistem Manajemen Servis Bengkel';
         const btn = document.getElementById('btnToggleTheme');
         const icon = document.getElementById('themeIcon');
         const label = document.getElementById('themeLabel');
+        const logoutLink = document.getElementById('btnLogout');
 
         function renderThemeState(theme) {
             document.documentElement.setAttribute('data-theme', theme);
@@ -86,6 +87,26 @@ $pageTitle = $pageTitle ?? 'Sistem Manajemen Servis Bengkel';
             const current = document.documentElement.getAttribute('data-theme');
             renderThemeState(current === 'dark' ? 'light' : 'dark');
         });
+
+        if (logoutLink) {
+            logoutLink.addEventListener('click', async function (event) {
+                event.preventDefault();
+                try {
+                    const response = await fetch('api.php?endpoint=auth&action=logout', {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        headers: { Accept: 'application/json' }
+                    });
+                    const result = await response.json();
+                    if (!response.ok || !result.success) {
+                        throw new Error(result.message || 'Tidak dapat keluar dari sesi.');
+                    }
+                    window.location.href = 'index.php?page=pelanggan&mode=login';
+                } catch (error) {
+                    window.alert(error.message || 'Tidak dapat menghubungi server.');
+                }
+            });
+        }
     });
     </script>
 

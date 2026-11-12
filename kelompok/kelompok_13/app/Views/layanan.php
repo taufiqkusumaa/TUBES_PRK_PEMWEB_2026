@@ -24,22 +24,28 @@ require_once __DIR__ . '/layouts/sidebar.php';
         <h2 class="h6 fw-bold mb-3" id="judulFormLayanan" style="color: var(--text-primary);">Tambah Paket Layanan</h2>
         <form id="formLayanan" class="row g-3" novalidate>
             <input type="hidden" name="id">
-            <div class="col-12 col-lg-5">
+            <div class="col-12 col-md-6 col-lg-3">
+                <label class="form-label small fw-semibold" for="kategoriLayanan">Kategori kendaraan</label>
+                <select class="form-select input-enterprise" id="kategoriLayanan" name="kategori_id" required>
+                    <option value="">Memuat kategori kendaraan...</option>
+                </select>
+            </div>
+            <div class="col-12 col-lg-4">
                 <label class="form-label small fw-semibold" for="namaPaket">Nama Paket</label>
                 <input class="form-control input-enterprise" id="namaPaket" name="nama_paket" maxlength="120"
                        placeholder="Contoh: Tune Up Injeksi" required>
             </div>
-            <div class="col-12 col-md-5 col-lg-3">
+            <div class="col-12 col-md-5 col-lg-2">
                 <label class="form-label small fw-semibold" for="tarifDasar">Tarif Dasar (Rp)</label>
                 <input class="form-control input-enterprise" id="tarifDasar" name="tarif_dasar"
                        type="number" min="0" step="1000" required>
             </div>
-            <div class="col-12 col-md-5 col-lg-2">
+            <div class="col-12 col-md-5 col-lg-1">
                 <label class="form-label small fw-semibold" for="durasiServis">Estimasi (menit)</label>
                 <input class="form-control input-enterprise" id="durasiServis" name="estimasi_durasi_menit"
                        type="number" min="1" max="10080" step="1" required>
             </div>
-            <div class="col-12 col-md-2 d-flex align-items-end gap-2">
+            <div class="col-12 col-md-2 col-lg-2 d-flex align-items-end gap-2">
                 <button class="btn-royal" type="submit" id="btnSimpanLayanan">Simpan</button>
                 <button class="btn-surface d-none" type="button" id="btnBatalLayanan">Batal</button>
             </div>
@@ -52,9 +58,9 @@ require_once __DIR__ . '/layouts/sidebar.php';
         </div>
         <div class="table-responsive">
             <table class="table table-enterprise align-middle mb-0">
-                <thead><tr><th>Nama Paket</th><th>Tarif Dasar</th><th>Estimasi Durasi</th><th class="text-end">Aksi</th></tr></thead>
+                <thead><tr><th>Nama Paket</th><th>Kategori Kendaraan</th><th>Tarif Dasar</th><th>Estimasi Durasi</th><th class="text-end">Aksi</th></tr></thead>
                 <tbody id="tbodyLayanan">
-                    <tr><td colspan="4" class="text-center py-4">Memuat paket layanan...</td></tr>
+                        <tr><td colspan="5" class="text-center py-4">Memuat paket layanan...</td></tr>
                 </tbody>
             </table>
         </div>

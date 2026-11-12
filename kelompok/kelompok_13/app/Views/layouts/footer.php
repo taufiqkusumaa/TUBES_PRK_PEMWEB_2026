@@ -1,6 +1,6 @@
 <!-- Footer -->
     <footer class="mt-5 pt-3 border-top text-center text-muted small no-print">
-        <p class="mb-1">&copy; <?= date('Y') ?> <strong>BENGKEL-SERVIS</strong> — Kelompok 13 Praktikum Pemrograman Web TI Unila.</p>
+        <p class="mb-1">&copy; <?= date('Y') ?> <strong>Machinify</strong> — Kelompok 13 Praktikum Pemrograman Web TI Unila.</p>
     </footer>
 </main>
 </div> <!-- End .app-wrapper -->
