@@ -21,7 +21,7 @@ if (!$isLoggedIn):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($pageTitle) ?> — BENGKEL-SERVIS</title>
+    <title><?= htmlspecialchars($pageTitle) ?> — Machinify</title>
     <script>
         (function() {
             const saved = localStorage.getItem('bengkel_theme') || 'light';
@@ -140,7 +140,7 @@ if (!$isLoggedIn):
             <div class="auth-header">
                 <a href="#" class="auth-brand">
                     <span class="brand-dot"></span>
-                    <span>BENGKEL-SERVIS</span>
+                    <span>Machinify</span>
                 </a>
                 <?php if ($mode === 'register'): ?>
                     <div class="auth-title">Buat Akun Baru</div>
@@ -225,7 +225,7 @@ if (!$isLoggedIn):
         </div>
 
         <div class="small mt-4 text-center" style="color: var(--text-muted);">
-            &copy; <?= date('Y') ?> BENGKEL-SERVIS &bull; Kelompok 13 TI Unila
+            &copy; <?= date('Y') ?> Machinify &bull; Kelompok 13 TI Unila
         </div>
     </div>
 
