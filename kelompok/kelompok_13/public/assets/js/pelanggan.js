@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const result = await res.json();
 
                 if (result.success) {
-                    showAlert('authAlert', 'Pendaftaran akun berhasil! Mengalihkan ke login...', true);
+                    showAlert('authAlert', `${result.message || 'Pendaftaran akun berhasil.'} Mengalihkan ke login...`, true);
                     setTimeout(() => {
                         window.location.href = 'index.php?page=pelanggan&mode=login';
                     }, 1000);
