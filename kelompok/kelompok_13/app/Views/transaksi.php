@@ -1,395 +1,629 @@
 <?php
-/**
- * @var array|null $transaksiAktif
- * @var array|null $paketLayanan
- * @var array|null $riwayatServis
- */
-$transaksiAktif = (isset($transaksiAktif) && is_array($transaksiAktif)) ? $transaksiAktif : null;
-$paketLayanan   = (isset($paketLayanan) && is_iterable($paketLayanan)) ? $paketLayanan : [];
-$riwayatServis  = (isset($riwayatServis) && is_iterable($riwayatServis)) ? $riwayatServis : [];
+// File: kelompok/kelompok_13/app/Views/transaksi.php
+require_once __DIR__ . '/../Config/Database.php';
+$pdo = Database::getConnection();
+
+$pageTitle = 'Pemesanan & Tracking Servis';
+$activePage = 'transaksi';
+
+// Jika dipanggil langsung tanpa melewati TransaksiController, siapkan variabel datanya
+if (!isset($transaksiList)) {
+    require_once __DIR__ . '/../Models/TransaksiModel.php';
+    $trxModel = new TransaksiModel($pdo);
+    $transaksiList = $trxModel->getAll($_GET);
+    $stats = $trxModel->getDashboardStats();
+    $kendaraanOptions = $pdo->query("SELECT k.id, k.kategori_id, k.no_polisi, k.nama_model, k.tahun_pembuatan, k.warna, u.nama AS pemilik FROM kendaraan k JOIN users u ON k.user_id = u.id ORDER BY k.no_polisi ASC")->fetchAll(PDO::FETCH_ASSOC);
+    $layananOptions = $pdo->query("SELECT * FROM layanan_servis WHERE status_layanan = 'Tersedia' ORDER BY nama_paket ASC")->fetchAll(PDO::FETCH_ASSOC);
+    $teknisiOptions = $pdo->query("SELECT id, nama FROM users WHERE role = 'teknisi' AND status_aktif = 1 ORDER BY nama ASC")->fetchAll(PDO::FETCH_ASSOC);
+    $kategoriOptions = $pdo->query("SELECT id, jenis, merk, tipe FROM kategori_kendaraan ORDER BY jenis, merk, tipe")->fetchAll(PDO::FETCH_ASSOC);
+}
+
+require_once __DIR__ . '/layouts/header.php';
+require_once __DIR__ . '/layouts/sidebar.php';
 ?>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BENGKEL-SERVIS | Sistem Manajemen Servis Kendaraan & Work Order</title>
-    <!-- Bootstrap 5.3 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f6f9;
-            color: #1e293b;
-        }
-        .navbar-brand {
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        .card {
-            border: none;
-            border-radius: 1rem;
-            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
-        }
-        /* Styling Stepper Tracking Progres Kendaraan */
-        .stepper-wrapper {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            margin: 1.5rem 0;
-        }
-        .stepper-wrapper::before {
-            content: "";
-            position: absolute;
-            top: 24px;
-            left: 10%;
-            right: 10%;
-            height: 4px;
-            background-color: #e2e8f0;
-            z-index: 1;
-        }
-        .stepper-item {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1;
-            z-index: 2;
-        }
-        .step-counter {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #ffffff;
-            border: 3px solid #cbd5e1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.25rem;
-            color: #64748b;
-            margin-bottom: 0.5rem;
-            transition: all 0.3s ease;
-        }
-        .stepper-item.completed .step-counter {
-            background-color: #10b981;
-            border-color: #10b981;
-            color: #ffffff;
-        }
-        .stepper-item.active .step-counter {
-            background-color: #2563eb;
-            border-color: #2563eb;
-            color: #ffffff;
-            box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.18);
-            transform: scale(1.08);
-        }
-        .step-name {
-            font-weight: 600;
-            font-size: 0.875rem;
-            color: #475569;
-        }
-        .stepper-item.active .step-name {
-            color: #2563eb;
-            font-weight: 700;
-        }
-        .stepper-item.completed .step-name {
-            color: #10b981;
-        }
-        .plate-badge {
-            background: #0f172a;
-            color: #ffffff;
-            border: 2px solid #334155;
-            font-family: monospace;
-            font-weight: 700;
-            padding: 0.25rem 0.65rem;
-            border-radius: 0.4rem;
-            letter-spacing: 1px;
-        }
-        .riwayat-row {
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-        .riwayat-row:hover {
-            background-color: #f1f5f9;
-        }
-        .riwayat-row.selected-row {
-            background-color: #eff6ff !important;
-            border-left: 4px solid #2563eb;
-        }
-    </style>
-</head>
-<body>
 
-<!-- Navbar Utama -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 sticky-top shadow-sm">
-    <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="index.php">
-            <span class="bg-primary text-white rounded-3 p-2 d-inline-flex align-items-center justify-content-center">
-                <i class="bi bi-wrench-adjustable-circle-fill fs-5"></i>
-            </span>
-            <span>BENGKEL-SERVIS</span>
-        </a>
-        <div class="d-flex align-items-center gap-3 text-white">
-            <div class="text-end d-none d-sm-block">
-                <div class="fw-semibold small"><?= htmlspecialchars($_SESSION['user_nama'] ?? 'Budi Santoso') ?></div>
-                <div class="text-secondary" style="font-size: 0.75rem;">Pelanggan Terdaftar (ID #<?= (int)($_SESSION['user_id'] ?? 1) ?>)</div>
-            </div>
-            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2">
-                <i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i> Online
-            </span>
+<style>
+    /* Penyesuaian komponen Transaksi agar 100% identik dengan tema Dashboard & Cetak (Light & Dark Mode) */
+    .trx-card {
+        background: var(--bg-surface, #ffffff);
+        border: 1px solid var(--border-color, #e2e8f0);
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+    [data-bs-theme="dark"] .trx-card,
+    body.dark-mode .trx-card,
+    [data-theme="dark"] .trx-card {
+        background: #111827 !important;
+        border-color: #1f2937 !important;
+        color: #f8fafc !important;
+    }
+    .trx-metric-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #64748b;
+    }
+    .trx-metric-value {
+        font-size: 1.75rem;
+        font-weight: 800;
+        line-height: 1.2;
+        margin: 0.35rem 0;
+    }
+    .trx-table th {
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #64748b;
+        background: rgba(100, 116, 139, 0.05) !important;
+        border-bottom: 1px solid var(--border-color, #e2e8f0);
+        padding: 0.85rem 1rem;
+    }
+    .trx-table td {
+        padding: 1rem;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--border-color, #e2e8f0);
+        background: transparent !important;
+        color: inherit !important;
+    }
+    [data-bs-theme="dark"] .trx-table th,
+    [data-bs-theme="dark"] .trx-table td,
+    body.dark-mode .trx-table th,
+    body.dark-mode .trx-table td,
+    [data-theme="dark"] .trx-table th,
+    [data-theme="dark"] .trx-table td {
+        border-color: #1f2937 !important;
+        color: #e2e8f0 !important;
+    }
+    .plate-box {
+        display: inline-block;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 0.2rem 0.55rem;
+        border-radius: 6px;
+        background: #f1f5f9;
+        color: #0f172a;
+        border: 1px solid #cbd5e1;
+    }
+    [data-bs-theme="dark"] .plate-box,
+    body.dark-mode .plate-box,
+    [data-theme="dark"] .plate-box {
+        background: #1e293b;
+        color: #f8fafc;
+        border-color: #334155;
+    }
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0.28rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    .status-pill .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+    .status-antre { background: rgba(245, 158, 11, 0.12); color: #d97706; }
+    .status-antre .dot { background: #f59e0b; }
+    .status-dikerjakan { background: rgba(6, 182, 212, 0.12); color: #0891b2; }
+    .status-dikerjakan .dot { background: #06b6d4; }
+    .status-siap { background: rgba(16, 185, 129, 0.12); color: #059669; }
+    .status-siap .dot { background: #10b981; }
+    .status-selesai { background: rgba(37, 99, 235, 0.12); color: #2563eb; }
+    .status-selesai .dot { background: #3b82f6; }
+    .status-batal { background: rgba(239, 68, 68, 0.12); color: #dc2626; }
+    .status-batal .dot { background: #ef4444; }
+
+    [data-bs-theme="dark"] .modal-content,
+    body.dark-mode .modal-content,
+    [data-theme="dark"] .modal-content {
+        background-color: #111827 !important;
+        border: 1px solid #1f2937 !important;
+        color: #f8fafc !important;
+    }
+    [data-bs-theme="dark"] .form-control,
+    [data-bs-theme="dark"] .form-select,
+    body.dark-mode .form-control,
+    body.dark-mode .form-select,
+    [data-theme="dark"] .form-control,
+    [data-theme="dark"] .form-select {
+        background-color: #1e293b !important;
+        border-color: #334155 !important;
+        color: #f8fafc !important;
+    }
+    .stepper-box {
+        background: rgba(100, 116, 139, 0.08);
+        border: 1px solid var(--border-color, #e2e8f0);
+        border-radius: 10px;
+        padding: 1rem;
+    }
+    .tracking-step {
+        flex: 1 1 0;
+        min-width: 0;
+        text-align: center;
+    }
+    .tracking-step-number {
+        display: inline-flex;
+        width: 2rem;
+        height: 2rem;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #cbd5e1;
+        border-radius: 50%;
+        background: #e2e8f0;
+        color: #334155;
+        font-weight: 700;
+    }
+    .tracking-step-label {
+        color: #334155;
+        font-size: 0.78rem;
+        font-weight: 600;
+        line-height: 1.25;
+    }
+    .tracking-step.is-reached .tracking-step-number {
+        border-color: #0047ab;
+        background: #0047ab;
+        color: #ffffff;
+    }
+    .tracking-step.is-reached .tracking-step-label {
+        color: #0047ab;
+        font-weight: 700;
+    }
+    [data-bs-theme="dark"] .stepper-box,
+    body.dark-mode .stepper-box,
+    [data-theme="dark"] .stepper-box {
+        background: #1e293b;
+        border-color: #334155;
+    }
+    [data-theme="dark"] .tracking-step-number {
+        border-color: #475569;
+        background: #334155;
+        color: #f8fafc;
+    }
+    [data-theme="dark"] .tracking-step-label {
+        color: #cbd5e1;
+    }
+    [data-theme="dark"] .tracking-step.is-reached .tracking-step-number {
+        border-color: #60a5fa;
+        background: #2563eb;
+    }
+    [data-theme="dark"] .tracking-step.is-reached .tracking-step-label {
+        color: #93c5fd;
+    }
+    @media (max-width: 575.98px) {
+        .stepper-box.tracking-stepper {
+            gap: 0.25rem;
+            padding: 0.75rem 0.4rem;
+        }
+        .tracking-step-label {
+            font-size: 0.68rem;
+        }
+    }
+</style>
+
+<div class="container-fluid py-4 px-4">
+    <!-- Header Section Seragam dengan Dashboard -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div>
+            <h4 class="fw-bold mb-1"><?= $canManage ? 'Pemesanan & Tracking Servis' : 'Booking & Tracking Servis Saya' ?></h4>
+            <p class="text-secondary small mb-0"><?= $canManage ? 'Kelola pendaftaran servis kendaraan, penugasan mekanik, dan pemantauan progres pengerjaan.' : 'Buat booking kendaraan dan pantau progres servis Anda.' ?></p>
         </div>
-    </div>
-</nav>
-
-<main class="container py-4">
-    <!-- Notifikasi Alert Dinamis -->
-    <div id="alertContainer"></div>
-
-    <!-- BAGIAN 1: STEPPER TRACKING PROGRES KENDARAAN -->
-    <div class="card mb-4">
-        <div class="card-body p-4">
-            <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                <div>
-                    <span class="badge bg-primary-subtle text-primary fw-semibold mb-1">LIVE WORK ORDER TRACKER</span>
-                    <h4 class="fw-bold mb-0" id="trackerTitle">
-                        <?php if (!empty($transaksiAktif) && !empty($transaksiAktif['pelat_nomor'])): ?>
-                            Status Kendaraan: <span class="plate-badge ms-1" id="trackerPelat"><?= htmlspecialchars($transaksiAktif['pelat_nomor']) ?></span>
-                        <?php else: ?>
-                            Status Kendaraan: <span class="text-muted fs-6 fw-normal ms-1" id="trackerPelat">Belum Ada Servis Berjalan</span>
-                        <?php endif; ?>
-                    </h4>
-                </div>
-                <div class="text-md-end">
-                    <div class="small text-muted">Nomor Work Order</div>
-                    <div class="fw-bold text-primary fs-5" id="trackerKodeWo">
-                        <?= htmlspecialchars($transaksiAktif['kode_wo'] ?? '-') ?>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Visualisasi 4 Tahap Stepper: Pending -> Antre -> Dikerjakan -> Siap Diambil -->
-            <?php
-            $stages = [
-                'Pending'      => ['icon' => 'bi-clipboard2-check', 'desc' => 'Verifikasi Order'],
-                'Antre'        => ['icon' => 'bi-hourglass-split', 'desc' => 'Antrean Pit/Stall'],
-                'Dikerjakan'   => ['icon' => 'bi-gear-wide-connected', 'desc' => 'Ditangani Mekanik'],
-                'Siap Diambil' => ['icon' => 'bi-check2-circle', 'desc' => 'Selesai & Siap Ambil']
-            ];
-            $currentStatus = $transaksiAktif['status_servis'] ?? 'Pending';
-            $stageKeys     = array_keys($stages);
-            $currentIndex  = array_search($currentStatus, $stageKeys, true);
-            if ($currentIndex === false) {
-                $currentIndex = 0;
-            }
-            ?>
-            <div class="stepper-wrapper" id="stepperWrapper" data-current-status="<?= htmlspecialchars($currentStatus) ?>">
-                <?php foreach ($stages as $stageName => $meta): 
-                    $idx = array_search($stageName, $stageKeys, true);
-                    $stateClass = '';
-                    if ($idx < $currentIndex) {
-                        $stateClass = 'completed';
-                    } elseif ($idx === $currentIndex) {
-                        $stateClass = 'active';
-                    }
-                ?>
-                <div class="stepper-item <?= $stateClass ?>" data-step="<?= htmlspecialchars($stageName) ?>">
-                    <div class="step-counter">
-                        <i class="bi <?= $meta['icon'] ?>"></i>
-                    </div>
-                    <div class="step-name"><?= htmlspecialchars($stageName) ?></div>
-                    <div class="text-muted d-none d-md-block" style="font-size: 0.75rem;"><?= htmlspecialchars($meta['desc']) ?></div>
-                </div>
-                <?php endforeach; ?>
-            </div>
-
-            <!-- Informasi Detail & Tombol Simulasi Update Status Mekanik -->
-            <div class="bg-light rounded-3 p-3 mt-3 border d-flex flex-wrap justify-content-between align-items-center gap-3">
-                <div>
-                    <div class="small text-secondary fw-semibold mb-1">
-                        <i class="bi bi-chat-square-text me-1"></i> Catatan Mekanik / Service Advisor:
-                    </div>
-                    <div class="fw-medium text-dark" id="trackerCatatan">
-                        <?= htmlspecialchars($transaksiAktif['catatan_mekanik'] ?? 'Pilih salah satu transaksi pada tabel riwayat untuk memantau progres.') ?>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                    <span class="small text-muted me-1">Simulasi Update Status:</span>
-                    <div class="btn-group btn-group-sm" role="group">
-                        <button type="button" class="btn btn-outline-secondary btn-simulasi-status" data-status="Pending">Pending</button>
-                        <button type="button" class="btn btn-outline-warning btn-simulasi-status" data-status="Antre">Antre</button>
-                        <button type="button" class="btn btn-outline-primary btn-simulasi-status" data-status="Dikerjakan">Dikerjakan</button>
-                        <button type="button" class="btn btn-outline-success btn-simulasi-status" data-status="Siap Diambil">Siap Diambil</button>
-                    </div>
-                </div>
-            </div>
+        <div class="d-flex gap-2">
+            <a href="index.php?page=transaksi" class="btn btn-outline-secondary btn-sm px-3 py-2 fw-semibold">
+                Muat Ulang
+            </a>
+            <button class="btn btn-primary btn-sm px-3 py-2 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalBookingBaru">
+                + Booking Servis Baru
+            </button>
         </div>
     </div>
 
-    <div class="row g-4">
-        <!-- BAGIAN 2: FORMULIR PEMESANAN SERVIS BARU -->
-        <div class="col-lg-5">
-            <div class="card h-100">
-                <div class="card-header bg-white border-bottom py-3 px-4">
-                    <h5 class="fw-bold mb-0 d-flex align-items-center gap-2">
-                        <i class="bi bi-plus-circle-fill text-primary"></i>
-                        Formulir Pemesanan Servis Baru
-                    </h5>
-                    <p class="text-muted small mb-0 mt-1">Isi data kendaraan & keluhan mesin untuk membuat Work Order baru.</p>
-                </div>
-                <div class="card-body p-4">
-                    <form id="formBookingServis" enctype="multipart/form-data" novalidate>
-                        <input type="hidden" name="action" value="create_booking">
-                        <input type="hidden" id="activeTransaksiId" value="<?= (int)($transaksiAktif['id'] ?? 0) ?>">
+    <?php if (!empty($successMsg)): ?>
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
+            <?= htmlspecialchars($successMsg) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php endif; ?>
+    <?php if (!empty($errorMsg)): ?>
+        <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
+            <?= htmlspecialchars($errorMsg) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php endif; ?>
 
-                        <div class="row g-3 mb-3">
-                            <div class="col-sm-5">
-                                <label for="pelat_nomor" class="form-label fw-semibold small">Pelat Nomor <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control text-uppercase fw-bold" id="pelat_nomor" name="pelat_nomor" placeholder="BE 1234 XX" required>
-                            </div>
-                            <div class="col-sm-7">
-                                <label for="merk_tipe_kendaraan" class="form-label fw-semibold small">Merk & Tipe Kendaraan <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="merk_tipe_kendaraan" name="merk_tipe_kendaraan" placeholder="Contoh: Toyota Innova Reborn" required>
-                            </div>
-                        </div>
+    <!-- 4 Kartu Metrik Seragam dengan Dashboard -->
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="trx-card p-3 h-100">
+                <div class="trx-metric-label">ANTREAN MASUK</div>
+                <div class="trx-metric-value"><?= (int)($stats['total_antre'] ?? 0) ?></div>
+                <div class="text-secondary small">Menunggu alokasi mekanik</div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="trx-card p-3 h-100">
+                <div class="trx-metric-label">SEDANG DIKERJAKAN</div>
+                <div class="trx-metric-value"><?= (int)($stats['total_dikerjakan'] ?? 0) ?></div>
+                <div class="text-secondary small">Unit aktif di stall servis</div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="trx-card p-3 h-100">
+                <div class="trx-metric-label">SELESAI / SIAP AMBIL</div>
+                <div class="trx-metric-value"><?= (int)($stats['total_selesai'] ?? 0) ?></div>
+                <div class="text-secondary small">Siap terbit nota & kuitansi</div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="trx-card p-3 h-100">
+                <div class="trx-metric-label">TOTAL NILAI TRANSAKSI</div>
+                <div class="trx-metric-value">Rp <?= number_format((float)($stats['total_pendapatan'] ?? 0), 0, ',', '.') ?></div>
+                <div class="text-secondary small">Akumulasi jasa & suku cadang</div>
+            </div>
+        </div>
+    </div>
 
-                        <div class="mb-3">
-                            <label for="paket_id" class="form-label fw-semibold small">Pilih Paket Layanan <span class="text-danger">*</span></label>
-                            <select class="form-select" id="paket_id" name="paket_id" required>
-                                <option value="" data-harga="0" data-estimasi="0">-- Pilih Paket Servis --</option>
-                                <?php if (!empty($paketLayanan)): ?>
-                                    <?php foreach ($paketLayanan as $pkt): ?>
-                                        <option value="<?= (int)$pkt['id'] ?>" 
-                                                data-harga="<?= (float)$pkt['harga'] ?>" 
-                                                data-estimasi="<?= (int)$pkt['estimasi_menit'] ?>"
-                                                data-deskripsi="<?= htmlspecialchars($pkt['deskripsi'] ?? '') ?>">
-                                            <?= htmlspecialchars($pkt['nama_paket']) ?> — Rp <?= number_format((float)$pkt['harga'], 0, ',', '.') ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </select>
-                            <div id="infoPaketBox" class="form-text text-primary mt-2 d-none"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="keluhan_mesin" class="form-label fw-semibold small">Keluhan Mesin / Kendala Kendaraan <span class="text-danger">*</span></label>
-                            <textarea class="form-control" id="keluhan_mesin" name="keluhan_mesin" rows="3" placeholder="Jelaskan gejala atau kendala mesin yang dialami..." required></textarea>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="foto_kendala" class="form-label fw-semibold small">
-                                Upload Foto Kendala <span class="text-muted fw-normal">(Opsional, disimpan ke <code>public/uploads/</code>)</span>
-                            </label>
-                            <input class="form-control" type="file" id="foto_kendala" name="foto_kendala" accept="image/jpeg,image/png,image/webp">
-                            <div class="form-text small">Format: JPG, PNG, WEBP (Maks. 5MB).</div>
-                            <!-- Preview gambar sebelum diunggah -->
-                            <div id="previewContainer" class="mt-2 d-none">
-                                <img id="fotoPreview" src="" alt="Preview Foto Kendala" class="img-thumbnail" style="max-height: 140px;">
-                            </div>
-                        </div>
-
-                        <button type="submit" id="btnSubmitBooking" class="btn btn-primary w-100 py-2 fw-semibold">
-                            <i class="bi bi-send-check me-1"></i> Buat Pesanan Work Order
-                        </button>
-                    </form>
-                </div>
+    <!-- Tabel Utama dengan Filter Real-Time -->
+    <div class="trx-card overflow-hidden">
+        <div class="p-3 border-bottom d-flex flex-wrap justify-content-between align-items-center gap-2" style="border-color: var(--border-color, #e2e8f0) !important;">
+            <h6 class="fw-bold mb-0">Daftar Booking & Tracking Work Order</h6>
+            <div class="d-flex flex-wrap gap-2">
+                <select id="filterStatusTrx" class="form-select form-select-sm" style="width: auto; min-width: 150px;">
+                    <option value="">Semua Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Antre">Antre</option>
+                    <option value="Dikerjakan">Dikerjakan</option>
+                    <option value="Siap Diambil">Siap Diambil</option>
+                    <option value="Selesai">Selesai</option>
+                </select>
+                <input type="text" id="searchInputTrx" class="form-control form-control-sm" placeholder="Cari No. Order / Nopol / Nama..." style="min-width: 230px;">
             </div>
         </div>
 
-        <!-- BAGIAN 3: DAFTAR RIWAYAT SERVIS MILIK AKUN PELANGGAN -->
-        <div class="col-lg-7">
-            <div class="card h-100">
-                <div class="card-header bg-white border-bottom py-3 px-4 d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="fw-bold mb-0 d-flex align-items-center gap-2">
-                            <i class="bi bi-clock-history text-primary"></i>
-                            Riwayat Servis Akun Saya
-                        </h5>
-                        <p class="text-muted small mb-0 mt-1">Klik salah satu baris transaksi untuk melihat progres pada Stepper di atas.</p>
-                    </div>
-                    <span class="badge bg-secondary-subtle text-secondary rounded-pill px-3 py-2" id="totalRiwayatBadge">
-                        <?= count($riwayatServis) ?> Work Order
-                    </span>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0" id="tabelRiwayatServis">
-                            <thead class="table-light small text-uppercase text-secondary">
-                                <tr>
-                                    <th class="ps-4">Work Order & Waktu</th>
-                                    <th>Kendaraan & Paket</th>
-                                    <th>Foto</th>
-                                    <th class="pe-4 text-end">Status Progres</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbodyRiwayat">
-                                <?php if (empty($riwayatServis)): ?>
-                                    <tr>
-                                        <td colspan="4" class="text-center py-5 text-muted">
-                                            Belum ada riwayat pemesanan servis pada akun Anda.
-                                        </td>
-                                    </tr>
-                                <?php else: ?>
-                                    <?php foreach ($riwayatServis as $idx => $item): 
-                                        $badgeMap = [
-                                            'Pending'      => 'bg-secondary-subtle text-secondary border-secondary-subtle',
-                                            'Antre'        => 'bg-warning-subtle text-warning-emphasis border-warning-subtle',
-                                            'Dikerjakan'   => 'bg-primary-subtle text-primary border-primary-subtle',
-                                            'Siap Diambil' => 'bg-success-subtle text-success border-success-subtle'
-                                        ];
-                                        $badgeStyle = $badgeMap[$item['status_servis']] ?? 'bg-secondary';
-                                    ?>
-                                    <tr class="riwayat-row <?= $idx === 0 ? 'selected-row' : '' ?>"
-                                        data-id="<?= (int)$item['id'] ?>"
-                                        data-wo="<?= htmlspecialchars($item['kode_wo']) ?>"
-                                        data-pelat="<?= htmlspecialchars($item['pelat_nomor']) ?>"
-                                        data-status="<?= htmlspecialchars($item['status_servis']) ?>"
-                                        data-catatan="<?= htmlspecialchars($item['catatan_mekanik'] ?? '') ?>">
-                                        <td class="ps-4">
-                                            <div class="fw-bold text-dark"><?= htmlspecialchars($item['kode_wo']) ?></div>
-                                            <div class="small text-muted"><?= date('d M Y, H:i', strtotime($item['tanggal_booking'])) ?></div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center gap-2 mb-1">
-                                                <span class="plate-badge" style="font-size: 0.75rem;"><?= htmlspecialchars($item['pelat_nomor']) ?></span>
-                                                <span class="fw-semibold small"><?= htmlspecialchars($item['merk_tipe_kendaraan']) ?></span>
-                                            </div>
-                                            <div class="small text-primary fw-medium"><?= htmlspecialchars($item['nama_paket'] ?? 'Paket Kustom') ?></div>
-                                            <div class="small text-muted text-truncate" style="max-width: 240px;" title="<?= htmlspecialchars($item['keluhan_mesin']) ?>">
-                                                "<?= htmlspecialchars($item['keluhan_mesin']) ?>"
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <?php if (!empty($item['foto_kendala'])): ?>
-                                                <a href="uploads/<?= urlencode($item['foto_kendala']) ?>" target="_blank" class="btn btn-sm btn-outline-secondary">
-                                                    <i class="bi bi-image"></i> Lihat
-                                                </a>
-                                            <?php else: ?>
-                                                <span class="text-muted small">-</span>
+        <div class="table-responsive">
+            <table class="table trx-table mb-0" id="tableTransaksi">
+                <thead>
+                    <tr>
+                        <th>NO. PKB / ORDER</th>
+                        <th>WAKTU MASUK</th>
+                        <th>PEMILIK KENDARAAN</th>
+                        <th>NO. POLISI & UNIT</th>
+                        <th>PAKET LAYANAN & KELUHAN</th>
+                        <th>MEKANIK PJ</th>
+                        <th>STATUS</th>
+                        <th>TOTAL BIAYA</th>
+                        <th class="text-end">TINDAKAN</th>
+                    </tr>
+                </thead>
+                <?php $trackingModals = ''; ?>
+                <tbody>
+                    <?php if (empty($transaksiList)): ?>
+                        <tr>
+                            <td colspan="9" class="text-center py-5 text-secondary">Belum ada data transaksi servis terdaftar.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($transaksiList as $tr):
+                            $grandTotal = (float)$tr['tarif_dasar'] + (float)$tr['biaya_sparepart'];
+                            $pillClass = match($tr['status_servis']) {
+                                'Pending', 'Antre' => 'status-antre',
+                                'Dikerjakan'       => 'status-dikerjakan',
+                                'Siap Diambil'     => 'status-siap',
+                                'Selesai'          => 'status-selesai',
+                                'Dibatalkan'       => 'status-batal',
+                                default            => 'status-antre'
+                            };
+                        ?>
+                            <tr class="trx-row" data-status="<?= htmlspecialchars($tr['status_servis']) ?>">
+                                <td class="fw-bold font-monospace"><?= htmlspecialchars($tr['kode_transaksi']) ?></td>
+                                <td class="text-secondary small"><?= date('d/m/Y H:i', strtotime($tr['tanggal_pesan'])) ?></td>
+                                <td>
+                                    <div class="fw-semibold"><?= htmlspecialchars($tr['nama_customer']) ?></div>
+                                    <div class="text-secondary small"><?= htmlspecialchars($tr['telp_customer'] ?? '-') ?></div>
+                                </td>
+                                <td>
+                                    <span class="plate-box mb-1"><?= htmlspecialchars($tr['no_polisi']) ?></span>
+                                    <div class="text-secondary small"><?= htmlspecialchars($tr['nama_model']) ?> <?= !empty($tr['tahun_pembuatan']) ? '('.$tr['tahun_pembuatan'].')' : '' ?></div>
+                                </td>
+                                <td style="max-width: 240px;">
+                                    <div class="fw-semibold"><?= htmlspecialchars($tr['nama_paket']) ?></div>
+                                    <div class="text-secondary small text-truncate" title="<?= htmlspecialchars($tr['keluhan_mesin']) ?>">
+                                        <?= htmlspecialchars($tr['keluhan_mesin']) ?>
+                                    </div>
+                                </td>
+                                <td>
+                                    <?= $tr['nama_teknisi'] ? htmlspecialchars($tr['nama_teknisi']) : '<span class="text-secondary fst-italic small">Belum dialokasikan</span>' ?>
+                                </td>
+                                <td>
+                                    <span class="status-pill <?= $pillClass ?>">
+                                        <span class="dot"></span>
+                                        <?= htmlspecialchars($tr['status_servis']) ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="fw-bold">Rp <?= number_format($grandTotal, 0, ',', '.') ?></div>
+                                    <div class="text-secondary" style="font-size: 0.72rem;">
+                                        <?= $tr['biaya_sparepart'] > 0 ? 'Jasa + Suku Cadang' : 'Tarif Dasar Paket' ?>
+                                    </div>
+                                </td>
+                                <td class="text-end">
+                                    <div class="d-inline-flex gap-1">
+                                        <button class="btn btn-sm btn-outline-primary fw-semibold"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalUpdateStatus<?= $tr['id'] ?>">
+                                            Tracking & Status
+                                        </button>
+                                        <?php if ($canManage): ?>
+                                            <form method="POST" action="index.php?page=transaksi" class="d-inline" onsubmit="return confirm('Hapus order <?= htmlspecialchars($tr['kode_transaksi']) ?>?');">
+                                                <input type="hidden" name="action" value="delete">
+                                                <input type="hidden" name="id" value="<?= $tr['id'] ?>">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">Hapus</button>
+                                            </form>
+                                        <?php endif; ?>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Modal Tracking & Update Status -->
+                            <?php ob_start(); ?>
+                            <div class="modal fade" id="modalUpdateStatus<?= $tr['id'] ?>" tabindex="-1">
+                                <div class="modal-dialog modal-lg">
+                                    <form method="POST" action="index.php?page=transaksi" class="modal-content">
+                                        <div class="modal-header border-bottom-0 pb-0">
+                                            <h5 class="modal-title fw-bold">Tracking & Update Work Order: <?= htmlspecialchars($tr['kode_transaksi']) ?></h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <?php if ($canManage): ?>
+                                                <input type="hidden" name="action" value="update_status">
+                                                <input type="hidden" name="id" value="<?= $tr['id'] ?>">
                                             <?php endif; ?>
-                                        </td>
-                                        <td class="pe-4 text-end">
-                                            <span class="badge border rounded-pill px-3 py-2 <?= $badgeStyle ?>">
-                                                <?= htmlspecialchars($item['status_servis']) ?>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
+
+                                            <?php
+                                            $steps = ['Pending', 'Antre', 'Dikerjakan', 'Siap Diambil', 'Selesai'];
+                                            $currentIdx = array_search($tr['status_servis'], $steps);
+                                            ?>
+                                            <div class="stepper-box tracking-stepper d-flex justify-content-between align-items-center mb-4">
+                                                <?php foreach ($steps as $idx => $stepName):
+                                                    $isDone = ($currentIdx !== false && $idx <= $currentIdx);
+                                                ?>
+                                                    <div class="tracking-step <?= $isDone ? 'is-reached' : '' ?>">
+                                                        <span class="tracking-step-number mb-1">
+                                                            <?= $idx + 1 ?>
+                                                        </span>
+                                                        <div class="tracking-step-label"><?= $stepName ?></div>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+
+                                            <?php if ($canManage): ?>
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-uppercase text-secondary">Status Pengerjaan</label>
+                                                    <select name="status_servis" class="form-select" required>
+                                                        <?php foreach (['Pending', 'Antre', 'Dikerjakan', 'Siap Diambil', 'Selesai', 'Dibatalkan'] as $st): ?>
+                                                            <option value="<?= $st ?>" <?= $tr['status_servis'] === $st ? 'selected' : '' ?>><?= $st ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-uppercase text-secondary">Mekanik Penanggung Jawab</label>
+                                                    <select name="teknisi_id" class="form-select">
+                                                        <option value="">-- Pilih Mekanik --</option>
+                                                        <?php foreach ($teknisiOptions as $tek): ?>
+                                                            <option value="<?= $tek['id'] ?>" <?= $tr['teknisi_id'] == $tek['id'] ? 'selected' : '' ?>>
+                                                                <?= htmlspecialchars($tek['nama']) ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label small fw-bold text-uppercase text-secondary">Keluhan Mesin Pelanggan</label>
+                                                    <textarea class="form-control" rows="2" readonly><?= htmlspecialchars($tr['keluhan_mesin']) ?></textarea>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label small fw-bold text-uppercase text-secondary">Catatan Pemeriksaan / Admin</label>
+                                                    <textarea name="catatan_admin" class="form-control" rows="2"><?= htmlspecialchars($tr['catatan_admin'] ?? '') ?></textarea>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="stepper-box d-flex justify-content-between align-items-center">
+                                                        <div class="small">
+                                                            <div>Tarif Paket (<?= htmlspecialchars($tr['nama_paket']) ?>): <strong>Rp <?= number_format($tr['tarif_dasar'], 0, ',', '.') ?></strong></div>
+                                                            <div>Komponen Suku Cadang (Work Order): <strong>Rp <?= number_format($tr['biaya_sparepart'], 0, ',', '.') ?></strong></div>
+                                                        </div>
+                                                        <div class="text-end">
+                                                            <div class="text-secondary small">Total Biaya Aktual</div>
+                                                            <h5 class="fw-bold text-primary mb-0">Rp <?= number_format($grandTotal, 0, ',', '.') ?></h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php else: ?>
+                                                <p class="mb-2"><strong>Status saat ini:</strong> <?= htmlspecialchars($tr['status_servis']) ?></p>
+                                                <p class="mb-2"><strong>Keluhan:</strong> <?= htmlspecialchars($tr['keluhan_mesin']) ?></p>
+                                                <p class="mb-0"><strong>Total biaya:</strong> Rp <?= number_format($grandTotal, 0, ',', '.') ?></p>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="modal-footer border-top-0">
+                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
+                                            <?php if ($canManage): ?>
+                                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                            <?php endif; ?>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <?php $trackingModals .= ob_get_clean(); ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+        <?= $trackingModals ?>
+    </div>
+</div>
+
+<!-- Modal Buat Booking Servis Baru -->
+<div class="modal fade" id="modalBookingBaru" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <form method="POST" action="index.php?page=transaksi" enctype="multipart/form-data" class="modal-content">
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title fw-bold">Pendaftaran Order Servis Baru</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="action" value="create_booking">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-uppercase text-secondary"><?= $canManage ? 'Unit Kendaraan Pelanggan' : 'Kendaraan Anda' ?></label>
+                        <select name="kendaraan_id" class="form-select" required>
+                            <option value="">-- Pilih Nomor Polisi & Unit --</option>
+                            <?php foreach ($kendaraanOptions as $ko): ?>
+                                <option value="<?= (int) $ko['id'] ?>"
+                                        data-kategori-id="<?= (int) $ko['kategori_id'] ?>"
+                                        data-no-polisi="<?= htmlspecialchars($ko['no_polisi'], ENT_QUOTES, 'UTF-8') ?>"
+                                        data-nama-model="<?= htmlspecialchars($ko['nama_model'], ENT_QUOTES, 'UTF-8') ?>"
+                                        data-tahun="<?= htmlspecialchars((string) ($ko['tahun_pembuatan'] ?? ''), ENT_QUOTES, 'UTF-8') ?>"
+                                        data-warna="<?= htmlspecialchars((string) ($ko['warna'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+                                    <?= htmlspecialchars($ko['no_polisi'] . ' - ' . $ko['nama_model'] . ' (' . $ko['pemilik'] . ')') ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?php if (!$canManage): ?>
+                            <?php if (empty($kendaraanOptions)): ?>
+                                <div class="form-text text-warning">Anda belum memiliki kendaraan terdaftar. Daftarkan kendaraan terlebih dahulu untuk booking.</div>
+                            <?php endif; ?>
+                            <button type="button" class="btn btn-link btn-sm px-0 text-decoration-none"
+                                    id="btnBukaTambahKendaraan" <?= empty($kategoriOptions) ? 'disabled' : '' ?>>
+                                + Daftarkan kendaraan baru
+                            </button>
+                            <button type="button" class="btn btn-link btn-sm px-0 ms-3 text-decoration-none"
+                                    id="btnUbahKendaraan" disabled>
+                                Ubah kendaraan terpilih
+                            </button>
+                            <?php if (empty($kategoriOptions)): ?>
+                                <div class="form-text text-danger">Kategori kendaraan belum tersedia. Silakan hubungi admin bengkel.</div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-uppercase text-secondary">Paket Layanan Servis</label>
+                        <select name="layanan_id" class="form-select" required>
+                            <option value="">-- Pilih Paket Layanan --</option>
+                            <?php foreach ($layananOptions as $lo): ?>
+                                <option value="<?= (int) $lo['id'] ?>" data-kategori-id="<?= (int) $lo['kategori_id'] ?>">
+                                    <?= htmlspecialchars($lo['nama_paket']) ?> — Rp <?= number_format($lo['tarif_dasar'], 0, ',', '.') ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <?php if ($canManage): ?>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-uppercase text-secondary">Alokasi Mekanik</label>
+                        <select name="teknisi_id" class="form-select">
+                            <option value="">-- Alokasikan Nanti --</option>
+                            <?php foreach ($teknisiOptions as $tek): ?>
+                                <option value="<?= $tek['id'] ?>"><?= htmlspecialchars($tek['nama']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-uppercase text-secondary">Status Awal</label>
+                        <select name="status_servis" class="form-select">
+                            <option value="Antre" selected>Antre</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Dikerjakan">Langsung Dikerjakan</option>
+                        </select>
+                    </div>
+                    <?php endif; ?>
+                    <div class="col-12">
+                        <label class="form-label small fw-bold text-uppercase text-secondary">Keluhan Mesin & Gejala Kerusakan</label>
+                        <textarea name="keluhan_mesin" class="form-control" rows="3" placeholder="Deskripsikan keluhan mesin kendaraan..." required></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-uppercase text-secondary">Foto Dokumentasi Kendala (Opsional)</label>
+                        <input type="file" name="foto_kendala" class="form-control" accept=".jpg,.jpeg,.png,.webp">
+                    </div>
+                    <?php if ($canManage): ?>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-uppercase text-secondary">Catatan Tambahan Admin</label>
+                        <input type="text" name="catatan_admin" class="form-control" placeholder="Contoh: Menunggu antrean stall 2">
+                    </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="modal-footer border-top-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Terbitkan Order Servis</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<?php if (!$canManage): ?>
+<div class="modal fade" id="modalTambahKendaraan" tabindex="-1" aria-labelledby="judulModalTambahKendaraan" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="formKendaraanPelanggan" class="modal-content">
+            <input type="hidden" name="id">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="judulModalTambahKendaraan">Daftarkan Kendaraan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body">
+                <div id="alertKendaraanPelanggan" class="alert d-none" role="alert"></div>
+                <div class="mb-3">
+                    <label class="form-label" for="kendaraanKategoriPelanggan">Kategori kendaraan</label>
+                    <select class="form-select" id="kendaraanKategoriPelanggan" name="kategori_id" required>
+                        <option value="">Pilih kategori</option>
+                        <?php foreach ($kategoriOptions as $kategori): ?>
+                            <option value="<?= (int) $kategori['id'] ?>">
+                                <?= htmlspecialchars($kategori['jenis'] . ' — ' . $kategori['merk'] . ' ' . $kategori['tipe'], ENT_QUOTES, 'UTF-8') ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <?php if (empty($kategoriOptions)): ?>
+                        <div class="form-text text-danger">Belum ada kategori kendaraan. Silakan hubungi admin bengkel.</div>
+                    <?php endif; ?>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="kendaraanNopolPelanggan">Nomor polisi</label>
+                    <input class="form-control" id="kendaraanNopolPelanggan" name="no_polisi"
+                           maxlength="15" placeholder="BE 1234 ABC" required>
+                    <div class="form-text">Contoh format: BE 1234 ABC.</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="kendaraanModelPelanggan">Model kendaraan</label>
+                    <input class="form-control" id="kendaraanModelPelanggan" name="nama_model"
+                           maxlength="100" placeholder="Contoh: Honda Vario 160" required>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 mb-3">
+                        <label class="form-label" for="kendaraanTahunPelanggan">Tahun pembuatan</label>
+                        <input class="form-control" id="kendaraanTahunPelanggan" name="tahun_pembuatan"
+                               type="number" min="1901" max="<?= (int) date('Y') + 1 ?>">
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <label class="form-label" for="kendaraanWarnaPelanggan">Warna</label>
+                        <input class="form-control" id="kendaraanWarnaPelanggan" name="warna" maxlength="30">
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary" <?= empty($kategoriOptions) ? 'disabled' : '' ?>>
+                    Simpan Kendaraan
+                </button>
+            </div>
+        </form>
     </div>
-</main>
+</div>
+<?php endif; ?>
 
-<!-- Bootstrap 5 JS Bundle -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Script Interaktif Transaksi & Stepper -->
 <script src="assets/js/transaksi.js"></script>
-</body>
-</html>
+
+<?php require_once __DIR__ . '/layouts/footer.php'; ?>

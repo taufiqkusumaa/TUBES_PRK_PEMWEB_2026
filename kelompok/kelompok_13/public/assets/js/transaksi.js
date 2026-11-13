@@ -1,223 +1,170 @@
-/**
- * File: public/assets/js/transaksi.js
- * Deskripsi: Mengelola interaksi sisi klien (Frontend) untuk:
- * 1. Preview foto kendala sebelum di-upload ke public/uploads/
- * 2. Submit form pemesanan servis baru via Fetch API (AJAX) ke public/api.php
- * 3. Pemilihan baris riwayat servis untuk mengganti tampilan Stepper Tracking
- * 4. Update progres Stepper (Pending -> Antre -> Dikerjakan -> Siap Diambil)
- */
+(() => {
+    'use strict';
 
-document.addEventListener('DOMContentLoaded', () => {
-    const formBooking = document.getElementById('formBookingServis');
-    const selectPaket = document.getElementById('paket_id');
-    const infoPaketBox = document.getElementById('infoPaketBox');
-    const inputFoto = document.getElementById('foto_kendala');
-    const previewContainer = document.getElementById('previewContainer');
-    const fotoPreview = document.getElementById('fotoPreview');
-    const tbodyRiwayat = document.getElementById('tbodyRiwayat');
-    const alertContainer = document.getElementById('alertContainer');
-    const activeTransaksiInput = document.getElementById('activeTransaksiId');
+    document.addEventListener('DOMContentLoaded', () => {
+        const filterStatus = document.getElementById('filterStatusTrx');
+        const searchInput = document.getElementById('searchInputTrx');
+        const rows = document.querySelectorAll('#tableTransaksi tbody .trx-row');
 
-    const urutanTahap = ['Pending', 'Antre', 'Dikerjakan', 'Siap Diambil'];
+        function filterTable() {
+            const statusVal = filterStatus.value.toLowerCase();
+            const searchVal = searchInput.value.toLowerCase();
 
-    /**
-     * Menampilkan pesan notifikasi Bootstrap Alert di bagian atas halaman
-     */
-    function showAlert(message, type = 'success') {
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = `
-            <div class="alert alert-${type} alert-dismissible fade show shadow-sm border-0 rounded-3" role="alert">
-                <i class="bi ${type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'} me-2"></i>
-                <span>${message}</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        `;
-        alertContainer.innerHTML = '';
-        alertContainer.appendChild(wrapper);
-    }
-
-    /**
-     * Menampilkan informasi deskripsi & estimasi waktu saat paket layanan dipilih
-     */
-    if (selectPaket) {
-        selectPaket.addEventListener('change', () => {
-            const opt = selectPaket.options[selectPaket.selectedIndex];
-            const deskripsi = opt.getAttribute('data-deskripsi');
-            const estimasi = opt.getAttribute('data-estimasi');
-
-            if (selectPaket.value && deskripsi) {
-                infoPaketBox.innerHTML = `<i class="bi bi-info-circle me-1"></i> ${deskripsi} (Estimasi pengerjaan: <strong>${estimasi} menit</strong>)`;
-                infoPaketBox.classList.remove('d-none');
-            } else {
-                infoPaketBox.classList.add('d-none');
-            }
-        });
-    }
-
-    /**
-     * Menampilkan pratinjau (preview) foto kendala sebelum dikirim ke server
-     */
-    if (inputFoto) {
-        inputFoto.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) {
-                previewContainer.classList.add('d-none');
-                return;
-            }
-
-            if (file.size > 5 * 1024 * 1024) {
-                showAlert('Ukuran foto melebihi batas maksimal 5 MB.', 'danger');
-                inputFoto.value = '';
-                previewContainer.classList.add('d-none');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                fotoPreview.src = ev.target.result;
-                previewContainer.classList.remove('d-none');
-            };
-            reader.readAsDataURL(file);
-        });
-    }
-
-    /**
-     * Memperbarui UI Stepper Tracking (Pending -> Antre -> Dikerjakan -> Siap Diambil)
-     */
-    function renderStepperProgress(kodeWo, pelatNomor, statusAktif, catatanMekanik) {
-        const trackerKodeWo = document.getElementById('trackerKodeWo');
-        const trackerPelat = document.getElementById('trackerPelat');
-        const trackerCatatan = document.getElementById('trackerCatatan');
-        const stepperItems = document.querySelectorAll('#stepperWrapper .stepper-item');
-
-        if (trackerKodeWo) trackerKodeWo.textContent = kodeWo;
-        if (trackerPelat) trackerPelat.textContent = pelatNomor;
-        if (trackerCatatan) trackerCatatan.textContent = catatanMekanik || 'Menunggu pembaruan dari mekanik.';
-
-        const activeIndex = urutanTahap.indexOf(statusAktif);
-
-        stepperItems.forEach((item) => {
-            const stepName = item.getAttribute('data-step');
-            const idx = urutanTahap.indexOf(stepName);
-
-            item.classList.remove('completed', 'active');
-            if (idx < activeIndex) {
-                item.classList.add('completed');
-            } else if (idx === activeIndex) {
-                item.classList.add('active');
-            }
-        });
-    }
-
-    /**
-     * Mengikat event klik pada setiap baris tabel riwayat servis
-     */
-    function bindRiwayatRowClicks() {
-        const rows = document.querySelectorAll('.riwayat-row');
-        rows.forEach((row) => {
-            row.addEventListener('click', () => {
-                rows.forEach((r) => r.classList.remove('selected-row'));
-                row.classList.add('selected-row');
-
-                const id = row.getAttribute('data-id');
-                const kodeWo = row.getAttribute('data-wo');
-                const pelat = row.getAttribute('data-pelat');
-                const status = row.getAttribute('data-status');
-                const catatan = row.getAttribute('data-catatan');
-
-                if (activeTransaksiInput) activeTransaksiInput.value = id;
-                renderStepperProgress(kodeWo, pelat, status, catatan);
+            rows.forEach((row) => {
+                const rowStatus = (row.getAttribute('data-status') || '').toLowerCase();
+                const rowText = row.innerText.toLowerCase();
+                const matchStatus = !statusVal || rowStatus === statusVal;
+                const matchSearch = !searchVal || rowText.includes(searchVal);
+                row.style.display = matchStatus && matchSearch ? '' : 'none';
             });
+        }
+
+        if (filterStatus) filterStatus.addEventListener('change', filterTable);
+        if (searchInput) searchInput.addEventListener('input', filterTable);
+
+        const bookingModalElement = document.getElementById('modalBookingBaru');
+        const vehicleSelect = bookingModalElement?.querySelector('[name="kendaraan_id"]');
+        const serviceSelect = bookingModalElement?.querySelector('[name="layanan_id"]');
+
+        function filterServices() {
+            if (!vehicleSelect || !serviceSelect) return;
+            const selectedVehicle = vehicleSelect.options[vehicleSelect.selectedIndex];
+            const categoryId = selectedVehicle?.dataset.kategoriId || '';
+            let selectedServiceAvailable = false;
+            Array.from(serviceSelect.options).forEach((option) => {
+                if (!option.value) {
+                    option.hidden = false;
+                    option.disabled = false;
+                    return;
+                }
+                const matches = categoryId !== '' && option.dataset.kategoriId === categoryId;
+                option.hidden = !matches;
+                option.disabled = !matches;
+                if (matches && option.value === serviceSelect.value) selectedServiceAvailable = true;
+            });
+            if (!selectedServiceAvailable) serviceSelect.value = '';
+        }
+
+        if (vehicleSelect && serviceSelect) {
+            vehicleSelect.addEventListener('change', filterServices);
+            filterServices();
+        }
+
+        const vehicleModalElement = document.getElementById('modalTambahKendaraan');
+        if (!vehicleModalElement || !window.bootstrap) return;
+
+        const bookingModal = bootstrap.Modal.getOrCreateInstance(bookingModalElement);
+        const vehicleModal = bootstrap.Modal.getOrCreateInstance(vehicleModalElement);
+        const vehicleForm = document.getElementById('formKendaraanPelanggan');
+        const vehicleAlert = document.getElementById('alertKendaraanPelanggan');
+        const editVehicleButton = document.getElementById('btnUbahKendaraan');
+        let reopenBooking = false;
+
+        function resetVehicleForm() {
+            vehicleForm.reset();
+            vehicleForm.elements.id.value = '';
+            document.getElementById('judulModalTambahKendaraan').textContent = 'Daftarkan Kendaraan';
+            vehicleForm.querySelector('[type="submit"]').textContent = 'Simpan Kendaraan';
+            vehicleAlert.className = 'alert d-none';
+        }
+
+        document.getElementById('btnBukaTambahKendaraan').addEventListener('click', () => {
+            resetVehicleForm();
+            reopenBooking = true;
+            bookingModalElement.addEventListener('hidden.bs.modal', () => {
+                vehicleModal.show();
+            }, { once: true });
+            bookingModal.hide();
         });
-    }
 
-    bindRiwayatRowClicks();
+        editVehicleButton.addEventListener('click', () => {
+            const selected = vehicleSelect.options[vehicleSelect.selectedIndex];
+            if (!selected?.value) return;
+            resetVehicleForm();
+            vehicleForm.elements.id.value = selected.value;
+            vehicleForm.elements.kategori_id.value = selected.dataset.kategoriId || '';
+            vehicleForm.elements.no_polisi.value = selected.dataset.noPolisi || '';
+            vehicleForm.elements.nama_model.value = selected.dataset.namaModel || '';
+            vehicleForm.elements.tahun_pembuatan.value = selected.dataset.tahun || '';
+            vehicleForm.elements.warna.value = selected.dataset.warna || '';
+            document.getElementById('judulModalTambahKendaraan').textContent = 'Ubah Kendaraan';
+            vehicleForm.querySelector('[type="submit"]').textContent = 'Simpan Perubahan';
+            reopenBooking = true;
+            bookingModalElement.addEventListener('hidden.bs.modal', () => {
+                vehicleModal.show();
+            }, { once: true });
+            bookingModal.hide();
+        });
 
-    /**
-     * Menangani pengiriman Formulir Pemesanan Servis Baru via Fetch API
-     */
-    if (formBooking) {
-        formBooking.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        vehicleModalElement.addEventListener('hidden.bs.modal', () => {
+            if (reopenBooking) {
+                reopenBooking = false;
+                bookingModal.show();
+            }
+        });
 
-            const btnSubmit = document.getElementById('btnSubmitBooking');
-            const originalText = btnSubmit.innerHTML;
-            btnSubmit.disabled = true;
-            btnSubmit.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan Work Order...`;
+        vehicleSelect.addEventListener('change', () => {
+            editVehicleButton.disabled = !vehicleSelect.value;
+        });
+        editVehicleButton.disabled = !vehicleSelect.value;
+
+        vehicleForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            if (!vehicleForm.reportValidity()) return;
+
+            const submitButton = vehicleForm.querySelector('[type="submit"]');
+            const originalLabel = submitButton.textContent.trim();
+            submitButton.disabled = true;
+            submitButton.textContent = 'Menyimpan...';
+            vehicleAlert.className = 'alert d-none';
 
             try {
-                const formData = new FormData(formBooking);
-                const response = await fetch('api.php?action=create_booking', {
+                const body = Object.fromEntries(new FormData(vehicleForm).entries());
+                body.kategori_id = Number(body.kategori_id);
+                if (body.id) body.id = Number(body.id);
+                const action = body.id ? 'update_own_vehicle' : 'register_own_vehicle';
+                const response = await fetch(`api.php?endpoint=kendaraan&action=${action}`, {
                     method: 'POST',
-                    body: formData
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(body),
                 });
-
                 const result = await response.json();
-
-                if (result.status === 'success') {
-                    showAlert(result.message, 'success');
-                    formBooking.reset();
-                    previewContainer.classList.add('d-none');
-                    infoPaketBox.classList.add('d-none');
-                    // Muat ulang halaman atau tabel riwayat
-                    window.location.reload();
-                } else {
-                    showAlert(result.message || 'Gagal menyimpan pesanan.', 'danger');
+                if (!response.ok || !result.success || !result.data?.kendaraan) {
+                    throw new Error(result.message || `Gagal menyimpan kendaraan (HTTP ${response.status}).`);
                 }
+
+                const vehicle = result.data.kendaraan;
+                let option = Array.from(vehicleSelect.options).find((item) => item.value === String(vehicle.id));
+                if (!option) {
+                    option = new Option('', vehicle.id);
+                    vehicleSelect.add(option);
+                }
+                option.textContent = `${vehicle.no_polisi} - ${vehicle.nama_model}`;
+                option.dataset.kategoriId = String(vehicle.kategori_id);
+                option.dataset.noPolisi = vehicle.no_polisi;
+                option.dataset.namaModel = vehicle.nama_model;
+                option.dataset.tahun = vehicle.tahun_pembuatan || '';
+                option.dataset.warna = vehicle.warna || '';
+                vehicleSelect.value = String(vehicle.id);
+                editVehicleButton.disabled = false;
+                filterServices();
+                vehicleForm.reset();
+                vehicleAlert.className = 'alert alert-success';
+                vehicleAlert.textContent = action === 'update_own_vehicle'
+                    ? 'Kendaraan berhasil diperbarui dan dipilih untuk booking.'
+                    : 'Kendaraan berhasil didaftarkan dan dipilih untuk booking.';
+                vehicleModal.hide();
             } catch (error) {
-                showAlert('Tidak dapat terhubung ke server API: ' + error.message, 'danger');
+                vehicleAlert.className = 'alert alert-danger';
+                vehicleAlert.textContent = error.message || 'Terjadi kesalahan saat menyimpan kendaraan.';
             } finally {
-                btnSubmit.disabled = false;
-                btnSubmit.innerHTML = originalText;
-            }
-        });
-    }
-
-    /**
-     * Tombol Simulasi perubahan status progres kendaraan
-     */
-    const statusButtons = document.querySelectorAll('.btn-simulasi-status');
-    statusButtons.forEach((btn) => {
-        btn.addEventListener('click', async () => {
-            const transaksiId = activeTransaksiInput ? activeTransaksiInput.value : 0;
-            const statusBaru = btn.getAttribute('data-status');
-
-            if (!transaksiId || transaksiId === '0') {
-                showAlert('Pilih salah satu transaksi Work Order terlebih dahulu.', 'warning');
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('action', 'update_status');
-            formData.append('transaksi_id', transaksiId);
-            formData.append('status_servis', statusBaru);
-
-            try {
-                const response = await fetch('api.php?action=update_status', {
-                    method: 'POST',
-                    body: formData
-                });
-                const result = await response.json();
-
-                if (result.status === 'success' && result.data) {
-                    const d = result.data;
-                    renderStepperProgress(d.kode_wo, d.pelat_nomor, d.status_servis, d.catatan_mekanik);
-                    showAlert(result.message, 'success');
-
-                    // Update atribut baris pada tabel riwayat
-                    const activeRow = document.querySelector(`.riwayat-row[data-id="${transaksiId}"]`);
-                    if (activeRow) {
-                        activeRow.setAttribute('data-status', d.status_servis);
-                        activeRow.setAttribute('data-catatan', d.catatan_mekanik);
-                        const badgeEl = activeRow.querySelector('.badge');
-                        if (badgeEl) badgeEl.textContent = d.status_servis;
-                    }
-                } else {
-                    showAlert(result.message || 'Gagal memperbarui status.', 'danger');
-                }
-            } catch (err) {
-                showAlert('Kesalahan jaringan saat memperbarui status.', 'danger');
+                submitButton.disabled = false;
+                submitButton.textContent = originalLabel;
             }
         });
     });
-});
+})();
