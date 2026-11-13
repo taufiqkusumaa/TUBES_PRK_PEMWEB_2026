@@ -1,0 +1,149 @@
+/* ==========================================================
+   Ruang Hukum: gaya khusus Beranda dan Daftar Pengacara.
+   Dimuat oleh index.php dan pengacara.php (tidak mengubah style.css).
+   ========================================================== */
+
+/* ---------- Umum ---------- */
+.bn-section { padding: 4.5rem 0; }
+.bn-putih { background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.bn-kicker { display: inline-block; color: var(--gold-600); font-weight: 600; font-size: .78rem; letter-spacing: .15em; text-transform: uppercase; margin-bottom: .45rem; }
+.bn-judul { font-size: clamp(1.65rem, 3vw, 2.3rem); margin-bottom: .6rem; }
+.bn-sub { color: var(--muted); max-width: 40rem; margin-bottom: 0; }
+.bn-kepala { margin-bottom: 2.5rem; }
+.bn-kepala.tengah { text-align: center; }
+.bn-kepala.tengah .bn-sub { margin-inline: auto; }
+.btn-outline-navy { color: var(--navy); border: 1.5px solid var(--navy); background: transparent; font-weight: 500; }
+.btn-outline-navy:hover { background: var(--navy); color: #fff; }
+
+/* ---------- Hero ---------- */
+.bn-hero { position: relative; overflow: hidden; color: #fff; padding: 4.5rem 0 8rem;
+  background:
+    radial-gradient(900px 420px at 88% -8%, rgba(201,162,75,.30), transparent 62%),
+    radial-gradient(700px 380px at -5% 105%, rgba(74,127,181,.28), transparent 60%),
+    linear-gradient(135deg, #0a1d38 0%, #0f2747 48%, #1b3a66 100%); }
+.bn-hero::before { content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+  background-size: 46px 46px; -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 88%); mask-image: linear-gradient(180deg, #000 0%, transparent 88%); }
+.bn-hero .container { position: relative; }
+.bn-eyebrow { display: inline-flex; align-items: center; gap: .5rem; padding: .4rem .95rem; border: 1px solid rgba(201,162,75,.55); border-radius: 999px; background: rgba(201,162,75,.10); color: #ecd59b; font-size: .85rem; }
+.bn-hero h1 { color: #fff; font-size: clamp(2.1rem, 4.6vw, 3.45rem); line-height: 1.14; letter-spacing: -.01em; }
+.bn-hero h1 .emas { color: var(--gold); }
+.bn-hero .lead { color: rgba(255,255,255,.82); max-width: 35rem; font-size: 1.12rem; }
+
+.bn-cari { background: #fff; border-radius: 16px; padding: .85rem; box-shadow: 0 22px 50px rgba(0,0,0,.30); max-width: 40rem; }
+.bn-cari .form-control, .bn-cari .form-select { border-color: var(--line); padding: .7rem .85rem; }
+.bn-cari .btn { padding: .7rem 1rem; font-weight: 600; }
+
+.bn-jaminan { list-style: none; padding: 0; margin: 1.4rem 0 0; display: flex; flex-wrap: wrap; gap: .6rem 1.5rem; color: rgba(255,255,255,.85); font-size: .92rem; }
+.bn-jaminan .bi { color: var(--gold); margin-right: .35rem; }
+
+/* contoh percakapan di hero */
+.bn-chat { position: relative; background: #fff; color: var(--ink); border-radius: 20px; padding: 1.25rem; box-shadow: 0 30px 70px rgba(0,0,0,.38); transform: rotate(1.2deg); }
+.bn-chat-label { position: absolute; top: -.7rem; left: 1.25rem; background: var(--gold); color: var(--navy); font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: .2rem .65rem; border-radius: 999px; }
+.bn-chat-kepala { display: flex; align-items: center; gap: .75rem; padding-bottom: .9rem; margin-bottom: .9rem; border-bottom: 1px solid var(--line); }
+.bn-chat-kepala small { color: var(--gold-600); }
+.bn-bubble { max-width: 88%; padding: .7rem .95rem; border-radius: 14px; font-size: .92rem; line-height: 1.45; margin-bottom: .65rem; }
+.bn-bubble.klien { background: #eef1f6; border-bottom-left-radius: 4px; }
+.bn-bubble.pengacara { background: var(--navy); color: #fff; border-bottom-right-radius: 4px; margin-left: auto; }
+.bn-chat-kaki { margin-top: .9rem; padding-top: .8rem; border-top: 1px solid var(--line); font-size: .82rem; color: var(--muted); }
+
+/* ---------- Statistik ---------- */
+.bn-stats { position: relative; z-index: 2; margin-top: -4.2rem; }
+.bn-stats-kartu { background: #fff; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 18px 44px rgba(15,39,71,.14); padding: 1.6rem .5rem; }
+.bn-stat { padding: .4rem 1rem; }
+.bn-stat + .bn-stat { border-left: 1px solid var(--line); }
+.bn-stat .angka { font-family: 'Playfair Display', serif; font-size: 2.3rem; font-weight: 700; color: var(--navy); line-height: 1.1; }
+.bn-stat .angka .bi { font-size: 1.1rem; color: var(--gold); margin-left: .25rem; vertical-align: .15em; }
+.bn-stat .label { color: var(--muted); font-size: .9rem; margin-top: .2rem; }
+@media (max-width: 767.98px) {
+  .bn-stat:nth-child(3) { border-left: 0; }
+  .bn-stat:nth-child(n+3) { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+}
+
+/* ---------- Bidang hukum ---------- */
+.bn-bidang { display: flex; flex-direction: column; height: 100%; padding: 1.6rem; text-decoration: none; color: var(--ink); }
+.bn-bidang:hover { color: var(--ink); }
+.bn-ikon { width: 54px; height: 54px; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; background: rgba(201,162,75,.16); color: var(--gold-600); margin-bottom: 1rem; transition: background .2s, color .2s; }
+.bn-bidang:hover .bn-ikon { background: var(--navy); color: var(--gold); }
+.bn-bidang h3 { font-size: 1.25rem; margin-bottom: .4rem; }
+.bn-bidang p { color: var(--muted); font-size: .95rem; flex: 1; }
+.bn-bidang-kaki { display: flex; justify-content: space-between; align-items: center; margin-top: .6rem; padding-top: .8rem; border-top: 1px solid var(--line); font-weight: 600; font-size: .9rem; color: var(--navy); }
+.bn-bidang-kaki .bi { transition: transform .2s; }
+.bn-bidang:hover .bn-bidang-kaki .bi, .bn-artikel:hover .bn-bidang-kaki .bi { transform: translateX(4px); }
+
+/* ---------- Cara kerja ---------- */
+.bn-langkah { text-align: center; padding: 0 1rem; }
+.bn-nomor { width: 56px; height: 56px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--navy); color: var(--gold); font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.5rem; margin-bottom: 1rem; box-shadow: 0 0 0 6px rgba(201,162,75,.18); }
+.bn-langkah h3 { font-size: 1.2rem; }
+.bn-langkah p { color: var(--muted); margin-bottom: 0; }
+
+/* ---------- Kartu pengacara ---------- */
+.pc { display: flex; flex-direction: column; height: 100%; padding: 1.35rem; }
+.pc-atas { display: flex; gap: .9rem; align-items: center; margin-bottom: 1rem; }
+.pc-avatar { position: relative; flex: 0 0 auto; width: 62px; height: 62px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.3rem; box-shadow: 0 6px 14px rgba(15,39,71,.22); }
+.pc-avatar-sm { width: 44px; height: 44px; font-size: 1rem; }
+.pc-verif { position: absolute; right: -4px; bottom: -4px; font-size: 1.05rem; color: var(--gold); background: #fff; border-radius: 50%; line-height: 1; }
+.av-0 { background: linear-gradient(135deg, #0f2747, #2f5f9e); }
+.av-1 { background: linear-gradient(135deg, #8a6416, #c9a24b); }
+.av-2 { background: linear-gradient(135deg, #134e4a, #2a9d8f); }
+.av-3 { background: linear-gradient(135deg, #3b2a6b, #7c5cc4); }
+.av-4 { background: linear-gradient(135deg, #7f1d1d, #c2575d); }
+.av-5 { background: linear-gradient(135deg, #1e3a5f, #4a7fb5); }
+.pc-info { min-width: 0; }
+.pc-nama { font-size: 1.08rem; margin: 0 0 .25rem; line-height: 1.25; }
+.pc-bidang { display: inline-flex; align-items: center; gap: .35rem; font-size: .8rem; font-weight: 600; color: var(--navy-700); background: rgba(27,58,102,.08); padding: .2rem .6rem; border-radius: 999px; }
+.pc-spes { display: flex; flex-direction: column; gap: .1rem; padding: .6rem .8rem; margin-bottom: .75rem; background: rgba(201,162,75,.11); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; }
+.pc-spes small { color: var(--gold-600); font-weight: 700; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; }
+.pc-spes span { font-weight: 600; font-size: .93rem; color: var(--navy); }
+.pc-bio { color: var(--muted); font-size: .88rem; line-height: 1.5; margin-bottom: .9rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.pc-meta { list-style: none; padding: 0; margin: auto 0 1rem; display: flex; flex-wrap: wrap; gap: .35rem 1.1rem; font-size: .86rem; color: var(--ink); }
+.pc-meta .bi { color: var(--gold-600); margin-right: .25rem; }
+.pc-bawah { display: flex; justify-content: space-between; align-items: center; gap: .75rem; padding-top: .9rem; border-top: 1px solid var(--line); }
+.pc-rating { font-size: .85rem; line-height: 1.3; }
+.bintang { color: var(--gold); letter-spacing: .05em; font-size: .85rem; }
+
+/* ---------- Testimoni ---------- */
+.bn-testi { position: relative; height: 100%; margin: 0; padding: 1.6rem; background: var(--ivory); border: 1px solid var(--line); border-radius: 16px; }
+.bn-kutip { position: absolute; top: .6rem; right: 1.1rem; font-size: 3.2rem; color: rgba(201,162,75,.35); line-height: 1; }
+.bn-testi blockquote { font-size: 1rem; line-height: 1.6; margin: 0 0 1.2rem; }
+.bn-testi figcaption { display: flex; align-items: center; gap: .75rem; font-size: .9rem; }
+.bn-testi figcaption small { color: var(--muted); }
+
+/* ---------- Artikel ---------- */
+.bn-artikel { display: flex; flex-direction: column; height: 100%; padding: 1.5rem; text-decoration: none; color: var(--ink); }
+.bn-artikel:hover { color: var(--ink); }
+.bn-artikel h3 { font-size: 1.15rem; margin: .4rem 0; }
+.bn-artikel p { color: var(--muted); font-size: .92rem; flex: 1; }
+
+/* ---------- Ajakan ---------- */
+.bn-cta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; padding: 2.6rem 2.8rem; border-radius: 22px; color: #fff;
+  background: radial-gradient(600px 260px at 100% 0%, rgba(201,162,75,.32), transparent 60%), linear-gradient(135deg, #0f2747, #1b3a66); box-shadow: 0 20px 50px rgba(15,39,71,.25); }
+.bn-cta h2 { color: #fff; font-size: clamp(1.5rem, 2.6vw, 2rem); margin-bottom: .4rem; }
+.bn-cta p { color: rgba(255,255,255,.8); }
+
+/* ---------- Halaman Daftar Pengacara ---------- */
+.pg-hero { color: #fff; padding: 3.2rem 0 5.5rem; background: radial-gradient(700px 320px at 90% -20%, rgba(201,162,75,.28), transparent 60%), linear-gradient(135deg, #0a1d38, #0f2747 55%, #1b3a66); }
+.pg-hero h1 { color: #fff; font-size: clamp(1.8rem, 3.6vw, 2.6rem); margin-bottom: .4rem; }
+.pg-hero p { color: rgba(255,255,255,.8); margin-bottom: 0; max-width: 40rem; }
+.pg-isi { margin-top: -3rem; padding-bottom: 4rem; position: relative; z-index: 2; }
+.pg-filter { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 1.1rem 1.2rem 1.2rem; box-shadow: 0 16px 40px rgba(15,39,71,.13); }
+.pg-filter .form-label { font-size: .78rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .3rem; }
+.pg-filter .input-group-text { background: #fff; color: var(--muted); border-color: var(--line); }
+.pg-filter .form-control, .pg-filter .form-select { border-color: var(--line); }
+.pg-info { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; margin: 1.6rem 0 1.2rem; color: var(--muted); font-size: .92rem; }
+.pg-kosong { text-align: center; padding: 3.5rem 1rem; background: #fff; border: 1px dashed var(--line); border-radius: 16px; }
+.pg-kosong .bi { font-size: 2.6rem; color: var(--gold-600); }
+.pg-kosong p { color: var(--muted); }
+.pagination .page-link { color: var(--navy); border-color: var(--line); margin: 0 .15rem; border-radius: 8px; min-width: 2.4rem; text-align: center; }
+.pagination .page-item.active .page-link { background: var(--navy); border-color: var(--navy); color: #fff; }
+.pagination .page-link:hover { background: rgba(201,162,75,.15); color: var(--navy); }
+.pagination .page-item.disabled .page-link { color: #9aa3b0; background: transparent; }
+
+/* ---------- HP ---------- */
+@media (max-width: 575.98px) {
+  .bn-section { padding: 3.2rem 0; }
+  .bn-hero { padding: 3rem 0 7rem; }
+  .bn-cta { padding: 1.8rem 1.4rem; }
+  .bn-cta .btn { width: 100%; }
+  .bn-stat .angka { font-size: 1.9rem; }
+}

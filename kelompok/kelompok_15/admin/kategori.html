@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id">
+  <!-- FITUR MANAJEMEN KATEGORI - ORANG 2 -->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pena Kampus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <script type="module" src="../js/app.js"></script>
+  </head>
+  <body class="min-h-screen bg-canvas font-sans text-slate-800" data-layout="admin" data-api="../api/admin_kategori.php">
+    <script type="text/x-template" id="page-template">
+    {{#msg_flash_success}}
+      <div class="flash success">{{msg}}</div>
+    {{/msg_flash_success}}{{#msg_flash_error}}
+      <div class="flash error">{{msg2}}</div>
+    {{/msg_flash_error}}
+      <div class="mb-5">
+        <h2 class="text-xl font-extrabold text-ink">Kategori Berita</h2>
+        <p class="mt-1 text-sm text-slate-500">Kelola kategori yang digunakan untuk mengelompokkan artikel.</p>
+      </div>
+      <div class="grid gap-6 xl:grid-cols-3">
+        <section class="border border-slate-200 bg-white p-5 xl:col-span-2">
+          <div class="mb-4 flex items-center justify-between">
+            <h3 class="font-bold text-ink">Daftar Kategori</h3>
+            <span class="text-xs text-slate-500">{{count_rows}} kategori</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th>Slug</th>
+                  <th>Artikel</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+              {{#rows}}
+                <tr>
+                  <td class="font-semibold text-ink">
+                  {{c_name}}
+                    <div class="text-xs font-normal text-slate-500">{{c_description}}</div>
+                  </td>
+                  <td class="text-xs text-slate-500">{{c_slug}}</td>
+                  <td>{{int_c_article_count}}</td>
+                  <td><span class="status {{statusClass}}">{{c_is_active_Aktif_Nonaktif}}</span></td>
+                  <td class="whitespace-nowrap">
+                    <a class="font-semibold text-bluebrand" href="?edit={{int_c_id}}">Edit</a>
+                    <form class="ml-3 inline" method="post" action="{{root}}api/admin_categories_delete.php" data-confirm="Hapus kategori ini?"><input type="hidden" name="csrf_token" value="{{csrf_token}}"><input type="hidden" name="id" value="{{int_c_id}}"><button class="font-semibold text-red-700">Hapus</button></form>
+                    <form class="ml-3 inline" method="post" action="{{root}}api/admin_categories_toggle.php" data-confirm="{{confirmToggle}}"><input type="hidden" name="csrf_token" value="{{csrf_token}}"><input type="hidden" name="id" value="{{int_c_id2}}"><input type="hidden" name="active" value="{{c_is_active_0_1}}"><button class="font-semibold {{toggleClass}}">{{c_is_active_Nonaktifkan_Aktifkan}}</button></form>
+                  </td>
+                </tr>
+              {{/rows}}
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section class="h-fit border border-slate-200 bg-white p-5">
+          <h3 class="font-extrabold text-ink">{{editing_Edit_Kategori_Tambah_Kategori}}</h3>
+          <form class="mt-4 space-y-4" method="post" action="{{root}}api/admin_categories_save.php">
+            <input type="hidden" name="csrf_token" value="{{csrf_token2}}">
+            <input type="hidden" name="id" value="{{int_editing_id_0}}">
+            <div><label class="mb-1 block text-sm font-semibold">Nama kategori *</label><input class="form-control" name="name" maxlength="100" required value="{{editing_name}}"></div>
+            <div><label class="mb-1 block text-sm font-semibold">Slug (opsional)</label><input class="form-control" name="slug" maxlength="120" value="{{editing_slug}}" placeholder="otomatis dari nama"></div>
+            <div><label class="mb-1 block text-sm font-semibold">Deskripsi</label><textarea class="form-control" name="description" rows="3" maxlength="255">{{editing_description}}</textarea></div>
+            <button class="btn-primary w-full">Simpan Kategori</button>
+          {{#editing}}
+            <a class="btn-secondary w-full" href="{{root}}admin/kategori.html">Batal Edit</a>
+          {{/editing}}
+          </form>
+        </section>
+      </div>
+    </script>
+    <noscript>Aktifkan JavaScript untuk membuka Pena Kampus.</noscript>
+  </body>
+</html>

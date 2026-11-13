@@ -1,0 +1,317 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --green: #218838;
+    --dark-green: #14532d;
+    --light-green: #eaf5e9;
+    --background: #f6f9f5;
+    --text: #26352a;
+    --muted: #718078;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 35px 20px;
+}
+
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 20px;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.login-container form {
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.login-container form label {
+    text-align: center;
+}
+
+.login-container form input {
+    margin-bottom: 19px;
+    text-align: center;
+}
+
+.login-container form button {
+    width: 100%;
+}
+
+.login-message {
+    margin: 0 0 15px;
+    padding: 13px 16px;
+    border-radius: 9px;
+    background: #eaf5e9;
+    color: #176329;
+    font-size: 13px;
+    text-align: center;
+}
+
+.login-register {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* HEADER */
+
+h1 {
+    color: var(--dark-green);
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+}
+
+h2 {
+    color: var(--dark-green);
+    font-size: 23px;
+    margin-bottom: 22px;
+}
+
+h3 {
+    color: var(--dark-green);
+    margin-bottom: 15px;
+}
+
+/* FORM CARD */
+
+form {
+    background: var(--white);
+    max-width: 460px;
+    padding: 32px;
+    margin: 25px auto;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(30, 80, 40, 0.08);
+    border: 1px solid #edf1eb;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #405348;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #dce5dc;
+    border-radius: 9px;
+    margin-bottom: 19px;
+    font-family: inherit;
+    font-size: 13px;
+    background: #fcfdfb;
+    transition: 0.2s;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(33, 136, 56, 0.1);
+}
+
+textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+/* BUTTON */
+
+button {
+    background: var(--green);
+    color: white;
+    border: none;
+    padding: 12px 21px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: var(--dark-green);
+    transform: translateY(-1px);
+}
+
+/* LINKS */
+
+a {
+    color: var(--green);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+a:hover {
+    color: var(--dark-green);
+}
+
+/* PROFILE */
+
+.profile-container {
+    max-width: 850px;
+    margin: 20px auto;
+}
+
+.profile-header {
+    background: linear-gradient(120deg, #14532d, #218838);
+    color: white;
+    padding: 35px;
+    border-radius: 16px;
+    margin-bottom: 22px;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-header h1 {
+    color: white;
+    font-size: 28px;
+}
+
+.profile-header p {
+    color: #e0f2e3;
+    margin-top: 8px;
+}
+
+.profile-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(30, 80, 40, 0.06);
+    border: 1px solid #edf1eb;
+}
+
+.profile-card p {
+    padding: 13px 0;
+    border-bottom: 1px solid #edf1eb;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+.profile-card p:last-child {
+    border-bottom: none;
+}
+
+.profile-actions {
+    margin-top: 25px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-secondary {
+    background: #e8eee8;
+    color: #34513b;
+}
+
+.btn-secondary:hover {
+    background: #d8e5d9;
+    color: #23442b;
+}
+
+/* ALERT */
+
+.alert {
+    max-width: 460px;
+    margin: 15px auto;
+    padding: 13px 16px;
+    border-radius: 9px;
+    background: #eaf5e9;
+    color: #176329;
+    font-size: 13px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 600px) {
+    body {
+        padding: 20px 14px;
+    }
+
+    form {
+        padding: 23px;
+    }
+
+    .profile-header {
+        padding: 25px;
+    }
+
+    .profile-card {
+        padding: 20px;
+    }
+}
+
+/* FIX TOTAL TAMPILAN LOGIN BUYPANEN */
+
+body.login-page {
+    min-height: 100vh !important;
+    width: 100% !important;
+    padding: 20px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+body.login-page .login-container {
+    width: 100% !important;
+    max-width: 460px !important;
+    margin: auto !important;
+    text-align: center !important;
+}
+
+body.login-page .login-container h2,
+body.login-page .login-container label,
+body.login-page .login-message,
+body.login-page .login-register {
+    text-align: center !important;
+}
+
+body.login-page .login-container form {
+    width: 100% !important;
+    max-width: 460px !important;
+    margin: 20px auto !important;
+    text-align: center !important;
+}
+
+body.login-page .login-container form input {
+    width: 100% !important;
+    text-align: center !important;
+}
+
+body.login-page .login-container form button {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+}

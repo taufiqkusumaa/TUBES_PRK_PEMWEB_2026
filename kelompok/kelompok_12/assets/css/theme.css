@@ -1,0 +1,78 @@
+/* ==========================================
+   SEHATIN - THEME GLOBAL
+   Satu-satunya sumber warna & font untuk semua halaman
+   ========================================== */
+:root {
+    --primary: #21845b;
+    --primary-dark: #176744;
+    --primary-light: #eaf6ef;
+    --background: #f8faf8;
+    --white: #ffffff;
+    --text: #263b31;
+    --muted: #7b8981;
+    --border: #e7eee9;
+    --radius: 14px;
+    --shadow: 0 4px 18px rgba(33, 132, 91, .08);
+
+    /* Samakan warna "success" Bootstrap dengan hijau Sehatin */
+    --bs-success: #21845b;
+    --bs-success-rgb: 33, 132, 91;
+    --bs-success-bg-subtle: #eaf6ef;
+    --bs-success-border-subtle: #cfe8da;
+    --bs-success-text-emphasis: #176744;
+    --bs-body-font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+}
+
+a { color: var(--primary); }
+a:hover { color: var(--primary-dark); }
+
+.text-success { color: var(--primary) !important; }
+.bg-success { background-color: var(--primary) !important; }
+.text-bg-success { background-color: var(--primary) !important; }
+.border-success-subtle { border-color: #cfe8da !important; }
+
+.btn-success {
+    --bs-btn-bg: var(--primary);
+    --bs-btn-border-color: var(--primary);
+    --bs-btn-hover-bg: var(--primary-dark);
+    --bs-btn-hover-border-color: var(--primary-dark);
+    --bs-btn-active-bg: var(--primary-dark);
+    --bs-btn-active-border-color: var(--primary-dark);
+    --bs-btn-disabled-bg: var(--primary);
+    --bs-btn-disabled-border-color: var(--primary);
+}
+.btn-outline-success {
+    --bs-btn-color: var(--primary);
+    --bs-btn-border-color: var(--primary);
+    --bs-btn-hover-bg: var(--primary);
+    --bs-btn-hover-border-color: var(--primary);
+    --bs-btn-active-bg: var(--primary);
+    --bs-btn-active-border-color: var(--primary);
+}
+
+/* Navbar & footer */
+.site-navbar { border-bottom: 1px solid var(--border); }
+.site-navbar .navbar-brand { font-size: 1.6rem; letter-spacing: -1px; color: var(--primary-dark); }
+.site-navbar .navbar-nav .nav-link {
+    font-weight: 600; font-size: .9rem; color: #65746b;
+}
+.site-navbar .navbar-nav .nav-link:hover,
+.site-navbar .navbar-nav .nav-link.active,
+.site-navbar .navbar-nav .nav-link:focus {
+    color: var(--primary);
+}
+.site-footer a:hover { color: var(--primary) !important; }
+
+/* Komponen umum */
+.card-ui {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}

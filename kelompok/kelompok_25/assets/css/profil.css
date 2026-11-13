@@ -1,0 +1,51 @@
+/* Kotak profil di navbar (muncul setelah login): foto, nama, login terakhir, Foto Profil, Keluar. */
+.profil-tombol { display: inline-flex; align-items: center; gap: .5rem; color: #fff; padding: .2rem .5rem; border: 0; font-weight: 600; font-size: .86rem; letter-spacing: .02em; }
+.profil-tombol:hover, .profil-tombol:focus-visible, .profil-tombol.show { color: var(--gold); background: rgba(255,255,255,.08); }
+.profil-nama { max-width: 12rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profil-tombol .bi-caret-down-fill { font-size: .7rem; }
+
+.avatar { display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; overflow: hidden; flex: 0 0 auto; background: #c7d5dd; color: #8da3b0; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.avatar-kecil { width: 2rem; height: 2rem; font-size: 1.25rem; }
+.avatar-besar { width: 6rem; height: 6rem; font-size: 4.2rem; box-shadow: 0 0 0 7px rgba(255,255,255,.22); }
+.avatar-besar.avatar-kosong i { margin-top: .6rem; }
+
+.profil-panel { width: 18.5rem; max-width: calc(100vw - 2rem); padding: 1.5rem 1.2rem 1.2rem; text-align: center; background: linear-gradient(160deg, #163867, #0f2747); border: 1px solid rgba(255,255,255,.12); border-radius: 14px; box-shadow: 0 18px 40px rgba(8,20,40,.45); margin-top: .6rem !important; }
+.profil-panel .avatar-besar { margin-bottom: 1rem; }
+.profil-panel-nama { color: #dfe8f5; font-weight: 600; font-size: .95rem; }
+.profil-panel-info { color: #9db4d3; font-size: .8rem; margin-top: .1rem; }
+.profil-panel-login { color: #c7d6ea; font-size: .84rem; margin: .8rem 0 1.1rem; line-height: 1.5; }
+.profil-panel-aksi { display: flex; gap: .6rem; justify-content: center; }
+.profil-panel-aksi .btn { min-width: 7rem; }
+
+@media (max-width: 991.98px) {
+  .profil-menu { width: 100%; }
+  .profil-panel { width: 100%; }
+}
+
+/* Di HP (menu navbar terlipat) panel profil ikut mengalir di dalam menu, tidak melayang. */
+@media (max-width: 991.98px) {
+  .profil-panel { position: static !important; transform: none !important; inset: auto !important; width: 100% !important; max-width: 100%; margin-top: .6rem !important; }
+  .profil-tombol { width: 100%; justify-content: flex-start; padding: .4rem .2rem; }
+  .profil-tombol .bi-caret-down-fill { margin-left: auto; }
+}
+
+/* Perbaikan kecil: .page-head menghapus padding samping container, sehingga .row.g-3 di dalamnya
+   melebar 8px ke samping di layar HP. Kembalikan padding samping hanya di HP. */
+@media (max-width: 575.98px) {
+  .container.page-head { padding-left: calc(var(--bs-gutter-x, 1.5rem) * .5); padding-right: calc(var(--bs-gutter-x, 1.5rem) * .5); }
+}
+
+/* Penanda menu aktif: halaman yang sedang dibuka diberi garis emas dan teks putih (header.php). */
+.navbar-rh .navbar-nav .nav-link.active { color: #fff; }
+@media (min-width: 992px) {
+  .navbar-rh .navbar-nav .nav-link { position: relative; }
+  .navbar-rh .navbar-nav .nav-link.active::after { content: ''; position: absolute; left: .5rem; right: .5rem; bottom: -.15rem; height: 3px; border-radius: 3px; background: var(--gold); }
+}
+@media (max-width: 991.98px) {
+  .navbar-rh .navbar-nav .nav-link.active { padding-left: .75rem; border-left: 3px solid var(--gold); border-radius: 0 6px 6px 0; background: rgba(255,255,255,.07); }
+}
+
+/* Angka sejajar: font judul (Playfair Display) bawaannya memakai angka gaya lama yang naik-turun
+   (contoh "87" atau "4,6" terlihat miring). Dipaksa memakai angka lurus yang sama tinggi di seluruh situs. */
+body { font-variant-numeric: lining-nums; }

@@ -1,0 +1,118 @@
+erDiagram
+    users ||--o| profil_pengacara : "punya (pengacara)"
+    bidang_hukum ||--o{ profil_pengacara : "keahlian"
+    users ||--o{ konsultasi : "klien mengajukan"
+    users |o--o{ konsultasi : "pengacara menjawab"
+    bidang_hukum ||--o{ konsultasi : "kategori"
+    konsultasi ||--o{ balasan : "berisi"
+    users ||--o{ balasan : "pengirim"
+    konsultasi ||--o| ulasan : "diulas"
+    users ||--o{ ulasan : "klien menulis"
+    users ||--o{ ulasan : "pengacara dinilai"
+    users ||--o{ artikel : "penulis"
+    bidang_hukum |o--o{ artikel : "topik"
+    users ||--o{ remember_tokens : "ingat akun"
+    users ||--o{ password_resets : "lupa sandi"
+    users ||--o{ social_accounts : "login sosial"
+
+    users {
+        int id PK
+        varchar nama
+        varchar username UK
+        varchar email UK
+        varchar password "hash bcrypt"
+        enum role "klien, pengacara, admin"
+        varchar perusahaan
+        varchar telepon
+        varchar foto
+        enum status "aktif, menunggu, ditolak, nonaktif"
+        datetime terms_at
+        datetime last_login_at
+        timestamp created_at
+    }
+    bidang_hukum {
+        int id PK
+        varchar nama UK
+        varchar deskripsi
+    }
+    profil_pengacara {
+        int user_id PK, FK
+        int bidang_id FK
+        text bio
+        tinyint pengalaman_tahun
+        varchar kota
+        varchar no_izin
+    }
+    konsultasi {
+        int id PK
+        int klien_id FK
+        int pengacara_id FK
+        int bidang_id FK
+        varchar judul
+        text isi
+        varchar lampiran
+        enum status "menunggu, dijawab, selesai, ditutup"
+        timestamp created_at
+    }
+    balasan {
+        int id PK
+        int konsultasi_id FK
+        int pengirim_id FK
+        text isi
+        timestamp created_at
+    }
+    ulasan {
+        int id PK
+        int konsultasi_id FK, UK
+        int klien_id FK
+        int pengacara_id FK
+        tinyint rating "1 sampai 5"
+        varchar komentar
+        timestamp created_at
+    }
+    artikel {
+        int id PK
+        int penulis_id FK
+        int bidang_id FK
+        varchar judul
+        varchar slug UK
+        varchar ringkasan
+        mediumtext isi
+        varchar gambar
+        enum status "draft, terbit"
+        timestamp created_at
+    }
+    faq {
+        int id PK
+        varchar pertanyaan
+        text jawaban
+        int urutan
+    }
+    remember_tokens {
+        int id PK
+        int user_id FK
+        char selector UK
+        char validator_hash
+        datetime expires_at
+        varchar user_agent
+    }
+    password_resets {
+        int id PK
+        int user_id FK
+        char token_hash UK
+        datetime expires_at
+        datetime used_at
+    }
+    social_accounts {
+        int id PK
+        int user_id FK
+        varchar provider
+        varchar provider_uid
+        varchar email
+    }
+    login_gagal {
+        int id PK
+        varchar identitas
+        varchar ip
+        datetime created_at
+    }

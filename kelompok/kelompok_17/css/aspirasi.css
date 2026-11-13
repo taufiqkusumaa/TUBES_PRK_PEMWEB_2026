@@ -1,0 +1,66 @@
+* { box-sizing: border-box; }
+
+.adm-body {
+    margin: 0;
+    background: #f8fafc;
+    color: #1e293b;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+}
+
+/* Layout */
+.adm-main { max-width: 72rem; margin: 0 auto; padding: 1.5rem 1rem; }
+.adm-title { font-size: 1.5rem; font-weight: 700; margin: 0 0 1rem; }
+
+/* Navbar admin */
+.adm-nav { background: #0f766e; color: #fff; }
+.adm-nav-inner {
+    max-width: 72rem; margin: 0 auto; padding: .75rem 1rem;
+    display: flex; flex-wrap: wrap; align-items: center;
+    justify-content: space-between; gap: .5rem;
+}
+.adm-nav-brand { font-weight: 700; }
+.adm-nav-links { display: flex; gap: 1rem; font-size: .875rem; }
+.adm-nav-links a { color: #fff; text-decoration: none; }
+.adm-nav-links a:hover { text-decoration: underline; }
+.adm-nav-links a.aktif { font-weight: 600; text-decoration: underline; }
+
+/* Alert */
+.adm-alert { border-radius: .5rem; padding: .75rem; margin-bottom: 1rem; }
+.adm-alert-sukses { background: #d1fae5; color: #065f46; }
+.adm-alert-error  { background: #fee2e2; color: #991b1b; }
+
+/* Card + tabel */
+.adm-card {
+    background: #fff; border-radius: .5rem; overflow-x: auto;
+    box-shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+}
+.adm-table { width: 100%; min-width: 40rem; border-collapse: collapse; font-size: .875rem; }
+.adm-table thead { background: #f1f5f9; text-align: left; }
+.adm-table th, .adm-table td { padding: .75rem; vertical-align: top; }
+.adm-table tbody tr { border-top: 1px solid #e2e8f0; }
+.adm-table td.judul { font-weight: 500; }
+.adm-empty { padding: 1.5rem !important; text-align: center; color: #64748b; }
+.adm-anonim { font-style: italic; }
+
+/* Form status */
+.adm-status-form { display: flex; gap: .5rem; align-items: center; }
+.adm-select {
+    border: 1px solid #cbd5e1; border-radius: .25rem;
+    padding: .25rem .5rem; font: inherit; background: #fff;
+}
+.adm-btn {
+    background: #0d9488; color: #fff; border: 0; border-radius: .25rem;
+    padding: .25rem .75rem; font: inherit; cursor: pointer;
+}
+.adm-btn:hover { background: #0f766e; }
+.adm-btn:focus-visible, .adm-select:focus-visible { outline: 2px solid #0d9488; outline-offset: 2px; }
+
+/* Badge status */
+.adm-badge {
+    display: inline-block; padding: .125rem .625rem; border-radius: 9999px;
+    font-size: .75rem; font-weight: 500; text-transform: capitalize;
+}
+.adm-badge-menunggu { background: #fef3c7; color: #92400e; }
+.adm-badge-ditinjau { background: #dbeafe; color: #1e40af; }
+.adm-badge-selesai  { background: #d1fae5; color: #065f46; }

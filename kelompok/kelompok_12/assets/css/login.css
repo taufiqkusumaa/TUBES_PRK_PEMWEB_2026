@@ -1,0 +1,278 @@
+
+/* ==========================================
+   SEHATIN - ADMIN LOGIN PAGE
+   Modern Green Login Design
+   ========================================== */
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* VARIABLES */
+:root {
+    --primary: #21845b;
+    --primary-dark: #176744;
+    --primary-light: #eaf6ef;
+    --background: #f4f8f5;
+    --white: #ffffff;
+    --text: #263b32;
+    --muted: #7b8980;
+    --border: #e2eae4;
+    --danger: #dc3545;
+}
+
+/* ==========================================
+   BODY
+   ========================================== */
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 25px;
+
+    font-family: 'Inter', Arial, sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(33, 132, 91, 0.10),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 85%,
+            rgba(33, 132, 91, 0.08),
+            transparent 35%
+        ),
+        var(--background);
+}
+
+/* ==========================================
+   LOGIN CARD
+   ========================================== */
+
+.login-card {
+    width: 100%;
+    max-width: 420px;
+
+    padding: 42px 38px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: 18px;
+
+    box-shadow:
+        0 12px 40px rgba(32, 70, 48, 0.08),
+        0 2px 8px rgba(32, 70, 48, 0.03);
+
+    animation: loginAppear 0.5s ease;
+}
+
+/* Animasi */
+@keyframes loginAppear {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   LOGO & TITLE
+   ========================================== */
+
+.login-card h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+
+    margin-bottom: 10px;
+
+    color: var(--text);
+    font-size: 29px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.login-card h2::first-letter {
+    color: var(--primary);
+}
+
+.login-card > p {
+    margin-bottom: 30px;
+
+    color: var(--muted);
+    font-size: 13px;
+    text-align: center;
+    line-height: 1.6;
+}
+
+/* ==========================================
+   ERROR MESSAGE
+   ========================================== */
+
+.login-card .error {
+    padding: 12px 14px;
+    margin-bottom: 22px;
+
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+
+    background: #fff0f0;
+    color: var(--danger);
+
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+/* ==========================================
+   FORM
+   ========================================== */
+
+.login-card form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-card label {
+    margin-bottom: 9px;
+
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.login-card input {
+    width: 100%;
+    height: 47px;
+
+    padding: 0 14px;
+    margin-bottom: 21px;
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #fbfdfb;
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 13px;
+
+    transition: 0.2s ease;
+}
+
+.login-card input::placeholder {
+    color: #a5b0a9;
+}
+
+.login-card input:hover {
+    border-color: #b8d8c3;
+}
+
+.login-card input:focus {
+    border-color: var(--primary);
+
+    background: var(--white);
+
+    box-shadow: 0 0 0 3px rgba(33, 132, 91, 0.10);
+}
+
+/* ==========================================
+   LOGIN BUTTON
+   ========================================== */
+
+.login-card button {
+    width: 100%;
+    height: 47px;
+
+    margin-top: 5px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: var(--primary);
+    color: var(--white);
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.login-card button:hover {
+    background: var(--primary-dark);
+
+    box-shadow: 0 5px 13px rgba(33, 132, 91, 0.20);
+
+    transform: translateY(-1px);
+}
+
+.login-card button:active {
+    transform: translateY(0);
+}
+
+/* ==========================================
+   BACK TO HOME
+   ========================================== */
+
+.login-card > p:last-child {
+    margin-top: 24px !important;
+    margin-bottom: 0;
+    padding-top: 20px;
+
+    border-top: 1px solid var(--border);
+}
+
+.login-card > p:last-child a {
+    color: var(--primary) !important;
+
+    font-size: 12px !important;
+    font-weight: 600;
+
+    text-decoration: none !important;
+
+    transition: 0.2s;
+}
+
+.login-card > p:last-child a:hover {
+    color: var(--primary-dark) !important;
+    text-decoration: underline !important;
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 480px) {
+
+    .login-page {
+        padding: 18px;
+    }
+
+    .login-card {
+        padding: 32px 24px;
+        border-radius: 14px;
+    }
+
+    .login-card h2 {
+        font-size: 25px;
+    }
+
+}

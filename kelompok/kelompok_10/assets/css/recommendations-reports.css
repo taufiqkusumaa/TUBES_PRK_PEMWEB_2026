@@ -1,0 +1,424 @@
+/* ==============================
+   REPORT CONTAINER
+============================== */
+
+.reports-container {
+    width: 100%;
+    padding: 24px;
+}
+
+.reports-container h1 {
+    margin-bottom: 8px;
+    color: #0f172a;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.reports-description {
+    margin-bottom: 24px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* ==============================
+   MENU LAPORAN
+============================== */
+
+.report-menu {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.report-menu-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.report-menu-item:hover {
+    border-color: #93c5fd;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.report-menu-item strong {
+    color: #1d4ed8;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.report-menu-item span {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ==============================
+   ANALYTICS CARDS
+============================== */
+
+.analytics-cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.analytics-card {
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    transition: box-shadow 0.2s ease;
+}
+
+.analytics-card:hover {
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+.analytics-card h3 {
+    margin-bottom: 12px;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.analytics-card p {
+    color: #1d4ed8;
+    font-size: 23px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+/* ==============================
+   ANALYTICS SECTION
+============================== */
+
+.analytics-section {
+    margin-bottom: 28px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.analytics-section h2 {
+    margin-bottom: 16px;
+    color: #0f172a;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.analytics-section > p {
+    margin-bottom: 16px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* ==============================
+   TABLE
+============================== */
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 8px;
+}
+
+.table-responsive table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+}
+
+.table-responsive th,
+.table-responsive td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+    font-size: 14px;
+}
+
+.table-responsive th {
+    background: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+}
+
+.table-responsive td {
+    color: #334155;
+}
+
+.table-responsive tbody tr:hover {
+    background: #f8fafc;
+}
+
+.table-responsive tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==============================
+   FILTER FORM
+============================== */
+
+.report-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.report-filters > div {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.report-filters label {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.report-filters input,
+.report-filters select {
+    min-width: 180px;
+    padding: 10px 12px;
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.report-filters input:focus,
+.report-filters select:focus,
+.table-responsive input:focus {
+    border-color: #1d4ed8;
+    box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+}
+
+/* ==============================
+   BUTTON
+============================== */
+
+.reports-container button {
+    margin-top: 16px;
+    padding: 10px 18px;
+    background: #1d4ed8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.reports-container button:hover {
+    background: #1e40af;
+}
+
+.reports-container button:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* ==============================
+   LINKS
+============================== */
+
+.reports-container a {
+    color: #1d4ed8;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.reports-container a:hover {
+    color: #1e40af;
+    text-decoration: underline;
+}
+
+.report-back-link {
+    display: inline-block;
+    margin-top: 16px;
+    font-weight: 600;
+}
+
+/* ==============================
+   DETAIL INFORMATION
+============================== */
+
+.report-detail-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 32px;
+}
+
+.report-detail-info p {
+    min-width: 220px;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.report-detail-info strong {
+    color: #0f172a;
+}
+
+/* ==============================
+   RESTOCK INPUT
+============================== */
+
+.table-responsive input[type="number"] {
+    width: 110px;
+    padding: 9px 10px;
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.table-responsive input[type="number"]:focus {
+    border-color: #1d4ed8;
+    box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+}
+
+/* ==============================
+   STOCK STATUS
+============================== */
+
+.stock-status {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.stock-low {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.stock-ok {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.report-error {
+    display: block;
+    margin: 8px 0;
+    color: #dc2626;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* ==============================
+   RESPONSIVE TABLET
+============================== */
+
+@media (max-width: 992px) {
+    .analytics-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .reports-container {
+        padding: 20px;
+    }
+
+    .analytics-section {
+        padding: 20px;
+    }
+}
+
+/* ==============================
+   RESPONSIVE MOBILE
+============================== */
+
+@media (max-width: 576px) {
+    .reports-container {
+        padding: 16px;
+    }
+
+    .reports-container h1 {
+        font-size: 22px;
+    }
+
+    .report-menu {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .report-menu-item {
+        padding: 16px;
+    }
+
+    .analytics-cards {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .analytics-card {
+        padding: 18px;
+    }
+
+    .analytics-card p {
+        font-size: 21px;
+    }
+
+    .analytics-section {
+        padding: 16px;
+        margin-bottom: 20px;
+    }
+
+    .analytics-section h2 {
+        font-size: 17px;
+    }
+
+    .report-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .report-filters > div {
+        width: 100%;
+    }
+
+    .report-filters input,
+    .report-filters select {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .report-detail-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .report-detail-info p {
+        min-width: 0;
+    }
+
+    .reports-container button {
+        width: 100%;
+    }
+}

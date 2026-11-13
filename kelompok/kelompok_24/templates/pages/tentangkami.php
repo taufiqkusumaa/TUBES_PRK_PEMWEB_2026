@@ -1,0 +1,1931 @@
+
+<main class="container page-content advokita-page">
+  <div class="dashboard-container">
+
+    <!-- HERO SECTION -->
+    <section class="adv-hero">
+      <div class="adv-hero-content">
+        <span class="adv-label">
+          <span class="adv-label-dot"></span>
+          PROFIL LEMBAGA
+        </span>
+
+        <h1>Mengenal Lebih Dekat<br>
+          <span>ADVOKITA.</span>
+        </h1>
+
+        <p>
+          Membangun jembatan menuju keadilan melalui akses informasi,
+          pengaduan, dan layanan hukum yang lebih mudah bagi seluruh masyarakat.
+        </p>
+
+        <div class="adv-hero-actions">
+          <a href="#sejarah" class="adv-btn-primary">
+            Kenali Kami <i class="bi bi-arrow-down-right"></i>
+          </a>
+          <a href="#kontak" class="adv-btn-outline">
+            Hubungi Kami
+          </a>
+        </div>
+
+        <div class="adv-hero-caption">
+          <i class="bi bi-shield-check"></i>
+          <span>Berkomitmen untuk akses keadilan bagi semua.</span>
+        </div>
+      </div>
+
+      <div class="adv-hero-decoration">
+        <div class="adv-hero-circle"></div>
+        <div class="adv-hero-icon">
+          <i class="bi bi-bank"></i>
+        </div>
+        <div class="adv-floating-card">
+          <i class="bi bi-scale"></i>
+          <div>
+            <strong>ADVOKITA</strong>
+            <small>Akses Keadilan untuk Semua</small>
+          </div>
+        </div>
+        <div class="adv-hero-watermark">A</div>
+      </div>
+    </section>
+
+    <!-- NAVIGASI -->
+    <nav class="adv-navigation" id="advNavigation">
+      <div class="adv-nav-heading">
+        <span>JELAJAHI</span>
+        <span class="adv-nav-indicator">
+          <i class="bi bi-list"></i> Tentang Kami
+        </span>
+      </div>
+
+      <div class="adv-nav-links">
+        <a href="#sejarah" class="adv-nav-link active">
+          <i class="bi bi-building"></i>
+          <span>Sejarah</span>
+        </a>
+        <a href="#visi-misi" class="adv-nav-link">
+          <i class="bi bi-bullseye"></i>
+          <span>Visi & Misi</span>
+        </a>
+        <a href="#struktur" class="adv-nav-link">
+          <i class="bi bi-diagram-3"></i>
+          <span>Organisasi</span>
+        </a>
+        <a href="#bantuan-hukum" class="adv-nav-link">
+          <i class="bi bi-briefcase"></i>
+          <span>Layanan</span>
+        </a>
+        <a href="#kontak" class="adv-nav-link">
+          <i class="bi bi-telephone"></i>
+          <span>Kontak</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- SEJARAH -->
+    <section id="sejarah" class="adv-section reveal">
+      <div class="adv-section-heading">
+        <div>
+          <span class="adv-eyebrow">01 — PROFIL LEMBAGA</span>
+          <h2>Perjalanan <span>ADVOKITA</span></h2>
+        </div>
+        <span class="adv-section-number">01</span>
+      </div>
+
+      <div class="adv-history-layout">
+        <div class="adv-history-side">
+          <div class="adv-history-symbol">
+            <i class="bi bi-bank"></i>
+          </div>
+          <span class="adv-history-caption">ACCESS TO JUSTICE</span>
+          <h3>Setiap Orang Berhak Mendapatkan Keadilan.</h3>
+          <div class="adv-history-line"></div>
+          <p>
+            Berawal dari kepedulian terhadap masyarakat yang membutuhkan
+            akses informasi dan pendampingan hukum.
+          </p>
+        </div>
+
+        <div class="adv-history-content">
+          <p>
+            ADVOKITA berawal dari keresahan sekelompok mahasiswa semester 5
+            yang melihat masih terbatasnya wadah bagi masyarakat untuk menyampaikan
+            pengaduan serta memperoleh informasi dan pendampingan terkait permasalahan hukum.
+            Kami menyadari bahwa tidak semua orang memiliki pemahaman yang cukup mengenai
+            hukum maupun mengetahui ke mana harus mencari bantuan ketika menghadapi
+            persoalan hukum.
+          </p>
+
+          <p>
+            Berangkat dari keresahan tersebut, kami berinisiatif membangun ADVOKITA sebagai
+            sebuah platform yang bertujuan menjadi jembatan antara masyarakat dengan akses
+            informasi dan layanan pengaduan hukum. Kehadiran ADVOKITA diharapkan dapat
+            mempermudah masyarakat dalam menyampaikan permasalahan, memperoleh informasi
+            hukum, serta mengetahui langkah-langkah yang dapat ditempuh untuk mendapatkan
+            bantuan yang sesuai.
+          </p>
+
+          <p>
+            Sebagai bentuk kepedulian terhadap akses keadilan, ADVOKITA dikembangkan
+            dengan mengedepankan kemudahan akses, keterbukaan informasi, dan pelayanan
+            yang responsif. Kami percaya bahwa setiap orang berhak mendapatkan kesempatan
+            yang sama untuk memahami dan memperjuangkan hak-haknya di hadapan hukum.
+          </p>
+
+          <p>
+            Melalui ADVOKITA, kami berharap dapat berkontribusi dalam menciptakan lingkungan
+            masyarakat yang lebih sadar hukum, berani menyuarakan ketidakadilan, dan memiliki
+            akses yang lebih mudah terhadap informasi serta bantuan hukum.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="adv-divider"></div>
+
+    <!-- VISI MISI -->
+    <section id="visi-misi" class="adv-section reveal">
+      <div class="adv-section-heading">
+        <div>
+          <span class="adv-eyebrow">02 — ARAH DAN TUJUAN</span>
+          <h2>Visi & <span>Misi</span></h2>
+          <p class="adv-section-description">
+            Landasan dan komitmen kami dalam mendukung akses keadilan.
+          </p>
+        </div>
+        <span class="adv-section-number">02</span>
+      </div>
+
+      <div class="adv-vision-card">
+        <div class="adv-vision-icon">
+          <i class="bi bi-eye"></i>
+        </div>
+        <div>
+          <span class="adv-card-label">OUR VISION</span>
+          <h3>Visi ADVOKITA</h3>
+          <p>
+            Menjadi platform pengaduan dan informasi hukum yang mudah diakses,
+            terpercaya, dan responsif dalam membantu masyarakat menyampaikan
+            permasalahan hukum serta memperoleh akses terhadap informasi dan bantuan
+            hukum secara lebih mudah dan merata.
+          </p>
+        </div>
+        <i class="bi bi-quote adv-quote"></i>
+      </div>
+
+      <div class="adv-mission-heading">
+        <span class="adv-eyebrow">OUR MISSION</span>
+        <h3>Langkah Nyata Kami</h3>
+      </div>
+
+      <div class="adv-mission-grid">
+        <div class="adv-mission-card">
+          <span class="adv-mission-number">01</span>
+          <div class="adv-mission-icon">
+            <i class="bi bi-chat-square-text"></i>
+          </div>
+          <h4>Wadah Pengaduan</h4>
+          <p>
+            Menyediakan wadah pengaduan hukum yang memudahkan masyarakat
+            dalam menyampaikan permasalahan hukum yang dialami.
+          </p>
+        </div>
+
+        <div class="adv-mission-card">
+          <span class="adv-mission-number">02</span>
+          <div class="adv-mission-icon">
+            <i class="bi bi-lightbulb"></i>
+          </div>
+          <h4>Edukasi Hukum</h4>
+          <p>
+            Meningkatkan kesadaran hukum masyarakat melalui penyediaan
+            informasi dan edukasi hukum yang mudah dipahami.
+          </p>
+        </div>
+
+        <div class="adv-mission-card">
+          <span class="adv-mission-number">03</span>
+          <div class="adv-mission-icon">
+            <i class="bi bi-journal-check"></i>
+          </div>
+          <h4>Akses Informasi</h4>
+          <p>
+            Mempermudah akses informasi bantuan hukum agar masyarakat
+            mengetahui langkah dan layanan yang dapat ditempuh.
+          </p>
+        </div>
+
+        <div class="adv-mission-card">
+          <span class="adv-mission-number">04</span>
+          <div class="adv-mission-icon">
+            <i class="bi bi-people"></i>
+          </div>
+          <h4>Kolaborasi Hukum</h4>
+          <p>
+            Menjadi penghubung antara masyarakat dan pihak pemberi bantuan
+            hukum sehingga pengaduan memperoleh perhatian dan tindak lanjut.
+          </p>
+        </div>
+
+        <div class="adv-mission-card">
+          <span class="adv-mission-number">05</span>
+          <div class="adv-mission-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <h4>Mendorong Keadilan</h4>
+          <p>
+            Mendorong terciptanya keadilan dan kesetaraan di hadapan hukum
+            dengan mendukung keterbukaan informasi serta akses layanan hukum.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="adv-divider"></div>
+
+    <!-- STRUKTUR ORGANISASI -->
+    <section id="struktur" class="adv-section reveal">
+      <div class="adv-section-heading">
+        <div>
+          <span class="adv-eyebrow">03 — KELEMBAGAAN</span>
+          <h2>Struktur <span>Organisasi</span></h2>
+          <p class="adv-section-description">
+            Pembagian fungsi dan tanggung jawab dalam mendukung kegiatan lembaga.
+          </p>
+        </div>
+        <span class="adv-section-number">03</span>
+      </div>
+
+      <div class="adv-org-intro">
+        <i class="bi bi-diagram-3"></i>
+        <p>
+          Dalam menjalankan kegiatan dan pelayanan bantuan hukum,
+          LBH Bandar Lampung didukung oleh pengabdi bantuan hukum
+          serta staf yang menjalankan fungsi organisasi dan
+          pendampingan masyarakat.
+        </p>
+      </div>
+
+      <div class="adv-org-grid">
+
+        <div class="adv-org-card">
+          <div class="adv-org-top">
+            <div class="adv-org-icon"><i class="bi bi-person-badge"></i></div>
+            <span class="adv-org-tag">KEPEMIMPINAN</span>
+          </div>
+          <h3>Direktur</h3>
+          <p>
+            Memimpin dan bertanggung jawab atas seluruh kegiatan
+            serta arah kebijakan lembaga.
+          </p>
+          <span class="adv-org-index">01</span>
+        </div>
+
+        <div class="adv-org-card">
+          <div class="adv-org-top">
+            <div class="adv-org-icon"><i class="bi bi-briefcase"></i></div>
+            <span class="adv-org-tag">PENDAMPINGAN</span>
+          </div>
+          <h3>Divisi Advokasi</h3>
+          <p>
+            Menangani pendampingan, pembelaan, dan advokasi
+            terhadap permasalahan hukum masyarakat.
+          </p>
+          <span class="adv-org-index">02</span>
+        </div>
+
+        <div class="adv-org-card">
+          <div class="adv-org-top">
+            <div class="adv-org-icon"><i class="bi bi-people"></i></div>
+            <span class="adv-org-tag">HAK MASYARAKAT</span>
+          </div>
+          <h3>Divisi Hak Sipil dan Politik</h3>
+          <p>
+            Berfokus pada perlindungan hak sipil dan politik
+            serta kebebasan masyarakat.
+          </p>
+          <span class="adv-org-index">03</span>
+        </div>
+
+        <div class="adv-org-card">
+          <div class="adv-org-top">
+            <div class="adv-org-icon"><i class="bi bi-globe"></i></div>
+            <span class="adv-org-tag">HAK MASYARAKAT</span>
+          </div>
+          <h3>Divisi Hak Ekonomi, Sosial, dan Budaya</h3>
+          <p>
+            Mengawal pemenuhan hak ekonomi, sosial,
+            dan budaya masyarakat.
+          </p>
+          <span class="adv-org-index">04</span>
+        </div>
+
+        <div class="adv-org-card">
+          <div class="adv-org-top">
+            <div class="adv-org-icon"><i class="bi bi-folder2-open"></i></div>
+            <span class="adv-org-tag">OPERASIONAL</span>
+          </div>
+          <h3>Kesekretariatan dan Staf</h3>
+          <p>
+            Mendukung administrasi, dokumentasi, pengelolaan informasi,
+            dan operasional lembaga.
+          </p>
+          <span class="adv-org-index">05</span>
+        </div>
+
+      </div>
+
+      <div class="adv-note">
+        <i class="bi bi-info-circle"></i>
+        <p>
+          Catatan: Susunan di atas merupakan gambaran fungsi organisasi,
+          bukan daftar kepengurusan resmi terkini.
+        </p>
+      </div>
+    </section>
+
+    <div class="adv-divider"></div>
+
+    <!-- BANTUAN HUKUM -->
+    <section id="bantuan-hukum" class="adv-section reveal">
+      <div class="adv-section-heading">
+        <div>
+          <span class="adv-eyebrow">04 — LAYANAN KAMI</span>
+          <h2>Akses <span>Bantuan Hukum</span></h2>
+          <p class="adv-section-description">
+            Informasi dan akses awal untuk membantu masyarakat memahami persoalan hukum.
+          </p>
+        </div>
+        <span class="adv-section-number">04</span>
+      </div>
+
+      <div class="adv-service-intro">
+        <p>
+          ADVOKITA hadir sebagai platform yang membantu masyarakat memperoleh akses
+          informasi dan layanan pengaduan terkait permasalahan hukum. Kami memahami
+          bahwa masih banyak masyarakat yang mengalami kesulitan dalam memahami
+          persoalan hukum maupun menentukan langkah yang tepat ketika menghadapi
+          permasalahan tersebut.
+        </p>
+      </div>
+
+      <div class="adv-service-grid">
+
+        <div class="adv-service-card">
+          <div class="adv-service-icon">
+            <i class="bi bi-bank"></i>
+          </div>
+          <span class="adv-service-number">01 / PENGADUAN</span>
+          <h3>Pengaduan Permasalahan Hukum</h3>
+          <p>
+            Menyediakan wadah bagi masyarakat untuk menyampaikan pengaduan
+            terkait permasalahan hukum yang sedang dihadapi.
+          </p>
+          <i class="bi bi-arrow-up-right adv-service-arrow"></i>
+        </div>
+
+        <div class="adv-service-card">
+          <div class="adv-service-icon">
+            <i class="bi bi-chat-square-text"></i>
+          </div>
+          <span class="adv-service-number">02 / EDUKASI</span>
+          <h3>Informasi dan Edukasi Hukum</h3>
+          <p>
+            Menyediakan informasi hukum yang mudah dipahami untuk meningkatkan
+            pengetahuan dan kesadaran hukum masyarakat.
+          </p>
+          <i class="bi bi-arrow-up-right adv-service-arrow"></i>
+        </div>
+
+        <div class="adv-service-card">
+          <div class="adv-service-icon">
+            <i class="bi bi-megaphone"></i>
+          </div>
+          <span class="adv-service-number">03 / KONSULTASI</span>
+          <h3>Konsultasi dan Arahan Hukum</h3>
+          <p>
+            Membantu masyarakat memperoleh informasi awal dan arahan mengenai
+            langkah yang dapat dilakukan ketika menghadapi persoalan hukum.
+          </p>
+          <i class="bi bi-arrow-up-right adv-service-arrow"></i>
+        </div>
+
+        <div class="adv-service-card">
+          <div class="adv-service-icon">
+            <i class="bi bi-book"></i>
+          </div>
+          <span class="adv-service-number">04 / AKSES LAYANAN</span>
+          <h3>Akses Bantuan Hukum</h3>
+          <p>
+            Membantu menghubungkan masyarakat dengan lembaga atau pihak
+            yang berkompeten untuk memperoleh layanan bantuan hukum lebih lanjut.
+          </p>
+          <i class="bi bi-arrow-up-right adv-service-arrow"></i>
+        </div>
+
+      </div>
+
+      <div class="adv-service-bottom">
+        <div>
+          <i class="bi bi-shield-check"></i>
+          <span>Kenali hak Anda. Pahami langkah hukumnya.</span>
+        </div>
+        <a href="#kontak">
+          Hubungi ADVOKITA <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </section>
+
+    <div class="adv-divider"></div>
+
+    <!-- KONTAK -->
+    <section id="kontak" class="adv-section reveal">
+      <div class="adv-section-heading">
+        <div>
+          <span class="adv-eyebrow">05 — HUBUNGI KAMI</span>
+          <h2>Mari <span>Terhubung.</span></h2>
+          <p class="adv-section-description">
+            Kami siap membantu Anda memperoleh informasi lebih lanjut.
+          </p>
+        </div>
+        <span class="adv-section-number">05</span>
+      </div>
+
+      <div class="adv-contact-layout">
+        <div class="adv-contact-info">
+          <span class="adv-eyebrow">GET IN TOUCH</span>
+          <h3>Akses Informasi Hukum Dimulai dari Sini.</h3>
+          <p>
+            Untuk mendapatkan informasi lebih lanjut mengenai layanan
+            bantuan hukum, silakan hubungi ADVOKITA melalui informasi berikut.
+          </p>
+
+          <div class="adv-contact-items">
+            <div class="adv-contact-item">
+              <div class="adv-contact-icon">
+                <i class="bi bi-geo-alt"></i>
+              </div>
+              <div>
+                <small>ALAMAT KANTOR</small>
+                <p>
+                  Jl. Sam Ratulangi, Gg. Mawar 1 No. 7,
+                  Gedong Air, Tanjung Karang Barat,
+                  Bandar Lampung, Lampung.
+                </p>
+              </div>
+            </div>
+
+            <div class="adv-contact-item">
+              <div class="adv-contact-icon">
+                <i class="bi bi-telephone"></i>
+              </div>
+              <div>
+                <small>TELEPON KANTOR</small>
+                <p>0721-9382911</p>
+              </div>
+            </div>
+
+            <div class="adv-contact-item">
+              <div class="adv-contact-icon">
+                <i class="bi bi-whatsapp"></i>
+              </div>
+              <div>
+                <small>WHATSAPP / HANDPHONE</small>
+                <p>0822-6993-7917</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="adv-contact-actions">
+            <a href="https://wa.me/6282269937917"
+               target="_blank" rel="noopener noreferrer"
+               class="adv-btn-primary">
+              <i class="bi bi-whatsapp"></i> Hubungi WhatsApp
+            </a>
+            <a href="tel:07219382911" class="adv-btn-light">
+              <i class="bi bi-telephone"></i> Telepon
+            </a>
+          </div>
+        </div>
+
+        <div class="adv-map-card">
+          <div class="adv-map-decoration">
+            <i class="bi bi-geo-alt-fill"></i>
+          </div>
+          <span class="adv-eyebrow">OUR LOCATION</span>
+          <h3>Temukan Lokasi Kami</h3>
+          <p>
+            Kunjungi lokasi kantor untuk mendapatkan informasi lebih lanjut
+            mengenai layanan ADVOKITA.
+          </p>
+          <div class="adv-map-placeholder">
+            <i class="bi bi-map"></i>
+            <span>Bandar Lampung, Lampung</span>
+          </div>
+          <a href="https://www.google.com/maps/search/?api=1&query=Jl.+Sam+Ratulangi+Gg.+Mawar+1+No.+7+Bandar+Lampung"
+             target="_blank" rel="noopener noreferrer"
+             class="adv-map-button">
+            Buka Google Maps <i class="bi bi-arrow-up-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PENUTUP -->
+    <section class="adv-footer reveal">
+      <div class="adv-footer-icon">
+        <i class="bi bi-scale"></i>
+      </div>
+      <span class="adv-eyebrow">OUR COMMITMENT</span>
+      <h2>ADVOKITA</h2>
+      <p>
+        Bersama mewujudkan akses keadilan dan perlindungan hukum
+        yang lebih mudah bagi seluruh masyarakat.
+      </p>
+      <a href="#sejarah">
+        Kembali ke Atas <i class="bi bi-arrow-up"></i>
+      </a>
+      <div class="adv-footer-bottom">
+        <span>ADVOKITA BANDAR LAMPUNG</span>
+        <span>ACCESS TO JUSTICE FOR EVERYONE</span>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- FLOATING BACK TO TOP -->
+<button id="advBackTop" class="adv-back-top"
+        aria-label="Kembali ke atas">
+  <i class="bi bi-arrow-up"></i>
+</button>
+
+<style>
+/* =====================================
+   ADVOKITA - PROFESSIONAL DESIGN
+===================================== */
+
+.advokita-page {
+  --adv-navy: #24344d;
+  --adv-navy-dark: #18263b;
+  --adv-red: #b42332;
+  --adv-red-dark: #941c29;
+  --adv-text: #45546a;
+  --adv-muted: #748196;
+  --adv-bg: #f7f8fa;
+  --adv-border: #e7eaf0;
+  --adv-white: #ffffff;
+  color: var(--adv-text);
+  font-family: inherit;
+  overflow: hidden;
+}
+
+.advokita-page * {
+  box-sizing: border-box;
+}
+
+.advokita-page a {
+  text-decoration: none;
+}
+
+.advokita-page section[id] {
+  scroll-margin-top: 120px;
+}
+
+/* HERO */
+
+.adv-hero {
+  position: relative;
+  min-height: 400px;
+  padding: 65px 55px;
+  background: linear-gradient(120deg, #18263b, #2d405d);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  margin-bottom: 35px;
+}
+
+.adv-hero-content {
+  max-width: 590px;
+  position: relative;
+  z-index: 2;
+}
+
+.adv-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 13px;
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 30px;
+  color: #e7eaf1;
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.adv-label-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ee7880;
+}
+
+.adv-hero h1 {
+  font-size: clamp(32px, 5vw, 47px);
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 25px 0 17px;
+  letter-spacing: -1.5px;
+  color: white;
+}
+
+.adv-hero h1 span {
+  color: #ee8b91;
+}
+
+.adv-hero-content > p {
+  max-width: 510px;
+  color: #d0d7e2;
+  font-size: 15px;
+  line-height: 1.9;
+  margin-bottom: 25px;
+}
+
+.adv-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.adv-btn-primary,
+.adv-btn-outline,
+.adv-btn-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 19px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: .25s ease;
+}
+
+.adv-btn-primary {
+  background: var(--adv-red);
+  color: white !important;
+}
+
+.adv-btn-primary:hover {
+  background: #d13c49;
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(180,35,50,.25);
+}
+
+.adv-btn-outline {
+  border: 1px solid rgba(255,255,255,.4);
+  color: white !important;
+}
+
+.adv-btn-outline:hover {
+  background: white;
+  color: var(--adv-navy) !important;
+}
+
+.adv-hero-caption {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #bfcada;
+  font-size: 12px;
+  margin-top: 28px;
+}
+
+.adv-hero-caption i {
+  color: #ed8a91;
+  font-size: 17px;
+}
+
+.adv-hero-decoration {
+  position: absolute;
+  right: 45px;
+  top: 0;
+  width: 340px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adv-hero-circle {
+  width: 255px;
+  height: 255px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(255,255,255,.035);
+  box-shadow: 0 0 0 35px rgba(255,255,255,.025),
+              0 0 0 70px rgba(255,255,255,.018);
+}
+
+.adv-hero-icon {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+  color: #f0a0a5;
+  font-size: 75px;
+  transform: rotate(-8deg);
+}
+
+.adv-floating-card {
+  position: absolute;
+  bottom: 55px;
+  left: -5px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  color: var(--adv-navy);
+  padding: 13px 17px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.15);
+}
+
+.adv-floating-card > i {
+  color: var(--adv-red);
+  font-size: 25px;
+}
+
+.adv-floating-card strong,
+.adv-floating-card small {
+  display: block;
+}
+
+.adv-floating-card strong {
+  font-size: 12px;
+}
+
+.adv-floating-card small {
+  color: var(--adv-muted);
+  font-size: 10px;
+  margin-top: 3px;
+}
+
+.adv-hero-watermark {
+  position: absolute;
+  font-size: 350px;
+  font-weight: 900;
+  color: rgba(255,255,255,.025);
+  right: 10px;
+  top: -90px;
+}
+
+/* NAVIGATION */
+
+.adv-navigation {
+  position: sticky;
+  top: 12px;
+  z-index: 100;
+  padding: 13px 18px;
+  background: rgba(255,255,255,.96);
+  border: 1px solid var(--adv-border);
+  border-radius: 12px;
+  box-shadow: 0 6px 25px rgba(28,40,60,.06);
+  backdrop-filter: blur(15px);
+  margin-bottom: 35px;
+}
+
+.adv-nav-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 0 5px;
+}
+
+.adv-nav-heading > span:first-child {
+  color: #9aa4b3;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.adv-nav-indicator {
+  font-size: 10px;
+  color: var(--adv-muted);
+}
+
+.adv-nav-links {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.adv-nav-links::-webkit-scrollbar {
+  display: none;
+}
+
+.adv-nav-link {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 13px;
+  border-radius: 7px;
+  color: var(--adv-text);
+  font-size: 12px;
+  font-weight: 600;
+  transition: .25s;
+  white-space: nowrap;
+}
+
+.adv-nav-link i {
+  font-size: 15px;
+}
+
+.adv-nav-link:hover,
+.adv-nav-link.active {
+  color: var(--adv-red);
+  background: #fff0f1;
+}
+
+/* SECTION GENERAL */
+
+.adv-section {
+  padding: 30px 10px;
+}
+
+.adv-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+
+.adv-eyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--adv-red);
+  margin-bottom: 10px;
+}
+
+.adv-section-heading h2 {
+  font-size: 29px;
+  color: var(--adv-navy);
+  font-weight: 800;
+  letter-spacing: -.7px;
+  margin: 0;
+}
+
+.adv-section-heading h2 span {
+  color: var(--adv-red);
+}
+
+.adv-section-description {
+  color: var(--adv-muted);
+  font-size: 14px;
+  line-height: 1.8;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.adv-section-number {
+  font-size: 45px;
+  font-weight: 800;
+  color: #edf0f4;
+  line-height: 1;
+}
+
+.adv-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #dfe3e9, transparent);
+  margin: 15px 0;
+}
+
+/* HISTORY */
+
+.adv-history-layout {
+  display: grid;
+  grid-template-columns: .8fr 1.6fr;
+  gap: 35px;
+  align-items: stretch;
+}
+
+.adv-history-side {
+  background: var(--adv-navy);
+  padding: 30px;
+  border-radius: 12px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.adv-history-side::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 50%;
+  right: -70px;
+  bottom: -70px;
+}
+
+.adv-history-symbol {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,.1);
+  color: #f08c94;
+  border-radius: 12px;
+  font-size: 29px;
+  margin-bottom: 27px;
+}
+
+.adv-history-caption {
+  color: #ed8d95;
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.adv-history-side h3 {
+  color: white;
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin: 13px 0;
+}
+
+.adv-history-line {
+  width: 45px;
+  height: 3px;
+  background: var(--adv-red);
+  margin: 20px 0;
+}
+
+.adv-history-side p {
+  color: #c6cfdb;
+  font-size: 13px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.adv-history-content {
+  padding: 5px 0;
+}
+
+.adv-history-content p {
+  font-size: 14px;
+  color: var(--adv-text);
+  line-height: 2;
+  text-align: justify;
+  margin-bottom: 16px;
+}
+
+/* VISION */
+
+.adv-vision-card {
+  display: flex;
+  position: relative;
+  gap: 22px;
+  align-items: flex-start;
+  padding: 30px;
+  background: #f7f8fa;
+  border-radius: 12px;
+  border-left: 4px solid var(--adv-red);
+  overflow: hidden;
+}
+
+.adv-vision-icon {
+  min-width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fce8ea;
+  color: var(--adv-red);
+  border-radius: 10px;
+  font-size: 25px;
+}
+
+.adv-card-label {
+  color: var(--adv-red);
+  font-size: 9px;
+  letter-spacing: 2px;
+  font-weight: 800;
+}
+
+.adv-vision-card h3 {
+  color: var(--adv-navy);
+  font-size: 20px;
+  font-weight: 800;
+  margin: 5px 0 10px;
+}
+
+.adv-vision-card p {
+  max-width: 750px;
+  color: var(--adv-text);
+  font-size: 14px;
+  line-height: 1.9;
+  margin: 0;
+}
+
+.adv-quote {
+  position: absolute;
+  right: 25px;
+  bottom: -20px;
+  font-size: 100px;
+  color: rgba(180,35,50,.07);
+}
+
+.adv-mission-heading {
+  margin: 35px 0 18px;
+}
+
+.adv-mission-heading h3 {
+  color: var(--adv-navy);
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.adv-mission-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.adv-mission-card {
+  position: relative;
+  padding: 23px;
+  background: white;
+  border: 1px solid var(--adv-border);
+  border-radius: 10px;
+  transition: .3s;
+  overflow: hidden;
+}
+
+.adv-mission-card:hover {
+  border-color: #e5a1a6;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(36,52,77,.07);
+}
+
+.adv-mission-number {
+  position: absolute;
+  top: 15px;
+  right: 17px;
+  color: #e9edf2;
+  font-size: 27px;
+  font-weight: 800;
+}
+
+.adv-mission-icon {
+  width: 43px;
+  height: 43px;
+  background: #fff0f1;
+  color: var(--adv-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  font-size: 20px;
+  margin-bottom: 17px;
+}
+
+.adv-mission-card h4 {
+  color: var(--adv-navy);
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 9px;
+}
+
+.adv-mission-card p {
+  color: var(--adv-muted);
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* ORGANIZATION */
+
+.adv-org-intro {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 17px 20px;
+  background: #f7f8fa;
+  border-radius: 9px;
+  margin-bottom: 20px;
+}
+
+.adv-org-intro i {
+  color: var(--adv-red);
+  font-size: 25px;
+}
+
+.adv-org-intro p {
+  color: var(--adv-text);
+  font-size: 13px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.adv-org-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.adv-org-card {
+  position: relative;
+  padding: 23px;
+  border: 1px solid var(--adv-border);
+  border-radius: 10px;
+  background: white;
+  transition: .3s;
+  overflow: hidden;
+}
+
+.adv-org-card:hover {
+  border-color: #dca0a5;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(36,52,77,.06);
+}
+
+.adv-org-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 19px;
+}
+
+.adv-org-icon {
+  width: 48px;
+  height: 48px;
+  background: #fff0f1;
+  color: var(--adv-red);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.adv-org-tag {
+  font-size: 9px;
+  color: var(--adv-red);
+  letter-spacing: 1px;
+  font-weight: 800;
+  background: #fff3f4;
+  padding: 6px 9px;
+  border-radius: 4px;
+}
+
+.adv-org-card h3 {
+  color: var(--adv-navy);
+  font-size: 16px;
+  font-weight: 800;
+  max-width: 85%;
+  margin-bottom: 9px;
+}
+
+.adv-org-card p {
+  color: var(--adv-muted);
+  font-size: 13px;
+  line-height: 1.8;
+  max-width: 90%;
+  margin: 0;
+}
+
+.adv-org-index {
+  position: absolute;
+  right: 17px;
+  bottom: 8px;
+  color: #f1f2f5;
+  font-size: 43px;
+  font-weight: 900;
+}
+
+.adv-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #fff9ed;
+  border: 1px solid #f4e7c9;
+  border-radius: 8px;
+  padding: 13px 16px;
+  margin-top: 20px;
+}
+
+.adv-note i {
+  color: #bd8b2c;
+  font-size: 17px;
+}
+
+.adv-note p {
+  font-size: 12px;
+  color: #826a3e;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* SERVICES */
+
+.adv-service-intro {
+  max-width: 850px;
+  margin-bottom: 25px;
+}
+
+.adv-service-intro p {
+  color: var(--adv-text);
+  font-size: 14px;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+.adv-service-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 17px;
+}
+
+.adv-service-card {
+  position: relative;
+  background: white;
+  border: 1px solid var(--adv-border);
+  border-radius: 11px;
+  padding: 25px;
+  min-height: 220px;
+  transition: .3s;
+}
+
+.adv-service-card:hover {
+  transform: translateY(-5px);
+  border-color: #e0a0a5;
+  box-shadow: 0 12px 30px rgba(36,52,77,.08);
+}
+
+.adv-service-icon {
+  width: 50px;
+  height: 50px;
+  background: #fff0f1;
+  color: var(--adv-red);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 23px;
+  margin-bottom: 18px;
+  transition: .3s;
+}
+
+.adv-service-card:hover .adv-service-icon {
+  background: var(--adv-red);
+  color: white;
+}
+
+.adv-service-number {
+  color: #a1aabb;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  font-weight: 800;
+}
+
+.adv-service-card h3 {
+  color: var(--adv-navy);
+  font-size: 17px;
+  font-weight: 800;
+  margin: 9px 0;
+}
+
+.adv-service-card p {
+  color: var(--adv-muted);
+  font-size: 13px;
+  line-height: 1.8;
+  max-width: 90%;
+  margin: 0;
+}
+
+.adv-service-arrow {
+  position: absolute;
+  bottom: 20px;
+  right: 22px;
+  font-size: 19px;
+  color: #d1d6df;
+  transition: .3s;
+}
+
+.adv-service-card:hover .adv-service-arrow {
+  color: var(--adv-red);
+  transform: translate(3px,-3px);
+}
+
+.adv-service-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 18px 20px;
+  background: var(--adv-navy);
+  border-radius: 9px;
+  margin-top: 22px;
+}
+
+.adv-service-bottom > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.adv-service-bottom > div i {
+  color: #f08d96;
+  font-size: 20px;
+}
+
+.adv-service-bottom a {
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.adv-service-bottom a:hover {
+  color: #f08d96;
+}
+
+/* CONTACT */
+
+.adv-contact-layout {
+  display: grid;
+  grid-template-columns: 1.4fr .8fr;
+  gap: 20px;
+}
+
+.adv-contact-info {
+  padding: 30px;
+  background: #f7f8fa;
+  border-radius: 12px;
+}
+
+.adv-contact-info h3 {
+  font-size: 23px;
+  color: var(--adv-navy);
+  font-weight: 800;
+  line-height: 1.4;
+  max-width: 450px;
+  margin-bottom: 12px;
+}
+
+.adv-contact-info > p {
+  color: var(--adv-muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.adv-contact-items {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.adv-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+}
+
+.adv-contact-icon {
+  min-width: 42px;
+  height: 42px;
+  background: white;
+  color: var(--adv-red);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  box-shadow: 0 3px 10px rgba(36,52,77,.04);
+}
+
+.adv-contact-item small {
+  color: #9aa4b3;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.adv-contact-item p {
+  color: var(--adv-navy);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.7;
+  margin: 4px 0 0;
+}
+
+.adv-contact-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.adv-btn-light {
+  color: var(--adv-navy) !important;
+  background: white;
+  border: 1px solid var(--adv-border);
+}
+
+.adv-btn-light:hover {
+  border-color: var(--adv-red);
+  color: var(--adv-red) !important;
+}
+
+.adv-map-card {
+  position: relative;
+  padding: 30px 25px;
+  border-radius: 12px;
+  background: var(--adv-navy);
+  color: white;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.adv-map-decoration {
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  font-size: 160px;
+  color: rgba(255,255,255,.04);
+}
+
+.adv-map-card .adv-eyebrow {
+  color: #f08d96;
+}
+
+.adv-map-card h3 {
+  color: white;
+  font-size: 21px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.adv-map-card > p {
+  color: #c3ccda;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.adv-map-placeholder {
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px dashed rgba(255,255,255,.25);
+  border-radius: 9px;
+  margin: 15px 0;
+  background: rgba(255,255,255,.04);
+  color: #e2a0a5;
+}
+
+.adv-map-placeholder i {
+  font-size: 35px;
+}
+
+.adv-map-placeholder span {
+  color: #d5dce7;
+  font-size: 11px;
+}
+
+.adv-map-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background: var(--adv-red);
+  color: white !important;
+  padding: 13px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  transition: .25s;
+}
+
+.adv-map-button:hover {
+  background: #d13c49;
+}
+
+/* FOOTER */
+
+.adv-footer {
+  text-align: center;
+  padding: 45px 25px 20px;
+  background: #f7f8fa;
+  border-radius: 13px;
+  margin: 30px 0 10px;
+}
+
+.adv-footer-icon {
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  border-radius: 14px;
+  background: #fff0f1;
+  color: var(--adv-red);
+  font-size: 28px;
+}
+
+.adv-footer .adv-eyebrow {
+  margin-bottom: 8px;
+}
+
+.adv-footer h2 {
+  color: var(--adv-navy);
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.adv-footer > p {
+  max-width: 500px;
+  margin: 0 auto 18px;
+  color: var(--adv-muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.adv-footer > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--adv-red);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.adv-footer-bottom {
+  border-top: 1px solid var(--adv-border);
+  margin-top: 30px;
+  padding: 17px 0 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #a0a9b6;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* BACK TO TOP */
+
+.adv-back-top {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  z-index: 999;
+  width: 43px;
+  height: 43px;
+  border: none;
+  border-radius: 9px;
+  background: var(--adv-red);
+  color: white;
+  font-size: 19px;
+  box-shadow: 0 5px 18px rgba(180,35,50,.25);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: .3s;
+}
+
+.adv-back-top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.adv-back-top:hover {
+  background: var(--adv-red-dark);
+  transform: translateY(-4px);
+}
+
+/* SCROLL ANIMATION */
+
+.reveal {
+  opacity: 1;
+  transform: none;
+  transition: opacity .45s ease, transform .45s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .adv-hero {
+    padding: 45px 35px;
+  }
+
+  .adv-hero-decoration {
+    right: -70px;
+    opacity: .55;
+  }
+
+  .adv-history-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .adv-history-side {
+    min-height: 230px;
+  }
+
+  .adv-mission-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .adv-contact-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .adv-hero {
+    min-height: 380px;
+    padding: 35px 23px;
+    border-radius: 11px;
+  }
+
+  .adv-hero h1 {
+    font-size: 34px;
+  }
+
+  .adv-hero-content > p {
+    font-size: 13px;
+  }
+
+  .adv-hero-decoration {
+    right: -150px;
+    opacity: .23;
+  }
+
+  .adv-hero-actions {
+    gap: 8px;
+  }
+
+  .adv-btn-primary,
+  .adv-btn-outline {
+    padding: 11px 13px;
+    font-size: 11px;
+  }
+
+  .adv-navigation {
+    top: 5px;
+    padding: 12px 10px;
+  }
+
+  .adv-nav-link {
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+
+  .adv-section {
+    padding: 25px 3px;
+  }
+
+  .adv-section-heading h2 {
+    font-size: 23px;
+  }
+
+  .adv-section-number {
+    font-size: 32px;
+  }
+
+  .adv-history-side {
+    padding: 24px;
+  }
+
+  .adv-history-side h3 {
+    font-size: 21px;
+  }
+
+  .adv-history-content p {
+    font-size: 13px;
+  }
+
+  .adv-vision-card {
+    padding: 22px 18px;
+    gap: 13px;
+  }
+
+  .adv-vision-icon {
+    min-width: 42px;
+    height: 42px;
+    font-size: 20px;
+  }
+
+  .adv-vision-card h3 {
+    font-size: 17px;
+  }
+
+  .adv-vision-card p {
+    font-size: 12px;
+  }
+
+  .adv-mission-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .adv-org-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .adv-service-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .adv-service-card {
+    min-height: 195px;
+  }
+
+  .adv-service-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .adv-contact-info {
+    padding: 23px 18px;
+  }
+
+  .adv-contact-info h3 {
+    font-size: 20px;
+  }
+
+  .adv-map-card {
+    padding: 25px 20px;
+  }
+
+  .adv-footer-bottom {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .adv-back-top {
+    right: 15px;
+    bottom: 15px;
+  }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+  .advokita-page *,
+  .advokita-page *::before,
+  .advokita-page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  // SMOOTH SCROLL
+  document.querySelectorAll('.adv-nav-link, .adv-hero-actions a, .adv-service-bottom a, .adv-footer > a')
+    .forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+  // ACTIVE NAVIGATION
+  const sections = document.querySelectorAll(
+    '#sejarah, #visi-misi, #struktur, #bantuan-hukum, #kontak'
+  );
+
+  const navLinks = document.querySelectorAll('.adv-nav-link');
+  const navIndicator = document.querySelector('.adv-nav-indicator');
+
+  const sectionNames = {
+    'sejarah': 'Sejarah',
+    'visi-misi': 'Visi & Misi',
+    'struktur': 'Organisasi',
+    'bantuan-hukum': 'Layanan',
+    'kontak': 'Kontak'
+  };
+
+  const sectionObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+
+        navLinks.forEach(function (link) {
+          const active = link.getAttribute('href') === '#' + id;
+          link.classList.toggle('active', active);
+        });
+
+        if (navIndicator) {
+          navIndicator.innerHTML =
+            '<i class="bi bi-list"></i> ' + sectionNames[id];
+        }
+      }
+    });
+  }, {
+    rootMargin: '-20% 0px -65% 0px',
+    threshold: 0
+  });
+
+  sections.forEach(function (section) {
+    sectionObserver.observe(section);
+  });
+
+  // REVEAL ANIMATION
+  const revealElements = document.querySelectorAll('.reveal');
+
+  if ('IntersectionObserver' in window) {
+    const revealObserver = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12
+    });
+
+    revealElements.forEach(function (element) {
+      revealObserver.observe(element);
+    });
+  } else {
+    revealElements.forEach(function (element) {
+      element.classList.add('visible');
+    });
+  }
+
+  // BACK TO TOP
+  const backTop = document.getElementById('advBackTop');
+
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 400) {
+      backTop.classList.add('show');
+    } else {
+      backTop.classList.remove('show');
+    }
+  }, { passive: true });
+
+  backTop.addEventListener('click', function () {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+
+});
+</script>

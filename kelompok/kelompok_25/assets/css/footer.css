@@ -1,0 +1,67 @@
+/* Footer Ruang Hukum (dipakai semua halaman lewat includes/footer.php).
+   Bagian atas terang berisi logo, kontak, media sosial, dan kolom tautan.
+   Bilah bawah biru tua berisi hak cipta. Warna ikut variabel di style.css. */
+
+.rh-footer { --emas-tua: #7a5c14; background: #efece4; color: var(--ink); border-top: 1px solid var(--line); }
+.rh-footer-atas { padding: 3rem 0 2.5rem; }
+
+/* ----- Logo ----- */
+.rh-logo { display: inline-flex; align-items: center; gap: .9rem; text-decoration: none; margin-bottom: 1.75rem; }
+.rh-logo-lingkar { width: 66px; height: 66px; flex: none; border-radius: 50%; border: 5px solid var(--navy); background: #fff; color: var(--navy); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; }
+.rh-logo-teks { display: flex; flex-direction: column; }
+.rh-logo-nama { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 1.5rem; line-height: 1.05; letter-spacing: .07em; text-transform: uppercase; color: var(--navy); }
+.rh-logo-sub { margin-top: .35rem; font-size: .68rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--emas-tua); }
+.rh-logo:hover .rh-logo-lingkar { border-color: var(--gold); }
+
+/* ----- Kontak ----- */
+.rh-kontak { margin: 0 0 1.75rem; padding: 0; }
+.rh-kontak li { display: flex; align-items: flex-start; gap: .85rem; margin-bottom: 1rem; line-height: 1.55; }
+.rh-kontak .bi { flex: none; margin-top: .02rem; color: var(--navy); font-size: 1.05rem; line-height: 1.5; }
+.rh-kontak address { font-style: normal; }
+.rh-kontak a { color: var(--ink); text-decoration: none; overflow-wrap: anywhere; }
+
+/* ----- Media sosial ----- */
+.rh-sosial { display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
+.rh-sosial a { width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: var(--navy); font-size: 1.55rem; text-decoration: none; transition: background .15s, color .15s, transform .15s; }
+.rh-sosial a:hover { background: var(--navy); color: var(--gold); transform: translateY(-2px); }
+
+/* ----- Kolom tautan ----- */
+.rh-footer-judul { font-family: var(--bs-body-font-family); font-size: 1.05rem; font-weight: 700; color: var(--navy); margin: .35rem 0 1.1rem; }
+.rh-footer-daftar { list-style: none; margin: 0; padding: 0; }
+.rh-footer-daftar li { margin-bottom: .75rem; line-height: 1.45; }
+.rh-footer-daftar a { color: var(--ink); text-decoration: none; }
+
+/* Hover dan fokus tautan: garis bawah emas */
+.rh-footer-daftar a:hover, .rh-kontak a:hover, .rh-bawah-tautan a:hover { text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.rh-footer-daftar a:hover, .rh-kontak a:hover { color: var(--navy); }
+.rh-footer a:focus-visible, .rh-ke-atas:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 4px; }
+
+/* ----- Bilah bawah ----- */
+.rh-footer-bawah { background: var(--navy); color: #fff; padding: .95rem 0 .8rem; }
+.rh-footer-bawah .container { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .45rem 1.5rem; }
+.rh-hak-cipta { display: flex; align-items: center; gap: .6rem; font-weight: 500; }
+.rh-c { width: 26px; height: 26px; flex: none; border-radius: 50%; background: #fff; color: var(--navy); font-size: .8rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+.rh-bawah-tautan { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .7rem; }
+.rh-bawah-tautan a { color: #fff; text-decoration: none; }
+.rh-bawah-tautan a:hover { color: var(--gold); }
+.rh-titik { color: var(--gold); }
+.rh-footer-bawah a:focus-visible { outline-color: var(--gold); }
+
+/* ----- Tombol kembali ke atas ----- */
+.rh-ke-atas { position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 1030; width: 48px; height: 48px; border: 0; border-radius: 50%; background: var(--navy); color: #fff; font-size: 1.25rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(15,39,71,.35); transition: background .15s, color .15s, transform .15s; }
+.rh-ke-atas[hidden] { display: none; }
+.rh-ke-atas:hover { background: var(--gold); color: var(--navy); transform: translateY(-2px); }
+
+/* ----- Layar kecil ----- */
+@media (max-width: 575.98px) {
+  .rh-footer-atas { padding: 2.25rem 0 1.75rem; }
+  .rh-logo-lingkar { width: 58px; height: 58px; font-size: 1.5rem; }
+  .rh-logo-nama { font-size: 1.3rem; }
+  .rh-footer-bawah .container { flex-direction: column; align-items: flex-start; }
+  .rh-ke-atas { right: .9rem; bottom: .9rem; width: 44px; height: 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rh-sosial a, .rh-ke-atas { transition: none; }
+  .rh-sosial a:hover, .rh-ke-atas:hover { transform: none; }
+}

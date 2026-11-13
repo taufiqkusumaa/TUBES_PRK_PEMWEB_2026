@@ -1,0 +1,55 @@
+<section class="space-y-4">
+    <?php if ($flash !== null): ?>
+        <?php $flashType = ($flash['type'] ?? 'success') === 'error' ? 'error' : 'success'; ?>
+        <p role="status" class="rounded-xl px-4 py-3 text-sm <?= $flashType === 'error' ? 'bg-red-50 text-red-700' : 'bg-[#e8f0e9] text-[#3f6548]' ?>">
+            <?= h((string) ($flash['message'] ?? '')) ?>
+        </p>
+    <?php endif; ?>
+
+    <div class="overflow-x-auto rounded-2xl border border-[#dfe6de] bg-white">
+        <table data-admin-table class="min-w-full divide-y divide-[#e6ebe5] text-left text-sm">
+            <thead class="bg-[#eff3ee] text-xs uppercase tracking-wide text-slate-500">
+                <tr>
+                    <th scope="col" class="whitespace-nowrap px-4 py-3.5 font-semibold sm:px-5">No</th>
+                    <th scope="col" class="whitespace-nowrap px-4 py-3.5 font-semibold sm:px-5">Kode</th>
+                    <th scope="col" class="whitespace-nowrap px-4 py-3.5 font-semibold sm:px-5">Nama</th>
+                    <th scope="col" class="whitespace-nowrap px-4 py-3.5 font-semibold sm:px-5">Status</th>
+                    <th scope="col" class="whitespace-nowrap px-4 py-3.5 font-semibold sm:px-5">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-[#e6ebe5] text-slate-700">
+                <?php if ($mataPelajaranList === []): ?>
+                    <tr><td colspan="5" class="px-4 py-9 text-center text-slate-500">Belum ada data mata pelajaran.</td></tr>
+                <?php else: ?>
+                    <?php foreach ($mataPelajaranList as $index => $mapel): ?>
+                        <tr class="hover:bg-[#fafbf9]">
+                            <td class="whitespace-nowrap px-4 py-3.5 text-center sm:px-5"><?= h((string) ($index + 1)) ?></td>
+                            <td class="whitespace-nowrap px-4 py-3.5 text-center sm:px-5"><?= h((string) $mapel['kode']) ?></td>
+                            <td class="whitespace-nowrap px-4 py-3.5 sm:px-5"><?= h((string) $mapel['nama']) ?></td>
+                            <td class="whitespace-nowrap px-4 py-3.5 text-center sm:px-5">
+                                <?php if ((bool) $mapel['is_active']): ?>
+                                    <span class="inline-flex rounded-full bg-[#e8f0e9] px-2.5 py-1 text-xs font-medium text-[#3f6548]">Aktif</span>
+                                <?php else: ?>
+                                    <span class="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">Nonaktif</span>
+                                <?php endif; ?>
+                            </td>
+                            <td class="whitespace-nowrap px-4 py-3.5 text-center sm:px-5">
+                                <div class="flex items-center justify-center gap-2">
+                                    <a href="mata-pelajaran.php?edit=<?= h((string) $mapel['id']) ?>" class="rounded-md px-2 py-1 text-xs font-semibold text-[#4e7a5d] hover:bg-[#e8f0e9]">Edit</a>
+                                    <form method="post" action="mata-pelajaran.php" class="inline">
+                                        <input type="hidden" name="_csrf_token" value="<?= h(csrfToken()) ?>">
+                                        <input type="hidden" name="action" value="toggle">
+                                        <input type="hidden" name="mata_pelajaran_id" value="<?= h((string) $mapel['id']) ?>">
+                                        <button type="submit" class="rounded-md px-2 py-1 text-xs font-semibold <?= (bool) $mapel['is_active'] ? 'text-red-700 hover:bg-red-50' : 'text-[#4e7a5d] hover:bg-[#e8f0e9]' ?>">
+                                            <?= (bool) $mapel['is_active'] ? 'Nonaktifkan' : 'Aktifkan' ?>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</section>

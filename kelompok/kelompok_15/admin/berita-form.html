@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="id">
+  <!-- FITUR CMS BERITA (DRAFT/PUBLISH/UPLOAD) - ORANG 5 -->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pena Kampus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <script type="module" src="../js/app.js"></script>
+  </head>
+  <body class="min-h-screen bg-canvas font-sans text-slate-800" data-layout="admin" data-api="../api/admin_berita_form.php">
+    <script type="text/x-template" id="page-template">
+    {{#error}}
+      <div class="flash error">{{error2}}</div>
+    {{/error}}
+      <div class="mb-5 flex items-center justify-between gap-3">
+        <div>
+          <p class="text-sm text-slate-500">Konten artikel Pena Kampus</p>
+          <h2 class="mt-1 text-xl font-extrabold text-ink">{{id_Sunting_Artikel_Tulis_Berita_Baru}}</h2>
+        </div>
+        <a href="{{root}}admin/berita.html" class="btn-secondary">Kembali</a>
+      </div>
+      <form method="post" enctype="multipart/form-data" class="grid gap-6 xl:grid-cols-12">
+        <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+        <div class="space-y-5 xl:col-span-8">
+          <section class="border border-slate-200 bg-white p-5">
+            <label class="mb-2 block text-sm font-bold">Judul Berita *</label>
+            <input class="form-control text-lg font-semibold" name="title" value="{{value_title}}" maxlength="255" required placeholder="Masukkan judul berita">
+            <label class="mb-2 mt-5 block text-sm font-bold">Slug URL</label>
+            <input class="form-control" name="slug" value="{{value_slug}}" maxlength="280" placeholder="otomatis-dari-judul-jika-kosong">
+            <label class="mb-2 mt-5 block text-sm font-bold">Ringkasan</label>
+            <textarea class="form-control" name="excerpt" rows="3" maxlength="500">{{value_excerpt}}</textarea>
+            <label class="mb-2 mt-5 block text-sm font-bold">Isi Berita *</label>
+            <textarea class="form-control" name="content" rows="18" required placeholder="Tuliskan isi berita. Pisahkan paragraf dengan baris kosong.">{{value_content}}</textarea>
+            <p class="mt-2 text-xs text-slate-500">Gunakan teks biasa. Pemformatan paragraf akan ditampilkan otomatis pada halaman artikel.</p>
+          </section>
+        </div>
+        <aside class="space-y-5 xl:col-span-4">
+          <section class="border border-slate-200 bg-white p-5">
+            <h3 class="font-extrabold text-ink">Pengaturan Publikasi</h3>
+            <label class="mb-1 mt-4 block text-sm font-semibold">Kategori *</label>
+            <select class="form-control" name="category_id" required>
+              <option value="">Pilih kategori</option>
+            {{#categories}}  {{#categoryOption_is_active_isSelected}}
+              <option value="{{int_categoryOption_id}}" {{isSelected_selected}}> {{categoryLabel}} </option>
+            {{/categoryOption_is_active_isSelected}} {{/categories}}
+            </select>
+          {{#is_admin}}
+            <label class="mb-1 mt-4 block text-sm font-semibold">Fakultas</label>
+            <select class="form-control" name="faculty_id">
+              <option value="0">Berita tingkat Universitas</option>
+            {{#faculties}}  {{#availableFaculty}}
+              <option value="{{int_facultyOption_id}}" {{isSelectedFaculty_selected}}> {{facultyLabel}} </option>
+            {{/availableFaculty}} {{/faculties}}
+            </select>
+          {{/is_admin}}{{#otherwise_is_admin}}
+            <div class="mt-4 border border-slate-200 bg-slate-50 p-3">
+              <p class="text-xs text-slate-500">Fakultas editor</p>
+              <p class="mt-1 text-sm font-bold text-ink">{{editorFaculty}}</p>
+            </div>
+          {{/otherwise_is_admin}}
+            <label class="mb-1 mt-4 block text-sm font-semibold">Status</label>
+            <select class="form-control" name="status">
+              <option value="draft" {{selectedStatus_draft_selected}}>Draft</option>
+              <option value="published" {{selectedStatus_published_selected}}>Published</option>
+              <option value="archived" {{selectedStatus_archived_selected}}>Archived</option>
+            </select>
+          {{#is_admin2}}
+            <label class="mt-4 flex items-center gap-2 text-sm"><input type="checkbox" name="is_featured" value="1" {{featuredChecked}}> Jadikan berita unggulan</label>
+          {{/is_admin2}}
+          </section>
+          <section class="border border-slate-200 bg-white p-5">
+            <h3 class="font-extrabold text-ink">Gambar Utama</h3>
+            <img data-image-preview class="{{currentImage_hidden}} mt-3 aspect-video w-full object-cover" src="{{article_image_currentImage}}" alt="Preview gambar">
+            <input class="mt-4 block w-full text-sm" type="file" name="featured_image" data-image-input accept="image/jpeg,image/png,image/webp">
+            <p class="mt-2 text-xs leading-5 text-slate-500">JPG, PNG, atau WebP. Maksimal 2 MB.</p>
+            <label class="mb-1 mt-4 block text-sm font-semibold">Keterangan gambar</label>
+            <input class="form-control" name="image_caption" value="{{value_image_caption}}" maxlength="255">
+          </section>
+          <div class="grid gap-2"><button class="btn-primary w-full">Simpan Berita</button><a class="btn-secondary w-full" href="{{root}}admin/berita.html">Batal</a></div>
+        </aside>
+      </form>
+    </script>
+    <noscript>Aktifkan JavaScript untuk membuka Pena Kampus.</noscript>
+  </body>
+</html>

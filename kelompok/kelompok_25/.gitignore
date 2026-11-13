@@ -1,0 +1,3 @@
+# Rahasia lokal dan unggahan pengguna, jangan di-commit
+config/auth.local.php
+uploads/foto/

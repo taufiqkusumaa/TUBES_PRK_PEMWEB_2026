@@ -1,0 +1,242 @@
+:root {
+    --brand: #198754;
+    --brand-dark: #146c43;
+    --brand-soft: #eaf5ee;
+    --font-sans: "Segoe UI", system-ui, sans-serif;
+    --font-body: 0.95rem;
+    --font-table: 0.9rem;
+    --font-page-title: 1.5rem;
+    --font-card-title: 1rem;
+    --font-small: 0.8rem;
+    --font-stat-label: 0.85rem;
+    --font-stat-value: 1.75rem;
+    --font-status-badge: 0.8rem;
+    --font-icon: 1.5rem;
+    --font-login-icon: 2rem;
+    --font-print: 11px;
+    --font-weight-title: 600;
+
+    --bs-primary: var(--brand);
+    --bs-primary-rgb: 25, 135, 84;
+    --bs-link-color: var(--brand);
+    --bs-link-color-rgb: 25, 135, 84;
+    --bs-link-hover-color: var(--brand-dark);
+    --bs-link-hover-color-rgb: 20, 108, 67;
+}
+
+body {
+    font-family: var(--font-sans);
+    font-size: var(--font-body);
+}
+
+.btn {
+    --bs-btn-font-size: var(--font-body);
+}
+
+.form-control,
+.form-select {
+    font-size: var(--font-body);
+}
+
+.small,
+small,
+.summary-label {
+    font-size: var(--font-small);
+}
+
+h1,
+h2 {
+    font-size: var(--font-page-title);
+    font-weight: var(--font-weight-title);
+}
+
+h3,
+h4,
+h5,
+h6,
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header h4,
+.card-header h5,
+.card-header h6 {
+    font-size: var(--font-card-title);
+    font-weight: var(--font-weight-title);
+}
+
+.stat-card .card-title {
+    font-size: var(--font-stat-label);
+    font-weight: var(--font-weight-title);
+}
+
+.stat-card h2 {
+    font-size: var(--font-stat-value);
+    font-weight: var(--font-weight-title);
+}
+
+.stat-card-caption {
+    font-size: var(--font-small);
+}
+
+.health-status-badge {
+    min-width: 5.5rem;
+    padding: 0.3em 0.7em;
+    border: 1px solid currentColor;
+    font-size: var(--font-status-badge);
+    font-weight: var(--font-weight-title);
+    text-align: center;
+}
+
+.login-card h3 {
+    font-size: var(--font-page-title);
+}
+
+.login-icon {
+    font-size: var(--font-login-icon);
+}
+
+.stat-icon,
+.summary-icon,
+.bi-inbox.display-6 {
+    font-size: var(--font-icon);
+}
+
+.feed-chart-legend li {
+    font-size: var(--font-small);
+}
+
+.app-sidebar .nav-section-toggle::after {
+    font-size: var(--font-small);
+}
+
+.app-sidebar .nav-section-label {
+    font-size: var(--font-body);
+}
+
+.table {
+    font-variant-numeric: tabular-nums;
+}
+
+.table th,
+.table td {
+    font-size: var(--font-table);
+}
+
+.summary-value {
+    font-size: var(--font-page-title);
+    font-weight: var(--font-weight-title);
+}
+
+@media print {
+    .report-page,
+    .report-page table,
+    .report-page .print-report-header h1,
+    .report-page .print-report-header h2 {
+        font-size: var(--font-print) !important;
+    }
+
+    .report-page .summary-value {
+        font-size: var(--font-page-title) !important;
+    }
+
+    .report-page table th,
+    .report-page table td {
+        font-size: var(--font-print) !important;
+    }
+}
+
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--brand);
+    --bs-btn-border-color: var(--brand);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--brand-dark);
+    --bs-btn-hover-border-color: var(--brand-dark);
+    --bs-btn-focus-shadow-rgb: 25, 135, 84;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--brand-dark);
+    --bs-btn-active-border-color: var(--brand-dark);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--brand);
+    --bs-btn-disabled-border-color: var(--brand);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--brand);
+    --bs-btn-border-color: var(--brand);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--brand);
+    --bs-btn-hover-border-color: var(--brand);
+    --bs-btn-focus-shadow-rgb: 25, 135, 84;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--brand);
+    --bs-btn-active-border-color: var(--brand);
+    --bs-btn-disabled-color: var(--brand);
+    --bs-btn-disabled-border-color: var(--brand);
+}
+
+.table-primary {
+    --bs-table-color: var(--brand-dark);
+    --bs-table-bg: var(--brand-soft);
+    --bs-table-border-color: #b8d9c8;
+    --bs-table-striped-bg: #e2f0e8;
+    --bs-table-striped-color: var(--brand-dark);
+    --bs-table-active-bg: #d7ebdf;
+    --bs-table-active-color: var(--brand-dark);
+    --bs-table-hover-bg: #dceee4;
+    --bs-table-hover-color: var(--brand-dark);
+}
+
+.page-link {
+    color: var(--brand);
+}
+
+.page-link:hover {
+    color: var(--brand-dark);
+}
+
+.page-link:focus {
+    color: var(--brand-dark);
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+}
+
+.page-item.active .page-link {
+    color: #fff;
+    background-color: var(--brand);
+    border-color: var(--brand);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: var(--brand);
+    border-color: var(--brand);
+}
+
+.form-check-input:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+}
+
+.nav-pills {
+    --bs-nav-pills-link-active-bg: var(--brand);
+}
+
+.progress-bar {
+    background-color: var(--brand);
+}
+
+.card-header {
+    color: var(--brand-dark);
+    background-color: var(--brand-soft);
+    border-bottom-color: #dcebe1;
+}
+
+.table thead th {
+    color: var(--brand-dark);
+    background-color: var(--brand-soft);
+}

@@ -1,0 +1,94 @@
+/* Halaman masuk, daftar, lupa/reset kata sandi, dan simulasi login sosial.
+   Semua tampil penuh layar tanpa navbar dan footer situs (lihat $tanpaKerangka di includes/header.php). */
+
+body.halaman-polos { background: var(--ivory); }
+.halaman-polos .toast-rh-wrap { top: 1rem; }
+
+/* ----- Logo dan tautan kembali ----- */
+.auth-logo { display: inline-flex; align-items: center; gap: .55rem; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 1.4rem; color: var(--navy); text-decoration: none; }
+.auth-logo .bi { color: var(--gold); }
+.auth-kembali { display: inline-flex; align-items: center; gap: .4rem; color: var(--muted); font-size: .9rem; text-decoration: none; }
+.auth-kembali:hover, .auth-kembali:focus-visible { color: var(--navy); }
+
+/* ----- Masuk & daftar: panel biru di kiri (menempel), formulir di kanan ----- */
+.auth-layar { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); min-height: 100vh; }
+
+.auth-panel { position: sticky; top: 0; height: 100vh; flex-direction: column; justify-content: space-between; gap: 2rem; padding: 2.6rem 3.2rem; color: #e8eef8; overflow: hidden;
+  background: radial-gradient(520px 340px at 100% 0%, rgba(201,162,75,.26), transparent 62%), radial-gradient(480px 360px at 0% 100%, rgba(74,127,181,.28), transparent 60%), linear-gradient(155deg, #163867, #0a1d38 78%); }
+.auth-panel::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse at 30% 40%, #000, transparent 75%); mask-image: radial-gradient(ellipse at 30% 40%, #000, transparent 75%); }
+.auth-panel > * { position: relative; }
+.auth-panel .auth-logo { color: #fff; margin-bottom: 2.6rem; }
+.auth-panel h2 { font-size: clamp(1.8rem, 2.5vw, 2.4rem); line-height: 1.22; color: #fff; text-wrap: balance; }
+.auth-manfaat { list-style: none; padding: 0; margin: 1.8rem 0 0; display: grid; gap: 1rem; }
+.auth-manfaat li { display: flex; gap: .75rem; align-items: flex-start; color: #d3deef; }
+.auth-manfaat .bi { color: var(--gold); font-size: 1.2rem; }
+.auth-angka { display: flex; gap: 2.4rem; border-top: 1px solid rgba(255,255,255,.18); padding-top: 1.4rem; }
+.auth-angka b { display: block; font-family: 'Playfair Display', serif; font-size: 2rem; color: #fff; line-height: 1; }
+.auth-angka span { font-size: .84rem; color: #aebfd8; }
+
+.auth-sisi { display: flex; flex-direction: column; min-width: 0; min-height: 100vh; padding: 1.4rem 2.2rem 2.4rem;
+  background: radial-gradient(ellipse at top left, rgba(201,162,75,.14), transparent 55%), var(--ivory); }
+.auth-atas { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.auth-isi { width: 100%; max-width: 27.5rem; margin: auto; padding: 1.6rem 0 .5rem; min-width: 0; }
+.auth-isi.auth-lebar { max-width: 39rem; }
+.auth-judul { font-size: 2rem; margin-bottom: .2rem; }
+.auth-isi .input-group-text { background: #faf8f3; border-color: var(--line); color: var(--muted); }
+.auth-isi .form-control, .auth-isi .form-select { border-color: var(--line); }
+.auth-isi .form-label { font-weight: 500; font-size: .92rem; margin-bottom: .3rem; }
+.btn-mata { border: 1px solid var(--line); background: #faf8f3; color: var(--muted); }
+.btn-mata:hover, .btn-mata:focus-visible { background: #f1ecde; color: var(--navy); }
+.input-group .form-control:focus { position: relative; z-index: 3; }
+
+.auth-pemisah { display: flex; align-items: center; gap: .8rem; margin: 1.6rem 0 1rem; color: var(--muted); font-size: .85rem; }
+.auth-pemisah::before, .auth-pemisah::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.auth-sosial { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; }
+.btn-sosial { display: flex; align-items: center; justify-content: center; gap: .5rem; padding: .55rem .4rem; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); font-weight: 500; font-size: .9rem; text-decoration: none; transition: background .15s, border-color .15s; }
+.btn-sosial:hover, .btn-sosial:focus-visible { background: #faf8f3; border-color: var(--gold); color: var(--ink); }
+.sosial-google .bi { color: #db4437; } .sosial-linkedin .bi { color: #0a66c2; } .sosial-facebook .bi { color: #1877f2; }
+.btn-sosial .ikon-google { width: 1.15rem; height: 1.15rem; }
+.logo-sosial .ikon-google { width: 1.8rem; height: 1.8rem; }
+.logo-sosial { display: inline-flex; width: 3.4rem; height: 3.4rem; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid var(--line); font-size: 1.7rem; }
+
+.meter-sandi { margin-top: .45rem; }
+.meter-sandi .batang { height: 5px; border-radius: 99px; background: #ebe6d7; overflow: hidden; }
+.meter-sandi .batang span { display: block; width: 0; height: 100%; border-radius: 99px; background: #dc3545; transition: width .2s, background .2s; }
+.meter-sandi .teks { display: block; margin-top: .3rem; color: var(--muted); }
+.meter-sandi[data-skor="2"] .batang span { background: #e8a317; }
+.meter-sandi[data-skor="3"] .batang span { background: #5aa55a; }
+.meter-sandi[data-skor="4"] .batang span { background: #198754; }
+
+.kotak-pengacara { border: 1px solid var(--line); border-radius: 12px; padding: 1rem; background: #faf8f3; }
+.info-ok { color: #198754; } .info-buruk { color: #b42318; }
+
+/* ----- Halaman kecil (lupa/reset sandi, simulasi sosial): kartu di tengah latar biru ----- */
+.auth-polos { position: relative; min-height: 100vh; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 2rem 1rem;
+  background: radial-gradient(620px 380px at 90% 0%, rgba(201,162,75,.24), transparent 62%), radial-gradient(560px 420px at 0% 100%, rgba(74,127,181,.26), transparent 60%), linear-gradient(155deg, #163867, #0a1d38 78%); }
+.auth-polos::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 45%, #000, transparent 78%); mask-image: radial-gradient(ellipse at 50% 45%, #000, transparent 78%); }
+.auth-polos > * { position: relative; }
+.auth-polos .auth-logo { color: #fff; }
+.auth-polos .auth-kembali { color: rgba(255,255,255,.72); }
+.auth-polos .auth-kembali:hover, .auth-polos .auth-kembali:focus-visible { color: #fff; }
+.auth-polos .auth-kartu-kecil { width: 100%; margin: 0; }
+
+.auth-kartu-kecil { max-width: 27rem; margin: 0 auto; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 2rem 1.8rem; box-shadow: 0 14px 40px rgba(15,39,71,.1); }
+.ikon-besar { display: inline-flex; width: 4rem; height: 4rem; align-items: center; justify-content: center; border-radius: 50%; background: #e7f3ec; color: #198754; font-size: 1.9rem; }
+.ikon-besar.gagal { background: #fdecec; color: #dc3545; }
+.demo-banner { display: flex; gap: .6rem; align-items: flex-start; background: #fff7df; border: 1px dashed #d9b64f; color: #6b5210; border-radius: 10px; padding: .7rem .85rem; font-size: .86rem; margin-top: 1rem; }
+.demo-banner .bi { color: #b8892f; margin-top: .1rem; }
+
+@media (max-width: 991.98px) {
+  .auth-layar { grid-template-columns: 1fr; }
+  .auth-sisi { min-height: 100vh; padding: 1.2rem 1.4rem 2rem; }
+  .auth-isi { margin-top: 1.2rem; }
+}
+@media (max-width: 575.98px) {
+  .auth-sisi { padding: 1rem 1.1rem 1.6rem; }
+  .auth-judul { font-size: 1.7rem; }
+  .auth-sosial { grid-template-columns: 1fr; }
+  .auth-kartu-kecil { padding: 1.6rem 1.2rem; }
+  .auth-atas { flex-wrap: wrap; }
+}

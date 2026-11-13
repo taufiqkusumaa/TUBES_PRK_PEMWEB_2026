@@ -1,0 +1,22 @@
+/* Form dan tampilan ulasan (rating bintang) di halaman detail konsultasi klien. */
+
+.ulasan-kartu { scroll-margin-top: 90px; }
+
+/* Bintang pilihan: radio disembunyikan, label berupa bintang. Urutan DOM 5..1 + row-reverse
+   membuat bintang tampil 1..5 dari kiri, dan "~" menyalakan semua bintang di sebelah kirinya. */
+.bintang { display: inline-flex; flex-direction: row-reverse; justify-content: flex-end; gap: .1rem; }
+.bintang input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.bintang label { font-size: 2.1rem; line-height: 1; padding: .1rem .2rem; color: #ddd5bf; cursor: pointer; transition: color .12s, transform .12s; }
+.bintang label:hover { transform: scale(1.12); }
+.bintang input:checked ~ label,
+.bintang label:hover,
+.bintang label:hover ~ label { color: var(--gold); }
+.bintang input:focus-visible + label { outline: 2px solid var(--navy); outline-offset: 2px; border-radius: 8px; }
+.bintang-teks { margin-top: .35rem; font-size: .92rem; color: var(--muted); min-height: 1.4rem; }
+
+.bintang-tampil { color: var(--gold); font-size: 1.25rem; }
+.bintang-tampil .bi-star { color: #ddd5bf; }
+
+@media (max-width: 575.98px) {
+  .bintang label { font-size: 2.4rem; }
+}

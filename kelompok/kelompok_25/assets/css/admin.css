@@ -1,0 +1,103 @@
+/* Modul admin (Rafi). Memakai variabel warna dari style.css. */
+
+.ad-wrap { padding-top: 2rem; padding-bottom: 3.5rem; }
+.ad-judul h1 { font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: .2rem; }
+.ad-judul p { color: var(--muted); margin-bottom: 1.1rem; }
+
+.ad-nav { display: flex; gap: .3rem; overflow-x: auto; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: .4rem; box-shadow: 0 6px 18px rgba(15,39,71,.06); margin-bottom: 1.6rem; scrollbar-width: thin; }
+.ad-nav a { display: inline-flex; align-items: center; gap: .45rem; padding: .55rem .95rem; border-radius: 10px; color: var(--ink); text-decoration: none; font-weight: 500; font-size: .92rem; white-space: nowrap; }
+.ad-nav a:hover { background: rgba(201,162,75,.14); }
+.ad-nav a.aktif { background: var(--navy); color: #fff; }
+.ad-nav .jml { background: var(--gold); color: var(--navy); border-radius: 999px; font-size: .72rem; font-weight: 700; padding: .05rem .5rem; }
+
+.ad-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 6px 20px rgba(15,39,71,.05); }
+.ad-card > .ad-card-h { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem; padding: 1rem 1.3rem; border-bottom: 1px solid var(--line); }
+.ad-card > .ad-card-h h2, .ad-card > .ad-card-h h3 { font-size: 1.05rem; margin: 0; }
+.ad-card > .ad-card-b { padding: 1.2rem 1.3rem; }
+
+.ad-stat { display: flex; align-items: center; gap: .95rem; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 1.1rem 1.2rem; box-shadow: 0 6px 20px rgba(15,39,71,.05); height: 100%; }
+.ad-stat .ikon { flex: 0 0 auto; width: 3rem; height: 3rem; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.35rem; color: #fff; }
+.ad-stat .angka { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.8rem; line-height: 1; color: var(--navy); }
+.ad-stat .label { color: var(--muted); font-size: .85rem; margin-top: .25rem; }
+.ad-stat .sub { font-size: .78rem; color: var(--gold-600); font-weight: 600; text-decoration: none; }
+.ik-0 { background: linear-gradient(135deg, #0f2747, #2f5f9e); }
+.ik-1 { background: linear-gradient(135deg, #8a6416, #c9a24b); }
+.ik-2 { background: linear-gradient(135deg, #134e4a, #2a9d8f); }
+.ik-3 { background: linear-gradient(135deg, #3b2a6b, #7c5cc4); }
+
+.ad-table { margin: 0; }
+.ad-table thead th { font-size: .74rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); background: #faf8f3; border-bottom: 1px solid var(--line); white-space: nowrap; padding: .75rem 1rem; }
+.ad-table td { padding: .85rem 1rem; vertical-align: middle; border-color: var(--line); font-size: .92rem; }
+.ad-table tbody tr:hover { background: #fdfbf6; }
+.ad-sub { display: block; color: var(--muted); font-size: .8rem; }
+.ad-potong { max-width: 22rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.ad-ava { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 2.4rem; height: 2.4rem; border-radius: 50%; color: #fff; font-family: 'Playfair Display', serif; font-weight: 700; font-size: .95rem; }
+.ad-ava-0 { background: linear-gradient(135deg, #0f2747, #2f5f9e); }
+.ad-ava-1 { background: linear-gradient(135deg, #8a6416, #c9a24b); }
+.ad-ava-2 { background: linear-gradient(135deg, #134e4a, #2a9d8f); }
+.ad-ava-3 { background: linear-gradient(135deg, #3b2a6b, #7c5cc4); }
+.ad-ava-4 { background: linear-gradient(135deg, #7f1d1d, #c2575d); }
+.ad-ava-5 { background: linear-gradient(135deg, #1e3a5f, #4a7fb5); }
+
+.ad-pil { display: inline-block; font-size: .74rem; font-weight: 600; padding: .22rem .65rem; border-radius: 999px; white-space: nowrap; }
+.pil-aktif, .pil-terbit { background: #dcfce7; color: #166534; }
+.pil-menunggu { background: #fff3d6; color: #8a6200; }
+.pil-nonaktif, .pil-draft { background: #e5e7eb; color: #4b5563; }
+.pil-ditolak { background: #fee2e2; color: #991b1b; }
+.pil-admin { background: #dbe4f3; color: #0f2747; }
+.pil-pengacara { background: #f6ecd0; color: #7a5600; }
+.pil-klien { background: #dbeafe; color: #1e4fa3; }
+
+.ad-bar { height: 8px; border-radius: 999px; background: #eee9dc; overflow: hidden; }
+.ad-bar > span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--navy), #2f5f9e); }
+.ad-bar.emas > span { background: linear-gradient(90deg, var(--gold-600), var(--gold)); }
+.ad-baris { margin-bottom: .95rem; }
+.ad-baris:last-child { margin-bottom: 0; }
+.ad-baris .atas { display: flex; justify-content: space-between; font-size: .88rem; margin-bottom: .3rem; }
+.ad-baris .atas b { color: var(--navy); }
+
+.ad-filter { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: .9rem 1rem; margin-bottom: 1.1rem; }
+.ad-filter .form-label { font-size: .74rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .25rem; }
+.ad-filter .form-control, .ad-filter .form-select, .ad-filter .input-group-text { border-color: var(--line); }
+.ad-filter .input-group-text { background: #fff; color: var(--muted); }
+
+.ad-kosong { text-align: center; padding: 3rem 1rem; color: var(--muted); }
+.ad-kosong .bi { display: block; font-size: 2.4rem; color: var(--gold-600); margin-bottom: .5rem; }
+
+.ad-aksi { display: inline-flex; gap: .35rem; flex-wrap: wrap; }
+.ad-aksi form { margin: 0; }
+.btn-ad { --bs-btn-padding-y: .28rem; --bs-btn-padding-x: .7rem; --bs-btn-font-size: .82rem; border-radius: 8px; font-weight: 500; }
+
+/* Kartu verifikasi pengacara */
+.ad-calon { display: flex; flex-wrap: wrap; gap: 1.2rem; align-items: flex-start; }
+.ad-calon .isi { flex: 1 1 22rem; min-width: 0; }
+.ad-calon h3 { font-size: 1.1rem; margin-bottom: .15rem; }
+.ad-fakta { display: flex; flex-wrap: wrap; gap: .4rem 1.3rem; margin: .7rem 0; font-size: .88rem; color: var(--ink); }
+.ad-fakta .bi { color: var(--gold-600); margin-right: .3rem; }
+.ad-bio { background: #faf8f3; border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0; padding: .7rem .9rem; font-size: .9rem; color: #3a465a; }
+
+/* Percakapan (moderasi konsultasi) */
+.ad-chat { display: grid; gap: .8rem; }
+.ad-pesan { max-width: 85%; border-radius: 14px; padding: .8rem 1rem; font-size: .94rem; line-height: 1.6; background: #f3efe4; }
+.ad-pesan.pengacara { background: #e4ecf8; justify-self: end; }
+.ad-pesan .siapa { display: block; font-size: .76rem; font-weight: 600; color: var(--muted); margin-bottom: .2rem; }
+
+.ad-hint { background: #faf8f3; border: 1px dashed #d9cfb4; border-radius: 12px; padding: .9rem 1rem; font-size: .86rem; color: #5a5440; }
+.ad-hint code { background: #fff; border: 1px solid var(--line); border-radius: 5px; padding: .05rem .35rem; color: var(--navy); }
+.ad-hitung { font-size: .78rem; color: var(--muted); text-align: right; }
+
+.ad-wrap .pagination { margin: 0; }
+.ad-wrap .pagination .page-link { color: var(--navy); border-color: var(--line); margin: 0 .15rem; border-radius: 8px; min-width: 2.4rem; text-align: center; }
+.ad-wrap .pagination .page-item.active .page-link { background: var(--navy); border-color: var(--navy); color: #fff; }
+.ad-wrap .pagination .page-link:hover { background: rgba(201,162,75,.15); color: var(--navy); }
+.ad-wrap .pagination .page-item.disabled .page-link { color: #9aa3b0; background: transparent; }
+
+@media (max-width: 575.98px) {
+  .ad-card > .ad-card-h { padding: .9rem 1rem; }
+  .ad-pesan { max-width: 100%; }
+}
+
+/* Tautan di dalam tabel memakai warna tema, bukan biru bawaan browser */
+.ad-table a:not(.btn) { color: var(--navy); }
+.ad-table a:not(.btn):hover { color: var(--gold-600); }

@@ -1,0 +1,20 @@
+DirectoryIndex index.html
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^index\.php$ index.html [R=302,L]
+RewriteRule ^berita\.php$ berita.html [R=302,L]
+RewriteRule ^detail\.php$ detail.html [R=302,L]
+RewriteRule ^tentang\.php$ tentang.html [R=302,L]
+RewriteRule ^kontak\.php$ kontak.html [R=302,L]
+RewriteRule ^fakultas\.php$ fakultas.html [R=302,L]
+RewriteRule ^admin/login\.php$ admin/login.html [R=302,L]
+RewriteRule ^admin/dashboard\.php$ admin/dashboard.html [R=302,L]
+RewriteRule ^admin/articles/index\.php$ admin/berita.html [R=302,L]
+RewriteRule ^admin/articles/form\.php$ admin/berita-form.html [R=302,L]
+RewriteRule ^admin/categories/index\.php$ admin/kategori.html [R=302,L]
+RewriteRule ^admin/faculties/index\.php$ admin/fakultas.html [R=302,L]
+RewriteRule ^admin/users/index\.php$ admin/akun.html [R=302,L]
+RewriteRule ^admin/users/form\.php$ admin/akun-form.html [R=302,L]
+RewriteRule ^admin/comments/index\.php$ admin/komentar.html [R=302,L]
+RewriteRule ^admin/messages/index\.php$ admin/pesan.html [R=302,L]
+</IfModule>

@@ -1,0 +1,658 @@
+/* ==========================================
+   SEHATIN - HALAMAN DAFTAR ARTIKEL
+   File: assets/css/articles_public.css
+   Dipakai bersama assets/css/articles.css
+   (hero, container, eyebrow tetap dari articles.css)
+
+   Semua class memakai prefix "ar-" supaya tidak
+   bentrok dengan "tp-" (Tips) dan "ct-" (Kategori).
+
+   CATATAN WARNA:
+   Samakan 4 variabel utama di bawah dengan yang
+   dipakai di tips_public.css / categories_public.css.
+   ========================================== */
+
+.ar-main {
+    --ar-primary: #0f9d78;
+    --ar-primary-dark: #0b7a5c;
+    --ar-primary-soft: #e6f6f0;
+    --ar-ink: #14302a;
+
+    --ar-muted: #647571;
+    --ar-border: #e3ece8;
+    --ar-surface: #ffffff;
+    --ar-radius: 20px;
+    --ar-shadow: 0 10px 30px rgba(15, 70, 55, .08);
+    --ar-shadow-hover: 0 18px 40px rgba(15, 70, 55, .16);
+
+    padding-top: 40px;
+    padding-bottom: 72px;
+}
+
+/* Jarak antar blok utama */
+.ar-main > section,
+.ar-main > article,
+.ar-main > .ar-grid,
+.ar-main > .ar-empty {
+    margin-bottom: 32px;
+}
+
+/* ---------- ANIMASI MUNCUL ---------- */
+.ar-pre {
+    opacity: 0;
+}
+
+.ar-show {
+    animation: ar-rise .6s cubic-bezier(.2, .7, .2, 1) backwards;
+    animation-delay: var(--d, 0ms);
+}
+
+@keyframes ar-rise {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- TOMBOL ---------- */
+.ar-btn,
+.ar-btn-light,
+.ar-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border: 2px solid transparent;
+    border-radius: 999px;
+    font: inherit;
+    font-weight: 600;
+    font-size: .95rem;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+
+.ar-btn {
+    background: var(--ar-primary);
+    color: #fff;
+}
+
+.ar-btn:hover {
+    background: var(--ar-primary-dark);
+    color: #fff;
+}
+
+.ar-btn-light {
+    background: #fff;
+    color: var(--ar-primary-dark);
+}
+
+.ar-btn-light:hover {
+    background: var(--ar-primary-soft);
+    color: var(--ar-primary-dark);
+}
+
+.ar-btn-outline {
+    background: transparent;
+    border-color: rgba(255, 255, 255, .7);
+    color: #fff;
+}
+
+.ar-btn-outline:hover {
+    background: rgba(255, 255, 255, .14);
+    border-color: #fff;
+    color: #fff;
+}
+
+.ar-btn:focus-visible,
+.ar-btn-light:focus-visible,
+.ar-btn-outline:focus-visible,
+.ar-page:focus-visible,
+.ar-link:focus-visible {
+    outline: 3px solid var(--ar-primary);
+    outline-offset: 3px;
+}
+
+.ar-btn-light:focus-visible,
+.ar-btn-outline:focus-visible {
+    outline-color: #fff;
+}
+
+/* ---------- STATISTIK ---------- */
+.ar-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.ar-stat {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 22px;
+    background: var(--ar-surface);
+    border: 1px solid var(--ar-border);
+    border-radius: var(--ar-radius);
+    box-shadow: var(--ar-shadow);
+}
+
+.ar-stat-icon {
+    flex: 0 0 52px;
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 16px;
+    background: var(--ar-primary-soft);
+    color: var(--ar-primary);
+    font-size: 1.4rem;
+}
+
+.ar-stat strong {
+    display: block;
+    font-size: 1.75rem;
+    line-height: 1.1;
+    color: var(--ar-ink);
+}
+
+.ar-stat span {
+    font-size: .92rem;
+    color: var(--ar-muted);
+}
+
+/* ---------- TOOLBAR ---------- */
+.ar-toolbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.ar-toolbar-title h2 {
+    margin: 4px 0 0;
+    font-size: 1.7rem;
+    color: var(--ar-ink);
+}
+
+.ar-filter {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.ar-input-wrap {
+    position: relative;
+}
+
+.ar-input-wrap i {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    color: var(--ar-muted);
+    pointer-events: none;
+}
+
+.ar-filter input[type="search"],
+.ar-filter select {
+    height: 46px;
+    border: 1px solid var(--ar-border);
+    border-radius: 999px;
+    background: var(--ar-surface);
+    color: var(--ar-ink);
+    font: inherit;
+    font-size: .95rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.ar-filter input[type="search"] {
+    width: 260px;
+    max-width: 100%;
+    padding: 0 18px 0 42px;
+}
+
+.ar-filter select {
+    max-width: 200px;
+    padding: 0 16px;
+    cursor: pointer;
+}
+
+.ar-filter input[type="search"]:focus,
+.ar-filter select:focus {
+    outline: none;
+    border-color: var(--ar-primary);
+    box-shadow: 0 0 0 4px var(--ar-primary-soft);
+}
+
+.ar-result-info {
+    margin: -12px 0 24px;
+    color: var(--ar-muted);
+}
+
+.ar-result-info a {
+    color: var(--ar-primary-dark);
+    font-weight: 600;
+}
+
+/* ---------- WARNA LATAR (berdasarkan ID kategori % 4) ---------- */
+.ar-tone-0 .ar-card-media,
+.ar-tone-0 .ar-featured-media { background: linear-gradient(135deg, #d9f4ea, #b4e6d2); }
+
+.ar-tone-1 .ar-card-media,
+.ar-tone-1 .ar-featured-media { background: linear-gradient(135deg, #dff0fb, #bddcf3); }
+
+.ar-tone-2 .ar-card-media,
+.ar-tone-2 .ar-featured-media { background: linear-gradient(135deg, #fdeedb, #f9d6a8); }
+
+.ar-tone-3 .ar-card-media,
+.ar-tone-3 .ar-featured-media { background: linear-gradient(135deg, #f0e5fa, #dac2f0); }
+
+.ar-emoji {
+    font-size: 3.6rem;
+    line-height: 1;
+    transition: transform .35s ease;
+}
+
+.ar-chip {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    max-width: calc(100% - 28px);
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .92);
+    color: var(--ar-primary-dark);
+    font-size: .78rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ---------- ARTIKEL PILIHAN ---------- */
+.ar-featured {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    overflow: hidden;
+    background: var(--ar-surface);
+    border: 1px solid var(--ar-border);
+    border-radius: var(--ar-radius);
+    box-shadow: var(--ar-shadow);
+}
+
+.ar-featured-media {
+    position: relative;
+    min-height: 280px;
+    display: grid;
+    place-items: center;
+}
+
+.ar-featured-media .ar-emoji {
+    font-size: 5.5rem;
+}
+
+.ar-featured-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 34px 38px;
+}
+
+.ar-badge {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 14px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--ar-primary-soft);
+    color: var(--ar-primary-dark);
+    font-size: .8rem;
+    font-weight: 600;
+}
+
+.ar-featured-body h3 {
+    margin: 0 0 10px;
+    font-size: 1.6rem;
+    line-height: 1.3;
+    color: var(--ar-ink);
+}
+
+.ar-featured-body p {
+    margin: 0 0 22px;
+    max-width: 62ch;
+    line-height: 1.65;
+    color: var(--ar-muted);
+}
+
+.ar-featured-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+/* ---------- GRID & KARTU ---------- */
+.ar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.ar-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--ar-surface);
+    border: 1px solid var(--ar-border);
+    border-radius: var(--ar-radius);
+    box-shadow: var(--ar-shadow);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.ar-card:hover,
+.ar-card:focus-within {
+    transform: translateY(-6px);
+    box-shadow: var(--ar-shadow-hover);
+}
+
+.ar-card:hover .ar-emoji {
+    transform: scale(1.12) rotate(-4deg);
+}
+
+.ar-card-media {
+    position: relative;
+    height: 150px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+.ar-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 22px;
+}
+
+.ar-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+}
+
+.ar-card-body .ar-meta {
+    margin-bottom: 10px;
+}
+
+.ar-meta span,
+.ar-views {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .85rem;
+    color: var(--ar-muted);
+}
+
+.ar-meta i,
+.ar-views i {
+    color: var(--ar-primary);
+}
+
+.ar-card-body h3 {
+    margin: 0 0 8px;
+    font-size: 1.15rem;
+    line-height: 1.35;
+    color: var(--ar-ink);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ar-card-body p {
+    flex: 1;
+    margin: 0 0 18px;
+    font-size: .94rem;
+    line-height: 1.6;
+    color: var(--ar-muted);
+}
+
+.ar-card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--ar-border);
+}
+
+.ar-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    font-weight: 600;
+    font-size: .92rem;
+    color: var(--ar-primary-dark);
+    text-decoration: none;
+}
+
+.ar-link i {
+    transition: transform .2s ease;
+}
+
+.ar-card:hover .ar-link i {
+    transform: translateX(4px);
+}
+
+/* Seluruh kartu bisa diklik lewat link di dalamnya */
+.ar-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+/* ---------- PAGINATION ---------- */
+.ar-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 40px 0;
+}
+
+.ar-page {
+    min-width: 42px;
+    height: 42px;
+    padding: 0 12px;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid var(--ar-border);
+    border-radius: 999px;
+    background: var(--ar-surface);
+    color: var(--ar-ink);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+
+.ar-page:hover {
+    border-color: var(--ar-primary);
+    color: var(--ar-primary-dark);
+}
+
+.ar-page.active {
+    background: var(--ar-primary);
+    border-color: var(--ar-primary);
+    color: #fff;
+}
+
+/* ---------- KONDISI KOSONG / ERROR ---------- */
+.ar-empty {
+    padding: 56px 24px;
+    text-align: center;
+    background: var(--ar-surface);
+    border: 2px dashed var(--ar-border);
+    border-radius: var(--ar-radius);
+}
+
+.ar-empty-icon {
+    width: 76px;
+    height: 76px;
+    margin: 0 auto 18px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--ar-primary-soft);
+    color: var(--ar-primary);
+    font-size: 2rem;
+}
+
+.ar-empty h2 {
+    margin: 0 0 8px;
+    font-size: 1.4rem;
+    color: var(--ar-ink);
+}
+
+.ar-empty p {
+    max-width: 44ch;
+    margin: 0 auto 22px;
+    color: var(--ar-muted);
+}
+
+/* ---------- CTA ---------- */
+.ar-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 48px;
+    padding: 34px 38px;
+    border-radius: var(--ar-radius);
+    background: linear-gradient(135deg, var(--ar-ink) 0%, #1f4a40 100%);
+    color: #fff;
+}
+
+.ar-cta-text h3 {
+    margin: 0 0 6px;
+    font-size: 1.45rem;
+    color: #fff;
+}
+
+.ar-cta-text p {
+    margin: 0;
+    max-width: 52ch;
+    opacity: .85;
+}
+
+.ar-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* ---------- RESPONSIF ---------- */
+@media (max-width: 991.98px) {
+    .ar-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ar-featured {
+        grid-template-columns: 1fr;
+    }
+
+    .ar-featured-media {
+        min-height: 190px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .ar-main {
+        padding-top: 28px;
+        padding-bottom: 56px;
+    }
+
+    .ar-stats {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .ar-toolbar {
+        align-items: stretch;
+    }
+
+    .ar-filter {
+        width: 100%;
+    }
+
+    .ar-input-wrap {
+        flex: 1 1 100%;
+    }
+
+    .ar-filter input[type="search"] {
+        width: 100%;
+    }
+
+    .ar-filter select {
+        flex: 1;
+        max-width: none;
+    }
+
+    .ar-featured-body {
+        padding: 24px;
+    }
+
+    .ar-featured-body h3 {
+        font-size: 1.35rem;
+    }
+
+    .ar-cta {
+        padding: 28px 24px;
+    }
+
+    .ar-cta-actions {
+        width: 100%;
+    }
+
+    .ar-cta-actions a {
+        flex: 1;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .ar-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Hormati pengguna yang mematikan animasi */
+@media (prefers-reduced-motion: reduce) {
+    .ar-show {
+        animation: none;
+    }
+
+    .ar-card,
+    .ar-emoji,
+    .ar-link i {
+        transition: none;
+    }
+
+    .ar-card:hover,
+    .ar-card:focus-within {
+        transform: none;
+    }
+
+    .ar-card:hover .ar-emoji,
+    .ar-card:hover .ar-link i {
+        transform: none;
+    }
+}

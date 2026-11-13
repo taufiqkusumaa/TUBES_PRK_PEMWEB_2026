@@ -1,0 +1,280 @@
+.anggota-content {
+    padding: 28px 30px;
+}
+
+.anggota-welcome {
+    margin-bottom: 25px;
+}
+
+.anggota-welcome h2 {
+    font-size: 23px;
+    color: #193f2d;
+    margin-bottom: 7px;
+}
+
+.anggota-welcome p {
+    font-size: 13px;
+    color: #84948a;
+}
+
+.anggota-summary {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    padding: 23px;
+    background: #ffffff;
+    border: 1px solid #e4eee7;
+    border-radius: 15px;
+    margin-bottom: 23px;
+    box-shadow: 0 5px 18px rgba(25, 63, 45, 0.04);
+}
+
+.anggota-summary-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: #e5f5eb;
+    color: #208653;
+    font-size: 27px;
+}
+
+.anggota-summary p {
+    color: #84948a;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.anggota-summary h3 {
+    color: #194c34;
+    font-size: 25px;
+}
+
+.anggota-summary h3 span {
+    font-size: 12px;
+    font-weight: 500;
+    color: #8a9b90;
+}
+
+.anggota-card {
+    background: #ffffff;
+    border: 1px solid #e5eee8;
+    border-radius: 15px;
+    padding: 24px;
+    margin-bottom: 23px;
+    box-shadow: 0 5px 18px rgba(25, 63, 45, 0.04);
+}
+
+.anggota-card-header {
+    margin-bottom: 22px;
+}
+
+.anggota-card-header h3 {
+    color: #214b35;
+    font-size: 17px;
+    margin-bottom: 6px;
+}
+
+.anggota-card-header p {
+    color: #8a998f;
+    font-size: 12px;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.anggota-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 580px;
+}
+
+.anggota-table th {
+    background: #f4f8f5;
+    color: #668071;
+    text-align: left;
+    padding: 14px 15px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.anggota-table td {
+    padding: 15px;
+    border-bottom: 1px solid #edf2ee;
+    color: #53695b;
+    font-size: 13px;
+}
+
+.anggota-name {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: #294b37;
+}
+
+.anggota-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: #e3f3e9;
+    color: #208653;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.status-active {
+    background: #e5f5eb;
+    color: #21834e;
+}
+
+.status-inactive {
+    background: #eeeeee;
+    color: #777777;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 35px 15px;
+}
+
+.empty-icon {
+    font-size: 38px;
+    color: #a6cbb2;
+    margin-bottom: 12px;
+}
+
+.empty-state h4 {
+    color: #355642;
+    font-size: 15px;
+    margin-bottom: 7px;
+}
+
+.empty-state p {
+    color: #91a096;
+    font-size: 12px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 19px;
+}
+
+.form-group label {
+    display: block;
+    color: #365542;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    height: 45px;
+    border: 1px solid #dce8df;
+    background: #fbfdfb;
+    border-radius: 9px;
+    padding: 0 13px;
+    outline: none;
+    font-family: inherit;
+    font-size: 13px;
+    color: #294b37;
+    transition: 0.2s ease;
+}
+
+.form-group input:focus {
+    border-color: #26945b;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(38, 148, 91, 0.09);
+}
+
+.form-group input::placeholder {
+    color: #aab8ae;
+}
+
+.form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #edf2ee;
+}
+
+.form-footer p {
+    color: #8a998f;
+    font-size: 11px;
+}
+
+.btn-tambah-anggota {
+    border: none;
+    border-radius: 9px;
+    padding: 12px 19px;
+    background: linear-gradient(135deg, #176b45, #23965b);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-tambah-anggota:hover {
+    background: #145b3b;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(23, 107, 69, 0.18);
+}
+
+.alert-success,
+.alert-error {
+    padding: 13px 16px;
+    border-radius: 9px;
+    margin-bottom: 20px;
+    font-size: 13px;
+}
+
+.alert-success {
+    background: #e8f7ed;
+    border: 1px solid #c9ead4;
+    color: #21834e;
+}
+
+.alert-error {
+    background: #fff0f0;
+    border: 1px solid #f5cccc;
+    color: #bd4141;
+}
+
+@media (max-width: 768px) {
+    .anggota-content {
+        padding: 20px 15px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-footer {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .btn-tambah-anggota {
+        width: 100%;
+    }
+}

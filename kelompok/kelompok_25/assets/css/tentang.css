@@ -1,0 +1,77 @@
+/* ==========================================================
+   Ruang Hukum: gaya khusus halaman Tentang Kami (tentang.php).
+   Dipakai bersama beranda.css; hanya menambah yang belum ada di sana.
+   ========================================================== */
+
+/* Hero lebih pendek daripada Beranda, tetap memberi ruang untuk kartu statistik yang menimpa */
+.tt-hero { padding: 4rem 0 7.5rem; }
+
+/* Lambang di sisi kanan hero: ikon gedung dengan cincin emas */
+.tt-lambang { width: 210px; height: 210px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 5.4rem; color: var(--gold);
+  background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.14), rgba(255,255,255,.03));
+  border: 2px solid rgba(201,162,75,.55);
+  box-shadow: 0 0 0 16px rgba(201,162,75,.10), 0 0 0 34px rgba(201,162,75,.05), 0 30px 60px rgba(0,0,0,.35); }
+
+/* Teks isi */
+.tt-isi { color: var(--ink); font-size: 1.04rem; line-height: 1.75; margin-bottom: 1rem; }
+.tt-isi a { color: var(--navy-700); font-weight: 600; }
+
+/* Daftar dengan tanda centang emas */
+.tt-daftar { list-style: none; padding: 0; margin: 0 0 1.5rem; }
+.tt-daftar li { position: relative; padding-left: 1.9rem; margin-bottom: .65rem; line-height: 1.55; }
+.tt-daftar li::before { content: '\F26A'; font-family: 'bootstrap-icons'; position: absolute; left: 0; top: .02rem; color: var(--gold-600); font-size: 1.05rem; }
+.tt-daftar li:last-child { margin-bottom: 0; }
+.tt-visi .bn-ikon, .tt-peran .bn-ikon, .tt-nilai .bn-ikon { margin-bottom: .9rem; }
+/* Judul kecil di dalam kartu: tebal seperti judul lain (kelas .h5 bawaan Bootstrap membuatnya tipis) */
+.tt-h { font-size: 1.3rem; font-weight: 700; margin-bottom: .5rem; }
+.tt-penting .tt-h { font-size: 1.2rem; }
+
+/* Kartu nilai */
+.tt-nilai h3 { font-size: 1.15rem; margin-bottom: .45rem; }
+.tt-nilai p { color: var(--muted); font-size: .94rem; margin-bottom: 0; }
+.tt-nilai:hover .bn-ikon { background: var(--navy); color: var(--gold); }
+
+/* Kartu untuk klien / untuk pengacara */
+.tt-peran { display: flex; flex-direction: column; }
+.tt-peran h3 { font-size: 1.45rem; margin-bottom: 1rem; }
+
+/* Catatan penting */
+.tt-penting { display: flex; gap: 1rem; align-items: flex-start; padding: 1.5rem 1.75rem; background: #fff8e6; border: 1px solid #ecd9a4; border-left: 5px solid var(--gold); border-radius: 14px; }
+.tt-penting > .bi { flex: none; font-size: 1.6rem; line-height: 1.2; color: var(--gold-600); }
+.tt-penting a, .tt-kontak a, .tt-ikuti a { color: var(--navy-700); font-weight: 600; }
+
+/* Tim: satu orang di tengah atas, empat orang di bawahnya */
+.tt-tim-baris { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.25rem; }
+.tt-tim-baris + .tt-tim-baris { margin-top: 1.25rem; }
+.tt-anggota { flex: 0 1 250px; display: flex; flex-direction: column; align-items: center; gap: .9rem; padding: 1.6rem 1rem 1.4rem; text-align: center; background: var(--ivory); border: 1px solid var(--line); border-radius: 16px; transition: transform .15s, box-shadow .15s; }
+.tt-anggota:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(15,39,71,.10); }
+.tt-anggota .pc-avatar { width: 76px; height: 76px; font-size: 1.5rem; }
+.tt-anggota strong { color: var(--navy); line-height: 1.35; }
+
+/* Kontak */
+.tt-kontak li { display: flex; gap: 1rem; align-items: flex-start; padding-bottom: 1.4rem; margin-bottom: 1.4rem; border-bottom: 1px solid var(--line); }
+.tt-kontak li:last-child { padding-bottom: 0; margin-bottom: 0; border-bottom: 0; }
+.tt-kontak .bn-ikon { flex: none; margin-bottom: 0; }
+.tt-kontak strong { display: block; color: var(--navy); margin-bottom: .15rem; }
+.tt-kontak address { font-style: normal; line-height: 1.6; }
+.tt-kontak a { overflow-wrap: anywhere; }
+
+.tt-sosial { display: flex; align-items: center; gap: .85rem; padding: .75rem 1rem; border: 1.5px solid var(--line); border-radius: 12px; color: var(--navy); font-weight: 600; text-decoration: none; background: #fff; transition: border-color .15s, background .15s, transform .15s; }
+.tt-sosial .bi:first-child { font-size: 1.35rem; }
+.tt-sosial .bi:last-child { font-size: .85rem; color: var(--muted); }
+.tt-sosial:hover { border-color: var(--gold); background: rgba(201,162,75,.08); color: var(--navy); transform: translateY(-1px); }
+
+/* Tautan #tim dan #kontak tidak tertutup navbar yang menempel */
+#tim, #kontak { scroll-margin-top: 4.5rem; }
+
+@media (max-width: 575.98px) {
+  .tt-anggota { flex-basis: 100%; max-width: 320px; }
+  .tt-hero { padding: 3rem 0 6.5rem; }
+  .tt-penting { flex-direction: column; gap: .5rem; padding: 1.25rem; }
+  .tt-peran .btn { align-self: stretch !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tt-sosial, .tt-anggota { transition: none; }
+  .tt-sosial:hover, .tt-anggota:hover { transform: none; }
+}

@@ -1,0 +1,576 @@
+
+@view-transition {
+  navigation: auto;
+}
+
+html {
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+/* Judul section */
+.dashboard-container .section-heading {
+  margin: 0 0 16px;
+  padding: 0 0 12px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #eeeeee;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Pengumuman */
+.dashboard-container .announcement-section {
+  margin: 0;
+}
+
+.dashboard-container .announcement-empty {
+  padding: 15px;
+  margin: 0;
+  background: #f8f9fa;
+  border: none;
+  border-radius: 7px;
+}
+
+.dashboard-container .announcement-card {
+  background: #f8f9fa;
+  border: none;
+  border-radius: 7px;
+}
+
+/* Laporan */
+.dashboard-container .report-list {
+  display: grid;
+  gap: 12px;
+}
+
+.dashboard-container .report-row {
+  background: #f8f9fa;
+  border: none;
+  border-radius: 7px;
+}
+
+/* Garis pemisah antarbagian */
+.dashboard-divider {
+  width: 100%;
+  height: 1px;
+  margin: 24px 0;
+  background: #e5e5e5;
+}
+
+/* Tampilan ketika belum ada laporan */
+.dashboard-container .empty-state {
+  max-width: 100%;
+  margin: 0;
+  background: #f8f9fa;
+  border: none;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .dashboard-container {
+    padding: 18px;
+    border-radius: 9px;
+  }
+
+  .dashboard-container .page-heading {
+    padding-bottom: 20px;
+  }
+
+  .dashboard-divider {
+    margin: 20px 0;
+  }
+}
+
+
+/* ==========================================
+   ADVOKITA - ADMIN RED BACKGROUND THEME
+========================================== */
+
+/* Background seluruh halaman admin */
+body:has(.admin-red-theme) {
+    background-color: #8f0015 !important;
+}
+
+/* Area konten */
+body:has(.admin-red-theme) .admin-red-theme {
+    background: transparent !important;
+    min-height: 100vh;
+    padding-top: 35px;
+    padding-bottom: 60px;
+}
+
+/* Judul halaman */
+.admin-red-theme .page-heading h1 {
+    color: #ffffff !important;
+    font-weight: 700;
+}
+
+.admin-red-theme .page-heading p {
+    color: #f5dfe1 !important;
+}
+
+/* Label kecil */
+.admin-red-theme .eyebrow {
+    color: #ffc1c6 !important;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+/* Judul section */
+.admin-red-theme .section-heading h2 {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* Jumlah laporan */
+.admin-red-theme .section-heading .text-secondary {
+    color: #f5dfe1 !important;
+}
+
+/* Garis pemisah */
+.admin-red-theme .admin-section {
+    margin-bottom: 40px;
+}
+
+.admin-red-theme .admin-section + .admin-section {
+    margin-top: 45px;
+}
+
+/* Pesan kosong */
+.admin-red-theme .empty-inline {
+    color: #ffffff !important;
+    padding: 15px 18px;
+}
+
+/* ==========================================
+   FORM PENGUMUMAN
+========================================== */
+
+.admin-red-theme .admin-form {
+    background: #ffffff !important;
+    border: 1px solid #eeeeee;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+}
+
+.admin-red-theme .admin-form .form-label {
+    color: #252525;
+    font-weight: 600;
+}
+
+.admin-red-theme .admin-form .form-control {
+    background-color: #ffffff;
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+    color: #333333;
+}
+
+/* ==========================================
+   CARD LAPORAN
+========================================== */
+
+.admin-red-theme .admin-report {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 18px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+}
+
+.admin-red-theme .admin-report h3,
+.admin-red-theme .admin-report h4 {
+    color: #292929;
+}
+
+.admin-red-theme .admin-report p {
+    color: #555555;
+}
+
+.admin-red-theme .admin-report .report-number,
+.admin-red-theme .admin-report .report-category {
+    color: #777777;
+}
+
+/* Lampiran */
+.admin-red-theme .admin-attachment {
+    color: #a10d19;
+}
+
+/* ==========================================
+   CARD DAFTAR PENGUMUMAN
+========================================== */
+
+.admin-red-theme .admin-announcement {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+}
+
+.admin-red-theme .admin-announcement h3 {
+    color: #292929;
+}
+
+.admin-red-theme .admin-announcement p {
+    color: #555555;
+}
+
+/* ==========================================
+   TOMBOL
+========================================== */
+
+.admin-red-theme .btn-danger {
+    background-color: #b20d19;
+    border-color: #b20d19;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.admin-red-theme .btn-danger:hover {
+    background-color: #85000d;
+    border-color: #85000d;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 768px) {
+    body:has(.admin-red-theme) .admin-red-theme {
+        padding: 25px 18px 40px;
+    }
+
+    .admin-red-theme .admin-form,
+    .admin-red-theme .admin-report,
+    .admin-red-theme .admin-announcement {
+        padding: 18px;
+    }
+}
+
+/* Pengumuman */
+.dashboard-container .announcement-section {
+  margin: 0;
+}
+
+.dashboard-container .announcement-empty {
+  padding: 15px;
+  margin: 0;
+  background: #f8f9fa;
+  border: none;
+  border-radius: 7px;
+}
+
+.dashboard-container .announcement-card {
+  background: #f8f9fa;
+  border: none;
+  border-radius: 7px;
+}
+
+/* Laporan */
+.dashboard-container .report-list {
+  display: grid;
+  gap: 12px;
+}
+
+.dashboard-container .report-row {
+  background: #f8f9fa;
+  border: none;
+  border-radius: 7px;
+}
+
+/* Garis pemisah antarbagian */
+.dashboard-divider {
+  width: 100%;
+  height: 1px;
+  margin: 24px 0;
+  background: #e5e5e5;
+}
+
+/* Tampilan ketika belum ada laporan */
+.dashboard-container .empty-state {
+  max-width: 100%;
+  margin: 0;
+  background: #f8f9fa;
+  border: none;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .dashboard-container {
+    padding: 18px;
+    border-radius: 9px;
+  }
+
+  .dashboard-container .page-heading {
+    padding-bottom: 20px;
+  }
+
+  .dashboard-divider {
+    margin: 20px 0;
+  }
+}
+
+::view-transition-old(root) {
+  animation: 160ms cubic-bezier(0.4, 0, 1, 1) both advFadeOut;
+}
+
+::view-transition-new(root) {
+  animation: 200ms cubic-bezier(0, 0, 0.2, 1) both advFadeIn;
+}
+
+@keyframes advFadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.995); }
+}
+
+@keyframes advFadeIn {
+  from { opacity: 0; transform: scale(0.995); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.site-header {
+  view-transition-name: site-header;
+}
+
+.page-content,
+.advokita-page,
+.auth-card {
+  animation: advPageEnter 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes advPageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =====================================
+    DASHBOARD USER - ULTRA ELEGAN REDESIGN
+===================================== */
+
+:root {
+  --primary-maroon: #8b0000;
+  --primary-hover: #660000;
+  --bg-page: #f4f6f9; /* Background abu-abu profesional yang lembut */
+  --card-bg: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-light: #e2e8f0;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --shadow-card: 0 10px 30px -5px rgba(15, 23, 42, 0.05);
+}
+
+/* Mengatur background keseluruhan halaman web */
+body {
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Kontainer Utama Dashboard */
+.dashboard-container {
+  width: 100%;
+  padding: 36px 40px;
+  background: var(--card-bg);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* Header Halaman Beranda di dalam Dashboard */
+.dashboard-container .page-heading {
+  margin-bottom: 24px;
+  padding: 0 0 24px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-light);
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-container .page-heading h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.03em;
+}
+
+/* Judul Section dengan Aksen Garis Marun Modern */
+.dashboard-container .section-heading {
+  position: relative;
+  margin: 0 0 20px;
+  padding: 0 0 0 14px;
+  background: transparent;
+  border: none;
+  border-bottom: none;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.dashboard-container .section-heading::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 18px;
+  background: var(--primary-maroon);
+  border-radius: 4px;
+}
+
+/* Bagian Pengumuman */
+.dashboard-container .announcement-section {
+  margin-bottom: 32px;
+  background: #fafbfc;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 24px;
+}
+
+.dashboard-container .announcement-empty,
+.dashboard-container .empty-state {
+  padding: 36px 24px;
+  margin: 0;
+  background: #ffffff;
+  border: 2px dashed #cbd5e1;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  text-align: center;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+}
+
+.dashboard-container .announcement-card {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-container .announcement-card:hover {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  transform: translateY(-2px);
+}
+
+/* Daftar Laporan */
+.dashboard-container .report-list {
+  display: grid;
+  gap: 16px;
+}
+
+.dashboard-container .report-row {
+  background: #fafbfc;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  transition: all 0.2s ease;
+}
+
+.dashboard-container .report-row:hover {
+  border-color: #94a3b8;
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.04);
+}
+
+/* Garis Pemisah Antarbagian */
+.dashboard-divider {
+  width: 100%;
+  height: 1px;
+  margin: 36px 0;
+  background: var(--border-light);
+}
+
+/* Tombol Utama (Buat Laporan, dll) */
+.dashboard-container .btn-danger,
+.dashboard-container .btn-primary {
+  background: var(--primary-maroon);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(139, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.dashboard-container .btn-danger:hover,
+.dashboard-container .btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(139, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 20px;
+    margin: 16px;
+    border-radius: 12px;
+  }
+  
+  .dashboard-container .page-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+/* =====================================
+    PERBESAR UKURAN FONT NAVBAR & MENU
+===================================== */
+
+/* Logo dan Subteks */
+.navbar-brand .brand-title, 
+.brand-name, 
+.dashboard-container .page-heading h1 {
+  font-size: 1.25rem !important; /* Memperbesar judul logo */
+}
+
+/* Menu Navigasi Atas (Beranda, Pengaduan, Riwayat) */
+.navbar-nav .nav-link,
+.nav-menu a,
+header nav a {
+  font-size: 1.05rem !important; /* Membuat teks menu lebih besar & nyaman dibaca */
+  font-weight: 500;
+}
+
+/* Informasi Profil Pengguna (Nama & Status Mahasiswa) */
+.user-profile .user-name,
+.profile-info .name {
+  font-size: 1rem !important;
+  font-weight: 600;
+}
+
+.user-profile .user-role,
+.profile-info .role,
+.user-profile small {
+  font-size: 0.85rem !important; /* Memperbesar subteks role agar terbaca jelas */
+}
+
+/* Tombol Keluar / Tombol Aksi di Header */
+.navbar .btn,
+header .btn-outline-danger,
+.user-profile .btn {
+  font-size: 0.95rem !important;
+  padding: 8px 16px !important;
+}

@@ -1,0 +1,4 @@
+# Folder upload gambar: blokir eksekusi file script demi keamanan
+<FilesMatch "\.(php|phtml|phar)$">
+  Require all denied
+</FilesMatch>
