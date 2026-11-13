@@ -3,3 +3,8 @@ Thumbs.db
 .vscode/
 .idea/
 *.log
+
+/scripts/
+rekap_*.md
+rekap_*.csv
+
