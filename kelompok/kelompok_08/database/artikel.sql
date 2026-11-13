@@ -59,4 +59,6 @@ SELECT u.id, k.id,
  'Gunakan campuran tanah, pupuk kandang, dan sekam dengan perbandingan 2:1:1.\n\nSemai biji lebih dulu selama 2-3 minggu, lalu pindahkan ke polybag berdiameter minimal 35 cm.\n\nSiram pagi atau sore dan pastikan tanaman mendapat sinar matahari 6-8 jam per hari.',
  'publish'
 FROM users u JOIN kategori_artikel k ON k.nama_kategori = 'Tips Tani'
-ORDER BY (u.role = 'admin') DESC, u.id LIMIT 1;
+ORDER BY (u.role = 'admin') DESC, u.id LIMIT 1;kategorikategori
+
+SELECT * FROM produk;

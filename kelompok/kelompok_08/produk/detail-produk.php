@@ -59,7 +59,7 @@ if (substr($whatsapp, 0, 1) === '0') {
         <div class="col-md-5">
             <?php if (!empty($produk['foto'])): ?>
                 <img
-                    src="../<?= htmlspecialchars($produk['foto']) ?>"
+                    src="../assets/<?= htmlspecialchars(basename($produk['foto'])) ?>"
                     class="img-fluid rounded"
                     alt="<?= htmlspecialchars($produk['nama_produk']) ?>"
                 >

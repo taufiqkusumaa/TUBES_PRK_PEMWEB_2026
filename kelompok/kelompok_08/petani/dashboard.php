@@ -178,16 +178,17 @@ $nama_petani = $_SESSION['nama'] ?? 'Petani';
                     </a>
                 </li>
 
+                <li class="nav-item"><a class="nav-link text-white" href="../edukasi/index.php">Edukasi</a></li>
                 <li class="nav-item">
                     <a class="nav-link text-white"
                        href="../petani/profil.php">
-                        profil
+                        Profil
                     </a>
                 </li>
 
                 <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
                     <a class="btn btn-light btn-sm px-3"
-                       href="../config/logout.php"
+                       href="../auth/logout.php"
                        onclick="return confirm('Yakin ingin logout?')">
 
                         <i class="bi bi-box-arrow-right"></i>
@@ -292,120 +293,115 @@ $nama_petani = $_SESSION['nama'] ?? 'Petani';
 
         <?php if (mysqli_num_rows($result) > 0): ?>
 
-            <?php while ($row = mysqli_fetch_assoc($result)): ?>
+    <?php while ($row = mysqli_fetch_assoc($result)): ?>
 
-                <?php
-                $foto = !empty($row['foto'])
-                    ? '../' . ltrim($row['foto'], '/')
-                    : 'https://placehold.co/600x400/eaf5e9/218838?text=Produk+BUYPANEN';
+        <?php
+        if (!empty($row['foto'])) {
+            $bersih = preg_replace('#^(\.\./)+#', '', trim($row['foto']));
+            $bersih = preg_replace('#^/?assets/#', '', ltrim($bersih, '/'));
+            $foto   = '../assets/' . $bersih;
+        } else {
+            $foto   = 'https://placehold.co/600x400/eaf5e9/218838?text=Produk+BUYPANEN';
+        }
 
-                $nomor_wa = preg_replace(
-                    '/\D/',
-                    '',
-                    $row['no_whatsapp']
-                );
+        $nomor_wa = preg_replace(
+            '/\D/',
+            '',
+            $row['no_whatsapp']
+        );
 
-                // Ubah format 08 menjadi 628
-                if (substr($nomor_wa, 0, 1) === '0') {
-                    $nomor_wa = '62' . substr($nomor_wa, 1);
-                }
+        // Ubah format 08 menjadi 628
+        if (substr($nomor_wa, 0, 1) === '0') {
+            $nomor_wa = '62' . substr($nomor_wa, 1);
+        }
 
-                $pesan_wa = "Halo " . $row['nama_petani'] .
-                    ", saya tertarik membeli " . $row['nama_produk'] .
-                    " yang tersedia di BUYPANEN.";
+        $pesan_wa = "Halo " . $row['nama_petani'] .
+            ", saya tertarik membeli " . $row['nama_produk'] .
+            " yang tersedia di BUYPANEN.";
 
-                $link_wa = "https://wa.me/" . $nomor_wa .
-                    "?text=" . rawurlencode($pesan_wa);
-                ?>
+        $link_wa = "https://wa.me/" . $nomor_wa .
+            "?text=" . rawurlencode($pesan_wa);
+        ?>
 
-                <div class="col-lg-3 col-md-4 col-sm-6 item-produk"
-                     data-nama="<?= htmlspecialchars(strtolower($row['nama_produk'] . ' ' . $row['nama_petani'])) ?>"
-                     data-kategori="<?= htmlspecialchars($row['nama_kategori']) ?>">
+        <div class="col-lg-3 col-md-4 col-sm-6 item-produk"
+             data-nama="<?= htmlspecialchars(strtolower($row['nama_produk'] . ' ' . $row['nama_petani'])) ?>"
+             data-kategori="<?= htmlspecialchars($row['nama_kategori']) ?>">
 
-                    <div class="card h-100 shadow-sm">
+            <div class="card h-100 shadow-sm">
 
-                        <img
-                            src="<?= htmlspecialchars($foto) ?>"
-                            class="img-produk"
-                            alt="<?= htmlspecialchars($row['nama_produk']) ?>"
-                            onerror="this.src='https://placehold.co/600x400/eaf5e9/218838?text=Produk+BUYPANEN'"
-                        >
+                <img
+                    src="<?= htmlspecialchars($foto) ?>"
+                    class="img-produk"
+                    alt="<?= htmlspecialchars($row['nama_produk']) ?>"
+                    onerror="this.src='https://placehold.co/600x400/eaf5e9/218838?text=Produk+BUYPANEN'"
+                >
 
-                        <div class="card-body d-flex flex-column">
+                <div class="card-body d-flex flex-column">
 
-                            <div class="mb-2">
-
-                                <span class="badge bg-success">
-                                    <?= htmlspecialchars($row['nama_kategori']) ?>
-                                </span>
-
-                            </div>
-
-                            <h5 class="card-title fw-bold">
-                                <?= htmlspecialchars($row['nama_produk']) ?>
-                            </h5>
-
-                            <p class="text-success fw-bold fs-5 mb-1">
-                                Rp <?= number_format($row['harga'], 0, ',', '.') ?>
-
-                                <small class="text-muted fs-6">
-                                    / <?= htmlspecialchars($row['satuan']) ?>
-                                </small>
-                            </p>
-
-                            <p class="text-muted small mb-2">
-                                Stok:
-                                <?= htmlspecialchars($row['stok']) ?>
-                                <?= htmlspecialchars($row['satuan']) ?>
-                            </p>
-
-                            <hr class="my-2">
-
-                            <p class="small text-secondary mb-1">
-                                <i class="bi bi-person-fill"></i>
-                                <?= htmlspecialchars($row['nama_petani']) ?>
-                            </p>
-
-                            <p class="small text-secondary mb-3">
-                                <i class="bi bi-geo-alt-fill"></i>
-                                <?= htmlspecialchars($row['lokasi_kebun']) ?>
-                            </p>
-
-                            <a href="<?= htmlspecialchars($link_wa) ?>"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="btn btn-outline-success w-100 mt-auto">
-
-                                <i class="bi bi-whatsapp"></i>
-                                Hubungi Petani
-
-                            </a>
-
-                        </div>
-
+                    <div class="mb-2">
+                        <span class="badge bg-success">
+                            <?= htmlspecialchars($row['nama_kategori']) ?>
+                        </span>
                     </div>
+
+                    <h5 class="card-title fw-bold">
+                        <?= htmlspecialchars($row['nama_produk']) ?>
+                    </h5>
+
+                    <p class="text-success fw-bold fs-5 mb-1">
+                        Rp <?= number_format($row['harga'], 0, ',', '.') ?>
+                        <small class="text-muted fs-6">
+                            / <?= htmlspecialchars($row['satuan']) ?>
+                        </small>
+                    </p>
+
+                    <p class="text-muted small mb-2">
+                        Stok:
+                        <?= htmlspecialchars($row['stok']) ?>
+                        <?= htmlspecialchars($row['satuan']) ?>
+                    </p>
+
+                    <hr class="my-2">
+
+                    <p class="small text-secondary mb-1">
+                        <i class="bi bi-person-fill"></i>
+                        <?= htmlspecialchars($row['nama_petani']) ?>
+                    </p>
+
+                    <p class="small text-secondary mb-3">
+                        <i class="bi bi-geo-alt-fill"></i>
+                        <?= htmlspecialchars($row['lokasi_kebun']) ?>
+                    </p>
+
+                    <a href="<?= htmlspecialchars($link_wa) ?>"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="btn btn-outline-success w-100 mt-auto">
+                        <i class="bi bi-whatsapp"></i>
+                        Hubungi Petani
+                    </a>
 
                 </div>
 
-            <?php endwhile; ?>
-
-        <?php else: ?>
-
-            <div class="col-12 text-center py-5">
-
-                <i class="bi bi-basket display-3 text-muted"></i>
-
-                <h5 class="mt-3">
-                    Belum Ada Produk
-                </h5>
-
-                <p class="text-muted">
-                    Saat ini belum ada produk yang tersedia di katalog.
-                </p>
-
             </div>
 
-        <?php endif; ?>
+        </div>
+
+    <?php endwhile; ?>
+
+<?php else: ?>
+
+    <div class="col-12 text-center py-5">
+        <i class="bi bi-basket display-3 text-muted"></i>
+        <h5 class="mt-3">
+            Belum Ada Produk
+        </h5>
+        <p class="text-muted">
+            Saat ini belum ada produk yang tersedia di katalog.
+        </p>
+    </div>
+
+<?php endif; ?>
 
     </div>
 

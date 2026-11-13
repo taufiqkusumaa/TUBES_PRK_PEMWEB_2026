@@ -128,3 +128,50 @@ VALUES
     'Jagung manis segar hasil panen lokal.',
     'tayang'
 );
+
+-- 1. Buat 1 akun user & profil petani terlebih dahulu
+INSERT INTO users (nama, email, password, role)
+VALUES ('Pak Sutrisno', 'sutrisno@buypanen.com', '123456', 'petani');
+
+INSERT INTO petani (user_id, no_whatsapp, lokasi_kebun)
+VALUES (LAST_INSERT_ID(), '6281234567890', 'Lampung Selatan');
+
+-- 2. Ambil ID petani yang baru saja dibuat
+SET @petani_id = (SELECT user_id FROM petani ORDER BY id ASC LIMIT 1);
+
+-- 3. Masukkan data produk beserta nama file foto
+INSERT INTO produk (user_id, kategori_id, nama_produk, harga, satuan, stok, deskripsi, foto, status)
+VALUES
+(
+    @petani_id,
+    (SELECT id FROM kategori WHERE nama_kategori = 'Sayur'),
+    'Cabai Merah',
+    45000,
+    'kg',
+    50,
+    'Cabai merah segar hasil panen petani lokal.',
+    'cabai.jpg',
+    'tayang'
+),
+(
+    @petani_id,
+    (SELECT id FROM kategori WHERE nama_kategori = 'Buah'),
+    'Pisang Kepok',
+    18000,
+    'sisir',
+    40,
+    'Pisang kepok matang dan berkualitas.',
+    'pisang.jpg',
+    'tayang'
+),
+(
+    @petani_id,
+    (SELECT id FROM kategori WHERE nama_kategori = 'Pangan'),
+    'Jagung Manis',
+    8000,
+    'kg',
+    70,
+    'Jagung manis segar hasil panen lokal.',
+    'cabai.jpg',
+    'tayang'
+);

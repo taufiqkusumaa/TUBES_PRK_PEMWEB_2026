@@ -1,4 +1,3 @@
-
 <?php
 require_once __DIR__ . '/../config/database.php';
 
@@ -46,7 +45,7 @@ if (!$resultProduk) {
 }
 ?>
 
-<div class="container">
+<div class="container px-0">
 
     <!-- Form Pencarian dan Filter -->
     <form action="index.php#katalog" method="GET" class="row g-3 mb-4">
@@ -97,13 +96,22 @@ if (!$resultProduk) {
                 if (substr($whatsapp, 0, 1) === '0') {
                     $whatsapp = '62' . substr($whatsapp, 1);
                 }
+
+                // Menyamakan path gambar dengan format simpanan dashboard petani Elan (tanpa '../')
+                if (!empty($produk['foto'])) {
+                    $bersih = preg_replace('#^(\.\./)+#', '', trim($produk['foto']));
+                    $bersih = preg_replace('#^/?assets/#', '', ltrim($bersih, '/'));
+                    $foto   = 'assets/' . $bersih;
+                } else {
+                    $foto   = 'https://placehold.co/600x400/eaf5e9/218838?text=Produk+BUYPANEN';
+                }
                 ?>
 
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="card h-100 shadow-sm border-0">
 
                         <img
-                            src="../<?= htmlspecialchars($produk['foto']) ?>"
+                            src="<?= htmlspecialchars($foto) ?>"
                             class="img-produk"
                             alt="<?= htmlspecialchars($produk['nama_produk']) ?>"
                         >
@@ -145,7 +153,7 @@ if (!$resultProduk) {
                             </p>
 
                             <a
-                                href="https://wa.me/<?= $whatsapp ?>"
+                                href="https://wa.me/<?= $whatsapp ?>?text=Halo%20<?= urlencode($produk['nama_petani']) ?>,%20saya%20tertarik%20membeli%20<?= urlencode($produk['nama_produk']) ?>"
                                 target="_blank"
                                 class="btn btn-outline-success w-100 mt-auto mb-2"
                             >
@@ -168,7 +176,7 @@ if (!$resultProduk) {
         <?php else: ?>
 
             <div class="col-12 text-center text-muted py-4">
-             
+                <p class="mb-0">Produk tidak ditemukan.</p>
             </div>
 
         <?php endif; ?>

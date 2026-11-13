@@ -1,9 +1,12 @@
 <?php
-// Daftar artikel edukasi. Koneksi memakai $conn (mysqli) dari config/database.php.
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once __DIR__ . '/../config/database.php';
 
-$judul_halaman = 'Edukasi Pertanian | BuyPanen';
+$judul_halaman = 'Edukasi Pertanian | BUYPANEN';
 $kategori = trim($_GET['kategori'] ?? '');
+$adalah_petani = ($_SESSION['role'] ?? '') === 'petani';
 
 $sql = "SELECT a.judul, a.slug, a.ringkasan, a.gambar, a.created_at, k.nama_kategori
         FROM artikel a
@@ -26,8 +29,15 @@ $daftar_kategori = $conn->query('SELECT nama_kategori FROM kategori_artikel ORDE
 include __DIR__ . '/header.php';
 ?>
 <main class="container py-5">
-  <h1 class="mb-1">Edukasi</h1>
-  <p class="text-muted mb-4">Tips bertani dan cara memilih serta menyimpan bahan pangan segar.</p>
+  <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-4">
+    <div>
+      <h1 class="mb-1">Edukasi</h1>
+      <p class="text-muted mb-0">Tips bertani dan cara memilih serta menyimpan bahan pangan segar.</p>
+    </div>
+    <?php if ($adalah_petani): ?>
+      <a href="kelola/index.php" class="btn btn-panen">Kelola Artikel</a>
+    <?php endif; ?>
+  </div>
 
   <div class="mb-4 d-flex flex-wrap gap-2">
     <a href="index.php" class="btn btn-sm <?= $kategori === '' ? 'btn-panen' : 'btn-outline-success' ?>">Semua</a>
