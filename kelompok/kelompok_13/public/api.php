@@ -1,65 +1,94 @@
 <?php
-/**
- * File: public/api.php
- * Deskripsi: Endpoint API khusus untuk menangani request AJAX Fetch dari
- * public/assets/js/transaksi.js (Submit Booking, Upload Foto, Ambil Riwayat, Update Stepper).
- */
+// File: kelompok/kelompok_13/public/api.php
+// Matikan tampilan error HTML agar tidak merusak format JSON frontend
+ini_set('display_errors', 0);
+error_reporting(0);
 
-declare(strict_types=1);
 session_start();
+
 header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
-// Autoloader kelas App\*
-spl_autoload_register(function ($class) {
-    $prefix = 'App\\';
-    $base_dir = dirname(__DIR__) . '/app/';
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
 
-    $len = strlen($prefix);
-    if (strncmp($prefix, $class, $len) !== 0) {
-        return;
-    }
-
-    $relative_class = substr($class, $len);
-    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
-
-    if (file_exists($file)) {
-        require $file;
+spl_autoload_register(function ($className) {
+    $paths = [
+        __DIR__ . '/../app/Models/' . $className . '.php',
+        __DIR__ . '/../app/Controllers/' . $className . '.php',
+    ];
+    foreach ($paths as $file) {
+        if (file_exists($file)) {
+            require_once $file;
+            return;
+        }
     }
 });
 
-use App\Controllers\TransaksiController;
+$module = $_REQUEST['module'] ?? $_REQUEST['controller'] ?? $_REQUEST['endpoint'] ?? $_REQUEST['page'] ?? '';
+$moduleKey = strtolower(trim($module));
 
-$action = $_GET['action'] ?? ($_POST['action'] ?? '');
-$controller = new TransaksiController();
+$moduleMap = [
+    'transaksi'  => 'TransaksiController',
+    'servis'     => 'TransaksiController',
+    'kendaraan'  => 'KendaraanController',
+    'layanan'    => 'LayananController',
+    'kategori'   => 'LayananController',
+    'mekanik'    => 'MekanikController',
+    'work_order' => 'MekanikController',
+    'teknisi'    => 'MekanikController',
+    'sparepart'  => 'SparepartController',
+    'komponen'   => 'SparepartController',
+    'pelanggan'  => 'PelangganController',
+    'users'      => 'PelangganController',
+    'auth'       => 'PelangganController',
+];
 
-switch ($action) {
-    case 'create_booking':
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            http_response_code(405);
-            echo json_encode(['status' => 'error', 'message' => 'Method tidak diizinkan']);
-            exit;
+if (!isset($moduleMap[$moduleKey])) {
+    http_response_code(404);
+    echo json_encode(['success' => false, 'message' => 'Endpoint tidak ditemukan.']);
+    exit;
+}
+
+$action = (string) ($_REQUEST['action'] ?? '');
+$publicActions = ['login', 'register', 'logout'];
+$authenticated = isset($_SESSION['user']) && is_array($_SESSION['user']) && !empty($_SESSION['user']);
+$isPublicAction = in_array($moduleKey, ['auth', 'pelanggan'], true) &&
+    in_array($action, $publicActions, true);
+if (!$authenticated && !$isPublicAction) {
+    http_response_code(401);
+    echo json_encode(['success' => false, 'message' => 'Sesi berakhir. Silakan login kembali.']);
+    exit;
+}
+
+try {
+    require_once __DIR__ . '/../app/config/Database.php';
+    $pdo = Database::getConnection();
+    $controllerClass = $moduleMap[$moduleKey];
+    $controller = new $controllerClass($pdo);
+    if (method_exists($controller, 'handle')) {
+        if ($moduleKey === 'transaksi' && empty($_GET['action']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
+            $_GET['action'] = 'list';
         }
-        echo json_encode($controller->storeBooking());
-        break;
-
-    case 'get_riwayat':
-        echo json_encode($controller->getRiwayatJson());
-        break;
-
-    case 'update_status':
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            http_response_code(405);
-            echo json_encode(['status' => 'error', 'message' => 'Method tidak diizinkan']);
-            exit;
-        }
-        echo json_encode($controller->updateStatusJson());
-        break;
-
-    default:
-        http_response_code(400);
-        echo json_encode([
-            'status'  => 'error',
-            'message' => 'Action API tidak dikenali.'
-        ]);
-        break;
+        $controller->handle();
+        exit;
+    }
+    if (method_exists($controller, 'handleApiRequest')) {
+        $controller->handleApiRequest($_GET['action'] ?? 'list');
+        exit;
+    }
+    if (method_exists($controller, 'index')) {
+        $controller->index();
+        exit;
+    }
+} catch (Throwable $e) {
+    error_log('[API] ' . $e->getMessage());
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Terjadi kesalahan pada server.'
+    ]);
 }

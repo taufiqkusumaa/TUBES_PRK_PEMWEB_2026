@@ -1,59 +1,27 @@
 <?php
-/**
- * File: app/Config/Database.php
- * Deskripsi: Kelas Koneksi Database menggunakan PDO (Singleton Pattern)
- * untuk keamanan dari SQL Injection dan manajemen koneksi yang efisien.
- */
+// File: kelompok/kelompok_13/app/config/Database.php
 
-namespace App\Config;
+class Database {
+    private static $host = '127.0.0.1';
+    private static $db_name = 'bengkel_db';
+    private static $username = 'root';
+    private static $password = '';
+    private static $conn = null;
 
-use PDO;
-use PDOException;
-
-class Database
-{
-    private static ?PDO $instance = null;
-
-    // Konfigurasi kredensial database MySQL
-    private string $host = 'localhost';
-    private string $db_name = 'db_bengkel_servis';
-    private string $username = 'root';
-    private string $password = '';
-    private string $charset = 'utf8mb4';
-
-    /**
-     * Constructor dibuat private untuk mencegah instansiasi berulang
-     */
-    private function __construct()
-    {
-        $dsn = "mysql:host={$this->host};dbname={$this->db_name};charset={$this->charset}";
-        $options = [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-        ];
-
-        try {
-            self::$instance = new PDO($dsn, $this->username, $this->password, $options);
-        } catch (PDOException $e) {
-            // Tangani error koneksi dengan rapi
-            http_response_code(500);
-            die(json_encode([
-                'status'  => 'error',
-                'message' => 'Koneksi Database Gagal: ' . $e->getMessage()
-            ]));
+    public static function getConnection() {
+        if (self::$conn === null) {
+            try {
+                $dsn = "mysql:host=" . self::$host . ";dbname=" . self::$db_name . ";charset=utf8mb4";
+                self::$conn = new PDO($dsn, self::$username, self::$password, [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                ]);
+            } catch (PDOException $e) {
+                self::$conn = null;
+                throw $e;
+            }
         }
-    }
-
-    /**
-     * Mendapatkan instance koneksi PDO aktif
-     * @return PDO
-     */
-    public static function getConnection(): PDO
-    {
-        if (self::$instance === null) {
-            new self();
-        }
-        return self::$instance;
+        return self::$conn;
     }
 }

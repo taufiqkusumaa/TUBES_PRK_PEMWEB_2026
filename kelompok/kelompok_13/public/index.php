@@ -1,45 +1,71 @@
 <?php
-require_once __DIR__ . '/config/db.php';
-$pageTitle = 'Beranda';
-require __DIR__ . '/includes/header.php';
-?>
-<div class="hero shadow mb-5">
-    <div class="row align-items-center">
-        <div class="col-lg-7">
-            <h1 class="display-5 fw-bold">Servis Kendaraan Jadi Lebih Mudah</h1>
-            <p class="lead opacity-75">Pesan servis secara online, pilih paket sesuai kebutuhan, dan pantau progres kendaraan Anda kapan saja.</p>
-            <div class="d-flex flex-wrap gap-2 mt-4">
-                <a href="booking.php" class="btn btn-warning btn-lg"><i class="bi bi-calendar-plus"></i> Pesan Servis</a>
-                <a href="tracking.php" class="btn btn-outline-light btn-lg"><i class="bi bi-geo-alt"></i> Lacak Kendaraan</a>
-            </div>
-        </div>
-        <div class="col-lg-5 text-center d-none d-lg-block">
-            <i class="bi bi-car-front-fill" style="font-size: 9rem; color: #f59e0b;"></i>
-        </div>
-    </div>
-</div>
+// File: kelompok/kelompok_13/public/index.php
+session_start();
 
-<div class="row g-4">
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100 p-4 text-center">
-            <i class="bi bi-pencil-square fs-1 text-warning"></i>
-            <h5 class="fw-bold mt-3">Pesan Online</h5>
-            <p class="text-muted mb-0">Isi plat nomor, keluhan, dan pilih paket servis dalam satu formulir.</p>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100 p-4 text-center">
-            <i class="bi bi-clock-history fs-1 text-warning"></i>
-            <h5 class="fw-bold mt-3">Riwayat Servis</h5>
-            <p class="text-muted mb-0">Lihat semua riwayat servis kendaraan Anda dalam satu halaman.</p>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100 p-4 text-center">
-            <i class="bi bi-diagram-3 fs-1 text-warning"></i>
-            <h5 class="fw-bold mt-3">Pantau Progres</h5>
-            <p class="text-muted mb-0">Ikuti tahap servis dari Pending, Antre, Dikerjakan, hingga Siap Diambil.</p>
-        </div>
-    </div>
-</div>
-<?php require __DIR__ . '/includes/footer.php'; ?>
+require_once __DIR__ . '/../app/config/Database.php';
+
+$page = $_GET['page'] ?? 'dashboard';
+$user = is_array($_SESSION['user'] ?? null) ? $_SESSION['user'] : null;
+$role = strtolower((string) ($user['role'] ?? ''));
+$role = ['pelanggan' => 'customer', 'mekanik' => 'teknisi'][$role] ?? $role;
+
+$views = [
+    'dashboard'  => 'dashboard.php',
+    'transaksi'  => 'transaksi.php',
+    'kendaraan'  => 'kendaraan.php',
+    'work_order' => 'mekanik.php',
+    'mekanik'    => 'mekanik.php',
+    'sparepart'  => 'sparepart.php',
+    'layanan'    => 'layanan.php',
+    'pelanggan'  => 'pelanggan.php',
+    'users'      => 'pelanggan.php',
+];
+
+if (!isset($views[$page])) {
+    $page = 'dashboard';
+}
+
+if ($user === null) {
+    if ($page !== 'pelanggan') {
+        header('Location: index.php?page=pelanggan&mode=login');
+        exit;
+    }
+} elseif ($page === 'pelanggan' && in_array($_GET['mode'] ?? '', ['login', 'register'], true)) {
+    header('Location: index.php?page=' . ($role === 'admin' ? 'dashboard' : ($role === 'teknisi' ? 'mekanik' : 'transaksi')));
+    exit;
+}
+
+$allowedRoles = [
+    'dashboard' => ['admin'],
+    'transaksi' => ['admin', 'customer'],
+    'kendaraan' => ['admin'],
+    'work_order' => ['admin', 'teknisi'],
+    'mekanik' => ['admin', 'teknisi'],
+    'sparepart' => ['admin', 'teknisi'],
+    'layanan' => ['admin'],
+    'pelanggan' => ['admin', 'customer', 'teknisi'],
+    'users' => ['admin'],
+];
+if ($user !== null && !in_array($role, $allowedRoles[$page], true)) {
+    http_response_code(403);
+    echo 'Anda tidak memiliki akses ke halaman ini.';
+    exit;
+}
+if ($user !== null && $page === 'pelanggan' && ($_GET['mode'] ?? '') === 'users' && $role !== 'admin') {
+    http_response_code(403);
+    exit('Hanya admin yang dapat mengelola pengguna.');
+}
+
+if ($page === 'transaksi') {
+    require_once __DIR__ . '/../app/Controllers/TransaksiController.php';
+    (new TransaksiController(Database::getConnection()))->index();
+    exit;
+}
+
+$fileView = __DIR__ . '/../app/Views/' . $views[$page];
+
+if (file_exists($fileView)) {
+    require_once $fileView;
+} else {
+    require_once __DIR__ . '/../app/Views/dashboard.php';
+}
